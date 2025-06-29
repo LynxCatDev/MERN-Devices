@@ -4,6 +4,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import { Button } from '@chakra-ui/react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useShallow } from 'zustand/react/shallow';
 import { DevicesProps } from '@/store/store.interface';
 import { PRODUCT_PROPERTY } from '@/constants/devicesSpecs';
 import { checkImageUrl } from '@/helpers';
@@ -20,14 +21,18 @@ export const DeviceInfo = ({ device }: DeviceInfoProps) => {
   const t = useTranslations('Devices');
   const tCategories = useTranslations('Categories');
   const locale = useLocale();
-  const [activeFavoritesIds, addToFavorites, loading, error] = useUser((state) => [
-    state.activeFavoritesIds,
-    state.addToFavorites,
-    state.loading,
-    state.error
-  ]);
+  const [activeFavoritesIds, addToFavorites, loading, error] = useUser(
+    useShallow((state) => [
+      state.activeFavoritesIds,
+      state.addToFavorites,
+      state.loading,
+      state.error,
+    ]),
+  );
 
-  const activeAddToFavorites = activeFavoritesIds?.find((favoriteId) => favoriteId === device.id);
+  const activeAddToFavorites = activeFavoritesIds?.find(
+    (favoriteId) => favoriteId === device.id,
+  );
   const findProperties = Object.keys(PRODUCT_PROPERTY).filter((property) => {
     return device?.[property];
   });
@@ -36,7 +41,10 @@ export const DeviceInfo = ({ device }: DeviceInfoProps) => {
     if (device.colors.length === 1) {
       return `/${locale}/device/${device.link}`;
     } else if (!device.memoryOptions.length) {
-      return `/${locale}/device/${device.link.split('-').slice(0, -1).join('-')}-${color}`;
+      return `/${locale}/device/${device.link
+        .split('-')
+        .slice(0, -1)
+        .join('-')}-${color}`;
     } else {
       return `/${locale}/device/${device.link
         .split('-')
@@ -52,7 +60,11 @@ export const DeviceInfo = ({ device }: DeviceInfoProps) => {
     if (property === 'resolution') {
       return `${device[property]} px`;
     }
-    if (property === 'memory' || property === 'hardDrive' || property === 'videoCardMemory') {
+    if (
+      property === 'memory' ||
+      property === 'hardDrive' ||
+      property === 'videoCardMemory'
+    ) {
       return `${device[property]} GB`;
     }
     if (property === 'weight') {
@@ -65,7 +77,11 @@ export const DeviceInfo = ({ device }: DeviceInfoProps) => {
     if (property === 'supportedWeight') {
       return `${device[property]} ${t('kilogram')}`;
     }
-    if (property === 'touchScreen' || property === 'microphone' || property === 'coldAir') {
+    if (
+      property === 'touchScreen' ||
+      property === 'microphone' ||
+      property === 'coldAir'
+    ) {
       if (device[property]) {
         return t('true');
       }
@@ -80,7 +96,11 @@ export const DeviceInfo = ({ device }: DeviceInfoProps) => {
     if (property === 'batteryCapacity') {
       return `${device[property]} mah`;
     }
-    if (property === 'audioFormats' || property === 'interface' || property === 'memoryCard') {
+    if (
+      property === 'audioFormats' ||
+      property === 'interface' ||
+      property === 'memoryCard'
+    ) {
       return device[property]?.join(', ');
     }
     if (property === 'maxSpeed' || property === 'electricRange') {
@@ -95,7 +115,11 @@ export const DeviceInfo = ({ device }: DeviceInfoProps) => {
     if (property === 'wheelDiameter' || property === 'frameDiameter') {
       return `${device[property]}"`;
     }
-    if (property === 'material' || property === 'rimMaterial' || property === 'frameMaterial') {
+    if (
+      property === 'material' ||
+      property === 'rimMaterial' ||
+      property === 'frameMaterial'
+    ) {
       return `${t(`${device[property]}`)}`;
     }
     return device[property];
@@ -135,7 +159,7 @@ export const DeviceInfo = ({ device }: DeviceInfoProps) => {
                             : 'device-color'
                         }
                         style={{
-                          backgroundColor: Object.values(color).join('')
+                          backgroundColor: Object.values(color).join(''),
                         }}
                       ></div>
                     </Link>
@@ -156,7 +180,9 @@ export const DeviceInfo = ({ device }: DeviceInfoProps) => {
                           : `/${locale}/device/${device.link
                               .split('-')
                               .slice(0, -3)
-                              .join('-')}-${memory}-gb-${device.color.toLowerCase()}`
+                              .join(
+                                '-',
+                              )}-${memory}-gb-${device.color.toLowerCase()}`
                       }
                       key={key}
                     >
@@ -226,7 +252,10 @@ export const DeviceInfo = ({ device }: DeviceInfoProps) => {
               } ${tCategories('lei')}`}</div>
             )}
             {device?.credit && (
-              <Link href={`/${locale}/credit`} className="device-product--credit">
+              <Link
+                href={`/${locale}/credit`}
+                className="device-product--credit"
+              >
                 {tCategories('buy_credit')}
               </Link>
             )}

@@ -4,16 +4,18 @@ import { fetchCategories, fetchDevices } from '@/services/api';
 
 export const metadata: Metadata = {
   title: 'TechnoHeart - Devices',
-  description: 'Select Category and Devices'
+  description: 'Select Category and Devices',
 };
 
 const DevicesPage = async ({
-  params: { link },
-  searchParams: { page }
+  params,
+  searchParams,
 }: {
-  params: { link: string };
-  searchParams: { page: number };
+  params: Promise<{ link: string }>;
+  searchParams: Promise<{ page: number }>;
 }) => {
+  const { link } = await params;
+  const { page } = await searchParams;
   const devices = await fetchDevices('', link, 'popularity', 8, page);
   const categories = await fetchCategories();
 

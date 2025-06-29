@@ -1,16 +1,16 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-import { useLocale, useTranslations } from 'next-intl';
+import { checkImageUrl } from '@/helpers';
 import { useDevices } from '@/store/store';
+import { useLocale, useTranslations } from 'next-intl';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useEffect, useMemo, useState } from 'react';
 import { Icon } from '../Icon/Icon';
 import { Loading } from '../Loading/Loading';
 import { ShowErrorMessage } from '../ShowErrorMessage/ShowErrorMessage';
-import { checkImageUrl } from '@/helpers';
-
+import { useShallow } from 'zustand/shallow';
 import './Search.scss';
 
 export const Search = () => {
@@ -19,12 +19,14 @@ export const Search = () => {
   const locale = useLocale();
   const router = useRouter();
 
-  const [devices, getDevices, loading, error] = useDevices((state) => [
-    state.devices,
-    state.getDevices,
-    state.loading,
-    state.error
-  ]);
+  const [devices, getDevices, loading, error] = useDevices(
+    useShallow((state) => [
+      state.devices,
+      state.getDevices,
+      state.loading,
+      state.error,
+    ]),
+  );
 
   const devicesSearchData = useMemo(() => devices?.data, [devices?.data]);
 
@@ -61,13 +63,20 @@ export const Search = () => {
     <div className="search">
       <input
         type="text"
-        style={searchValue && devicesSearchData?.length > 0 ? { borderRadius: '8px 8px 0 0' } : {}}
+        style={
+          searchValue && devicesSearchData?.length > 0
+            ? { borderRadius: '8px 8px 0 0' }
+            : {}
+        }
         placeholder={t('search')}
         value={searchValue}
         onChange={onSearchChange}
       />
 
-      <Link href={`/${locale}/search?q=${searchValue}`} onClick={clearSearchValue}>
+      <Link
+        href={`/${locale}/search?q=${searchValue}`}
+        onClick={clearSearchValue}
+      >
         <Icon type="zoom" />
       </Link>
 

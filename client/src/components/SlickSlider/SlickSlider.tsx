@@ -1,28 +1,30 @@
 'use client';
 
-import { useEffect } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
+import { apiBaseUrl } from '@/helpers/baseUrl';
+import { useSlider } from '@/store/store';
 import Slider, { Settings } from '@ant-design/react-slick';
 import { useLocale } from 'next-intl';
-import { useSlider } from '@/store/store';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useEffect } from 'react';
 import { Loading } from '../Loading/Loading';
-import { ShowErrorMessage } from '../ShowErrorMessage/ShowErrorMessage';
 import { NoData } from '../NoData/NoData';
-import { apiBaseUrl } from '@/helpers/baseUrl';
-
-import 'slick-carousel/slick/slick.css';
+import { ShowErrorMessage } from '../ShowErrorMessage/ShowErrorMessage';
+import { useShallow } from 'zustand/react/shallow';
 import 'slick-carousel/slick/slick-theme.css';
+import 'slick-carousel/slick/slick.css';
 import './SlickSlider.scss';
 
 export const SlickSlider = () => {
   const locale = useLocale();
-  const [slides, getSlides, loading, error] = useSlider((state) => [
-    state.slides,
-    state.getSlides,
-    state.loading,
-    state.error
-  ]);
+  const [slides, getSlides, loading, error] = useSlider(
+    useShallow((state) => [
+      state.slides,
+      state.getSlides,
+      state.loading,
+      state.error,
+    ]),
+  );
 
   useEffect(() => {
     getSlides();
@@ -36,7 +38,7 @@ export const SlickSlider = () => {
     arrows: false,
     autoplay: true,
     autoplaySpeed: 5000,
-    lazyLoad: 'ondemand'
+    lazyLoad: 'ondemand',
   };
 
   return (

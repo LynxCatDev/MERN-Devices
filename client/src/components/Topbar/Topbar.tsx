@@ -1,17 +1,20 @@
 'use client';
 
-import { useEffect } from 'react';
-import { usePathname } from 'next/navigation';
-import Link from 'next/link';
-import { Button } from '@chakra-ui/react';
 import { useTheme } from '@/store/store';
+import { Button } from '@chakra-ui/react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { useEffect } from 'react';
+import { useShallow } from 'zustand/react/shallow';
 import { Icon } from '../Icon/Icon';
 
 import './Topbar.scss';
 
 export const TopBar = () => {
   const pathname = usePathname();
-  const [theme, toggleTheme] = useTheme((state) => [state.theme, state.toggleTheme]);
+  const [theme, toggleTheme] = useTheme(
+    useShallow((state) => [state.theme, state.toggleTheme]),
+  );
 
   useEffect(() => {
     if (theme === 'light') {

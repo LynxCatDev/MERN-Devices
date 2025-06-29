@@ -1,12 +1,13 @@
-import Link from 'next/link';
-import Image from 'next/image';
-import { useLocale, useTranslations } from 'next-intl';
-import { Button } from '@chakra-ui/react';
+import { checkImageUrl } from '@/helpers';
 import { useUser } from '@/store/store';
 import { DevicesProps } from '@/store/store.interface';
+import { Button } from '@chakra-ui/react';
+import { useLocale, useTranslations } from 'next-intl';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useState } from 'react';
+import { useShallow } from 'zustand/react/shallow';
 import { Icon } from '../Icon/Icon';
-import { checkImageUrl } from '@/helpers';
-
 import './Devices.scss';
 
 interface DeviceItemProps {
@@ -16,13 +17,22 @@ interface DeviceItemProps {
 export const DevicesItem = ({ device }: DeviceItemProps) => {
   const locale = useLocale();
   const t = useTranslations('Categories');
-  const [activeFavoritesIds, addToFavorites, loading, error] = useUser((state) => [
-    state.activeFavoritesIds,
-    state.addToFavorites,
-    state.loading,
-    state.error
-  ]);
-  const activeAddToFavorites = activeFavoritesIds?.find((favoriteId) => favoriteId === device.id);
+  const [imgSrc, setImgSrc] = useState(checkImageUrl(device?.imageUrl));
+  const [activeFavoritesIds, addToFavorites, loading, error] = useUser(
+    useShallow((state) => [
+      state.activeFavoritesIds,
+      state.addToFavorites,
+      state.loading,
+      state.error,
+    ]),
+  );
+  const activeAddToFavorites = activeFavoritesIds?.find(
+    (favoriteId) => favoriteId === device.id,
+  );
+
+  const handleImageError = () => {
+    setImgSrc('/images/placeholder.webp');
+  };
 
   return (
     <div className="device--item">
@@ -30,13 +40,14 @@ export const DevicesItem = ({ device }: DeviceItemProps) => {
         <>
           <Link href={`/${locale}/device/${device.link}`}>
             <Image
-              src={checkImageUrl(device?.imageUrl)}
+              src={imgSrc}
               alt={device?.name}
               width={0}
               height={0}
               sizes="100vw"
               style={{ width: '100%', height: 'auto' }}
               priority
+              onError={handleImageError}
             />
           </Link>
           <Link href={`/${locale}/device/${device.link}`}>
@@ -68,7 +79,9 @@ export const DevicesItem = ({ device }: DeviceItemProps) => {
                 >
                   <Icon type="compare" />
                 </Button>
-                <div className="options-devices-info compare-info">{t('compare')}</div>
+                <div className="options-devices-info compare-info">
+                  {t('compare')}
+                </div>
               </div>
               <div className="add-to-favorites">
                 <Button
@@ -77,7 +90,9 @@ export const DevicesItem = ({ device }: DeviceItemProps) => {
                 >
                   <Icon type="heart" />
                 </Button>
-                <div className="options-devices-info favorites-info">{t('favorites')}</div>
+                <div className="options-devices-info favorites-info">
+                  {t('favorites')}
+                </div>
               </div>
             </div>
           </div>

@@ -36,7 +36,9 @@ export class DevicesService {
       .find(checkDeviceType(), { _id: 0 })
       .sort(sort ? { [`${sort}`]: -1 } : 'id')
       .skip((page - 1) * limit)
-      .limit(limit);
+      .limit(limit)
+      .lean()
+      .exec();
 
     return {
       limit: Number(limit),

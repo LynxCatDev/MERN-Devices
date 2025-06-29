@@ -6,6 +6,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useLocale, useTranslations } from 'next-intl';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import { useShallow } from 'zustand/react/shallow';
 import { useUser } from '@/store/store';
 import { Button } from '../Button/Button';
 import { Icon } from '../Icon/Icon';
@@ -16,12 +17,14 @@ import './AuthForm.scss';
 
 export const AuthForm = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [profile, login, registration, error] = useUser((state) => [
-    state.profile,
-    state.login,
-    state.registration,
-    state.error
-  ]);
+  const [profile, login, registration, error] = useUser(
+    useShallow((state) => [
+      state.profile,
+      state.login,
+      state.registration,
+      state.error,
+    ]),
+  );
   const t = useTranslations('Auth');
   const locale = useLocale();
   const { push } = useRouter();
@@ -50,7 +53,7 @@ export const AuthForm = () => {
       last_name: '',
       email: '',
       password: '',
-      role: 'user'
+      role: 'user',
     },
     validationSchema: Yup.object({
       first_name: Yup.string()
@@ -59,11 +62,13 @@ export const AuthForm = () => {
       last_name: Yup.string()
         // .required('First name is required')
         .max(16, 'First name must not be more than 16 characters'),
-      email: Yup.string().required('Email is required').email('Invalid email address'),
+      email: Yup.string()
+        .required('Email is required')
+        .email('Invalid email address'),
       password: Yup.string()
         .required('Password is required')
         .min(6, 'Password must have at least 6 characters')
-        .max(18, 'Max password length is 18')
+        .max(18, 'Max password length is 18'),
       // confirmPassword: Yup.string()
       //   .oneOf([Yup.ref('password')], 'Confirm password must match')
       //   .required('Confirm password is required')
@@ -75,7 +80,7 @@ export const AuthForm = () => {
       } else {
         login(values.email, values.password);
       }
-    }
+    },
   });
 
   const buttonEnabled = !emailValidation.test(formik.values.email);
@@ -97,7 +102,11 @@ export const AuthForm = () => {
 
         <h1>{formTitle()}</h1>
       </div>
-      <form className="login--form" autoComplete="off" onSubmit={formik.handleSubmit}>
+      <form
+        className="login--form"
+        autoComplete="off"
+        onSubmit={formik.handleSubmit}
+      >
         {isRegistrationPage && (
           <>
             <div className="login--input-wrapper">
@@ -161,7 +170,9 @@ export const AuthForm = () => {
           />
         </div>
 
-        {formik.submitCount > 0 && formik.errors.email && <div>{formik.errors.email}</div>}
+        {formik.submitCount > 0 && formik.errors.email && (
+          <div>{formik.errors.email}</div>
+        )}
 
         <div className="login--input-wrapper">
           <span>
@@ -179,7 +190,9 @@ export const AuthForm = () => {
             autoComplete="off"
           />
 
-          {formik.submitCount > 0 && formik.errors.password && <p>{formik.errors.password}</p>}
+          {formik.submitCount > 0 && formik.errors.password && (
+            <p>{formik.errors.password}</p>
+          )}
 
           <button
             type="button"
@@ -199,7 +212,12 @@ export const AuthForm = () => {
 
           {error && <div className="error-message">{error}</div>}
 
-          <Button generalType="submit" size="auth" className="login--btn" disabled={buttonEnabled}>
+          <Button
+            generalType="submit"
+            size="auth"
+            className="login--btn"
+            disabled={buttonEnabled}
+          >
             {isLoginPage ? t('login') : t('register')}
           </Button>
         </div>
