@@ -16,6 +16,7 @@
   &--info-image {
     grid-column-start: 1;
     grid-column-end: 4;
+    width: 100%;
 
     img {
       width: 100%;
@@ -35,7 +36,7 @@
   &--info-specifications {
     grid-column-start: 4;
     grid-column-end: 7;
-    color: var(--device-medium-grey);
+    color: var(--device-white);
   }
 
   &--options-colors-wrapper {

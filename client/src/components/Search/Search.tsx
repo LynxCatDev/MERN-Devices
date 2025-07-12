@@ -10,7 +10,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Icon } from '../Icon/Icon';
 import { Loading } from '../Loading/Loading';
 import { ShowErrorMessage } from '../ShowErrorMessage/ShowErrorMessage';
-import { useShallow } from 'zustand/shallow';
+import { useShallow } from 'zustand/react/shallow';
 import './Search.scss';
 
 export const Search = () => {

@@ -1,21 +1,25 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Devices, DevicesDocument, DevicesPagination } from './schemas/devices.schema';
+import {
+  Devices,
+  DevicesDocument,
+  DevicesPagination,
+} from './schemas/devices.schema';
 import { getPageNumber, getTotalPages } from '../../utils/utils';
 
 @Injectable()
 export class DevicesService {
   constructor(
     @InjectModel(Devices.name)
-    private devicesModel: Model<DevicesDocument>
+    private devicesModel: Model<DevicesDocument>,
   ) {}
   getAllDevices = async (
     q: string,
     category: string,
     sort: string,
     limit: number = 8,
-    page: number
+    page: number,
   ): Promise<DevicesPagination> => {
     const manufacturer = 'Apple';
     const checkDeviceType = () => {
@@ -30,7 +34,9 @@ export class DevicesService {
       }
     };
 
-    const devicesBeforeLimit = await this.devicesModel.find(checkDeviceType(), { _id: 0 });
+    const devicesBeforeLimit = await this.devicesModel.find(checkDeviceType(), {
+      _id: 0,
+    });
 
     const devices = await this.devicesModel
       .find(checkDeviceType(), { _id: 0 })
@@ -45,7 +51,7 @@ export class DevicesService {
       page: getPageNumber(page),
       totalCount: devicesBeforeLimit.length,
       totalPages: getTotalPages(devicesBeforeLimit.length, limit),
-      data: devices
+      data: devices,
     };
   };
 
@@ -55,7 +61,10 @@ export class DevicesService {
   };
 
   search = async (name: string) => {
-    const searchDevices = await this.devicesModel.find({ name: new RegExp(name, 'i') }, { _id: 0 });
+    const searchDevices = await this.devicesModel.find(
+      { name: new RegExp(name, 'i') },
+      { _id: 0 },
+    );
     return searchDevices;
   };
 }

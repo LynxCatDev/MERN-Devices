@@ -19,22 +19,6 @@ const DevicesPage = async ({
   const devices = await fetchDevices('', link, 'popularity', 8, page);
   const categories = await fetchCategories();
 
-  // const [
-  //   devices,
-  //   loading,
-  //   error,
-  //   getDevices
-  // ] = useDevices((state) => [
-  //   state.devices,
-  //   state.loading,
-  //   state.error,
-  //   state.getDevices
-  // ]);
-
-  // useEffect(() => {
-  //   getDevices(deviceType);
-  // }, [deviceType]);
-
   return (
     <div className="devices-page">
       <Categories categories={categories} />

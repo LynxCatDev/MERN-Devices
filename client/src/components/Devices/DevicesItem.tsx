@@ -46,7 +46,6 @@ export const DevicesItem = ({ device }: DeviceItemProps) => {
               height={0}
               sizes="100vw"
               style={{ width: '100%', height: 'auto' }}
-              priority
               onError={handleImageError}
             />
           </Link>

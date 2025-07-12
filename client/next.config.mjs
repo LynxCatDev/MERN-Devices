@@ -8,21 +8,30 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'darwin.md',
+        hostname: '',
         port: '',
         pathname: '/**',
       },
       {
-        protocol: "http",
-        hostname: "localhost",
-        port: "5000",
-        pathname: "/**",
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '5000',
+        pathname: '/**',
       },
     ],
-    // domains: [
-    //   'localhost',
-    // ],
   },
+  // images: {
+  //   remotePatterns: [
+  //     {
+  //       protocol: 'https',
+  //       hostname: '**', // Allows all HTTPS domains
+  //     },
+  //     {
+  //       protocol: 'http',
+  //       hostname: '**', // Allows all HTTP domains
+  //     },
+  //   ],
+  // },
 };
 
 export default withNextIntl(nextConfig);
