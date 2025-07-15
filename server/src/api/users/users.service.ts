@@ -2,7 +2,8 @@ import {
   BadRequestException,
   ForbiddenException,
   Injectable,
-  UnprocessableEntityException
+  UnauthorizedException,
+  UnprocessableEntityException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { JwtService } from '@nestjs/jwt';
@@ -22,7 +23,7 @@ const errorMessage = {
   forbidden: 'forbidden',
   invalidEmail: 'User with this email not found',
   invalidPassword: 'Password does not match',
-  invalidToken: 'Invalid token'
+  invalidToken: 'Invalid token',
 };
 
 @Injectable()
@@ -32,7 +33,7 @@ export class UsersService {
     private users: Model<UsersDocument>,
     private jwtService: JwtService,
     @InjectModel(Devices.name)
-    private devicesModel: Model<DevicesDocument>
+    private devicesModel: Model<DevicesDocument>,
   ) {}
 
   getAllUsers = async () => {
@@ -57,7 +58,9 @@ export class UsersService {
       const emailUser = await this.users.findOne({ email });
 
       if (emailUser) {
-        throw new UnprocessableEntityException({ error: errorMessage.emailUnique });
+        throw new UnprocessableEntityException({
+          error: errorMessage.emailUnique,
+        });
       }
     }
 
@@ -72,14 +75,14 @@ export class UsersService {
     const user = await this.users.create({
       ...userDto,
       created_at: new Date(),
-      password: hashedPassword
+      password: hashedPassword,
     });
 
     const tokens = await this.issueTokens(user._id);
 
     return {
       user,
-      ...tokens
+      ...tokens,
     };
   };
 
@@ -94,14 +97,14 @@ export class UsersService {
 
     const checkPassMatch = await bcrypt.compare(password, user.password);
     if (!checkPassMatch) {
-      throw new ForbiddenException(errorMessage.invalidPassword);
+      throw new UnauthorizedException(errorMessage.invalidPassword);
     }
 
     const tokens = await this.issueTokens(user._id);
     user.password = undefined;
     return {
       user,
-      ...tokens
+      ...tokens,
     };
   };
 
@@ -111,7 +114,7 @@ export class UsersService {
     const user = await this.users.findOne({ _id: token.id });
 
     if (!user || !token) {
-      throw new ForbiddenException(errorMessage.invalidToken);
+      throw new UnauthorizedException(errorMessage.invalidToken);
     }
 
     const profileUser = {
@@ -122,7 +125,8 @@ export class UsersService {
       role: user.role,
       isLoggedIn: true,
       // favorites: user.favorites,
-      activeFavoritesIds: user?.favorites?.data.map((favorite) => favorite.id) || []
+      activeFavoritesIds:
+        user?.favorites?.data.map((favorite) => favorite.id) || [],
     };
 
     return profileUser;
@@ -146,7 +150,9 @@ export class UsersService {
 
     const checkAddToFavorites = () => {
       if (userFavorites?.find((favorite) => favorite.id === device?.id)) {
-        const filteredFavorites = userFavorites.filter((favorite) => favorite.id !== device.id);
+        const filteredFavorites = userFavorites.filter(
+          (favorite) => favorite.id !== device.id,
+        );
         return filteredFavorites;
       } else {
         return [...userFavorites, device];
@@ -161,16 +167,20 @@ export class UsersService {
           page: getPageNumber(1),
           totalCount: checkAddToFavorites()?.length,
           totalPages: getTotalPages(checkAddToFavorites()?.length, 8),
-          data: checkAddToFavorites()
-        }
-      }
+          data: checkAddToFavorites(),
+        },
+      },
     );
 
     return device;
   };
 
   //Get User Favorites
-  getUserFavorites = async (page: number, limit: number = 8, userId: string) => {
+  getUserFavorites = async (
+    page: number,
+    limit: number = 8,
+    userId: string,
+  ) => {
     const user = await this.users.findOne({ _id: userId });
     const userFavorites = user?.favorites?.data || [];
 
@@ -184,8 +194,8 @@ export class UsersService {
         page: getPageNumber(page),
         totalCount: userFavorites?.length,
         totalPages: getTotalPages(userFavorites?.length, 8),
-        data: paginate(userFavorites, 8, page)
-      }
+        data: paginate(userFavorites, 8, page),
+      },
     };
   };
 
@@ -193,11 +203,11 @@ export class UsersService {
     const data = { id: userId };
 
     const accessToken = this.jwtService.sign(data, {
-      expiresIn: '1h'
+      expiresIn: '1h',
     });
 
     const refreshToken = this.jwtService.sign(data, {
-      expiresIn: '7d'
+      expiresIn: '7d',
     });
 
     return { accessToken, refreshToken };

@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { Button } from '@chakra-ui/react';
 import Link from 'next/link';
@@ -18,6 +19,7 @@ interface DeviceInfoProps {
 }
 
 export const DeviceInfo = ({ device }: DeviceInfoProps) => {
+  const [imgSrc, setImgSrc] = useState(checkImageUrl(device?.imageUrl));
   const t = useTranslations('Devices');
   const tCategories = useTranslations('Categories');
   const locale = useLocale();
@@ -125,6 +127,10 @@ export const DeviceInfo = ({ device }: DeviceInfoProps) => {
     return device[property];
   };
 
+  const handleImageError = () => {
+    setImgSrc('/images/placeholder.webp');
+  };
+
   return (
     <div className="device-product">
       <div className="device-product--wrapper">
@@ -135,13 +141,14 @@ export const DeviceInfo = ({ device }: DeviceInfoProps) => {
         <div className="device-product--info">
           <div className="device-product--info-image">
             <Image
-              src={checkImageUrl(device?.imageUrl)}
+              src={imgSrc}
               alt={device?.name}
               width={0}
               height={0}
               sizes="100vw"
               style={{ width: '100%', height: 'auto' }}
               priority
+              onError={handleImageError}
             />
           </div>
 

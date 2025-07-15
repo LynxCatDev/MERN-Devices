@@ -8,12 +8,14 @@ export const metadata: Metadata = {
 };
 
 const DevicesPage = async ({
-  params: { link },
-  searchParams: { page, q }
+  params,
+  searchParams
 }: {
-  params: { link: string };
-  searchParams: { page: number; q: string };
+  params: Promise<{ link: string }>;
+  searchParams: Promise<{ page: number; q: string }>;
 }) => {
+  const { link } = await params;
+  const { q, page } = await searchParams; 
   const devices = await fetchDevices(q, link, 'popularity', 8, page);
 
   return (

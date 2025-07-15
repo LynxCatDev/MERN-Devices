@@ -25,7 +25,10 @@ export const Devices = ({ devices, loading }: ComponentDevicesDataProps) => {
             <DevicesItem key={device.id} device={device} />
           ))}
           <div className="devices--pagination">
-            <Pagination currentPage={devices.page} totalPages={devices.totalPages} />
+            <Pagination
+              currentPage={devices.page}
+              totalPages={devices.totalPages}
+            />
           </div>
         </div>
       )}
