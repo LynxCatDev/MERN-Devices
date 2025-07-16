@@ -2,11 +2,12 @@
 
 import { getRefreshToken } from '@/services/auth-token.service';
 import { useUser } from '@/store/store';
-import { useOutsideClick, useToast } from '@chakra-ui/react';
+import { useOutsideClick } from '@chakra-ui/hooks';
 import { useLocale, useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { useShallow } from 'zustand/react/shallow';
+import { toaster } from '@/components/Toaster/Toaster';
 import { Button } from '../Button/Button';
 import { Icon } from '../Icon/Icon';
 import { Menu } from '../Menu/Menu';
@@ -27,7 +28,6 @@ export const Header = () => {
     ref: showRef,
     handler: () => setShowProfileMenu(false),
   });
-  const toast = useToast();
 
   const [profile, validateSession, userLogOut, profileError] = useUser(
     useShallow((state) => [
@@ -66,13 +66,13 @@ export const Header = () => {
 
   useEffect(() => {
     if (profileError) {
-      toast({
+      toaster.create({
         title: `${profileError}`,
         // description: "We've created your account for you.",
-        status: 'error',
+        type: 'error',
         duration: 9000,
-        isClosable: true,
-        position: 'top-right',
+        // isClosable: true,
+        // position: 'top-right',
       });
       // removeFromStorage();
     }

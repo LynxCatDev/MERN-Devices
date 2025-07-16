@@ -27,13 +27,15 @@ export default async function LocaleLayout({
     <CacheProvider>
       <html lang={locale}>
         <link rel="icon" type="image/x-icon" href="/images/play.png" />
-        <NextIntlClientProvider locale={locale}>
-          <body className="night">
-            <NextTopLoader showSpinner={false} height={4} />
-            <Header />
-            <Providers>{children}</Providers>
-            <Footer />
-          </body>
+        <NextIntlClientProvider>
+          <Providers>
+            <body className="night">
+              <NextTopLoader showSpinner={false} height={4} />
+              <Header />
+              {children}
+              <Footer />
+            </body>
+          </Providers>
         </NextIntlClientProvider>
       </html>
     </CacheProvider>

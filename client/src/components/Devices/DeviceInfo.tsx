@@ -219,7 +219,7 @@ export const DeviceInfo = ({ device }: DeviceInfoProps) => {
             <div className="options-devices">
               <div className="compare-devices">
                 <Button
-                  size="full-width"
+                  size="xl"
                   // onClick={() => addToCompare(deviceData)}
                   // className={userCompareFind ? 'added-to-compare' : ''}
                 >
