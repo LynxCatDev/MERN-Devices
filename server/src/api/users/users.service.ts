@@ -141,6 +141,11 @@ export class UsersService {
   //Add to favorites
   addToFavorites = async (deviceId: string, userId: string, page) => {
     const user = await this.users.findOne({ _id: userId });
+
+     if (!userId) {
+      throw new ForbiddenException(errorMessage.invalidToken);
+    }
+    
     const device = await this.devicesModel.findOne({ id: deviceId });
     const userFavorites = user?.favorites?.data || [];
 

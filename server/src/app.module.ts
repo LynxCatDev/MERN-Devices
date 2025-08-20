@@ -7,6 +7,7 @@ import { join } from 'path';
 import { CategoriesModule, DevicesModule, SlidersModule } from './api';
 import { CollectionModule } from './api/collection/collection.module';
 import { UsersModule } from './api/users/users.module';
+import { HealthModule } from './health/health.module';
 
 @Module({
   imports: [
@@ -29,7 +30,8 @@ import { UsersModule } from './api/users/users.module';
     CategoriesModule,
     SlidersModule,
     DevicesModule,
-    CollectionModule
+    CollectionModule,
+    HealthModule
   ],
   controllers: [],
   providers: []
