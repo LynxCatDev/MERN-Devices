@@ -2,7 +2,7 @@ import Cookies from 'js-cookie';
 
 export enum EnumTokens {
   'ACCESS_TOKEN' = 'accessToken',
-  'REFRESH_TOKEN' = 'refreshToken'
+  'REFRESH_TOKEN' = 'refreshToken',
 }
 
 export const getRefreshToken = () => {
@@ -12,9 +12,8 @@ export const getRefreshToken = () => {
 
 export const saveTokenStorage = (refreshToken: string) => {
   Cookies.set(EnumTokens.REFRESH_TOKEN, refreshToken, {
-    domain: 'localhost',
     sameSite: 'strict',
-    expires: 1
+    expires: 1,
   });
 };
 
