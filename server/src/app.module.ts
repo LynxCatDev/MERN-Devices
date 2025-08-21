@@ -12,15 +12,13 @@ import { HealthModule } from './health/health.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: `.${process.env.NODE_ENV}.env`
+      envFilePath: `.${process.env.NODE_ENV}.env`,
     }),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'public'),
-      serveRoot: '/api/'
+      serveRoot: '/api/',
     }),
-    MongooseModule.forRoot(
-      'mongodb+srv://admin:14595@devices.oy68wq2.mongodb.net/technoheart?retryWrites=true&w=majority&appName=Devices'
-    ),
+    MongooseModule.forRoot(`${process.env.DATABASE_URL}`),
     // JwtModule.register({
     //   global: true,
     //   secret: process.env.JWT_SECRET,
@@ -31,9 +29,9 @@ import { HealthModule } from './health/health.module';
     SlidersModule,
     DevicesModule,
     CollectionModule,
-    HealthModule
+    HealthModule,
   ],
   controllers: [],
-  providers: []
+  providers: [],
 })
 export class AppModule {}

@@ -53,7 +53,6 @@ export const SlickSlider = () => {
             top="0"
             left="0"
             borderRadius="md"
-            variant="shine"
           />
         </div>
       </div>
