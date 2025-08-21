@@ -41,6 +41,25 @@ export const SlickSlider = () => {
     lazyLoad: 'ondemand',
   };
 
+  if (loading)
+    return (
+      <div className="slick-wrapper">
+        <Loading />
+      </div>
+    );
+  if (error)
+    return (
+      <div className="slick-wrapper">
+        <ShowErrorMessage errorMessage={error} />
+      </div>
+    );
+  if (!slides?.length)
+    return (
+      <div className="slick-wrapper">
+        <NoData />
+      </div>
+    );
+
   return (
     <div className="slick-wrapper">
       {slides?.length > 0 && (
@@ -60,12 +79,6 @@ export const SlickSlider = () => {
           ))}
         </Slider>
       )}
-
-      {slides?.length === 0 && !loading && <NoData />}
-
-      {loading && <Loading />}
-
-      {error && <ShowErrorMessage errorMessage={error} />}
     </div>
   );
 };
