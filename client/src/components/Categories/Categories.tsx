@@ -8,22 +8,6 @@ interface CategoriesDataProps {
 }
 
 export const Categories = ({ categories }: CategoriesDataProps) => {
-  // const [
-  //   categories,
-  //   getCategories,
-  //   loading,
-  //   error,
-  // ] = useCategories((state) => [
-  //   state.categories,
-  //   state.getCategories,
-  //   state.loading,
-  //   state.error
-  // ]);
-
-  // useEffect(() => {
-  //   getCategories();
-  // }, []);
-
   return (
     <div className="categories">
       {categories?.length > 0 && (
@@ -33,14 +17,6 @@ export const Categories = ({ categories }: CategoriesDataProps) => {
           ))}
         </div>
       )}
-
-      {/* {(!categories?.length) && (
-        <NoData />
-      )} */}
-
-      {/* {loading && <Loading />} */}
-
-      {/* {error && <ShowErrorMessage errorMessage={error}/>} */}
     </div>
   );
 };

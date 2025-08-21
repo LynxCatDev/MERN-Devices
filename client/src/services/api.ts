@@ -20,9 +20,9 @@ import {
 export const fetchSlides = async (): Promise<SlidesProps[]> => {
   const response = await axiosClassic.get('/sliders');
 
-  if (response.status !== 200) {
-    throw new Error(`${response.data.message}`);
-  }
+  // if (response.status !== 200) {
+  //   throw new Error(`${response.data.message}`);
+  // }
 
   return response.data;
 };
