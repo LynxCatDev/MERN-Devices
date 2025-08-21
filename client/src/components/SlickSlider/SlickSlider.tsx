@@ -14,6 +14,7 @@ import { useShallow } from 'zustand/react/shallow';
 import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
 import './SlickSlider.scss';
+import { Skeleton } from '@chakra-ui/react';
 
 export const SlickSlider = () => {
   const locale = useLocale();
@@ -41,6 +42,34 @@ export const SlickSlider = () => {
     lazyLoad: 'ondemand',
   };
 
+  if (loading)
+    return (
+      <div className="slick-wrapper">
+        <div className="slide-skeleton">
+          <Skeleton
+            height="100%"
+            width="100%"
+            position="absolute"
+            top="0"
+            left="0"
+            borderRadius="md"
+          />
+        </div>
+      </div>
+    );
+  if (error)
+    return (
+      <div className="slick-wrapper">
+        <ShowErrorMessage errorMessage={error} />
+      </div>
+    );
+  if (!slides?.length)
+    return (
+      <div className="slick-wrapper">
+        <NoData />
+      </div>
+    );
+
   return (
     <div className="slick-wrapper">
       {slides?.length > 0 && (
@@ -60,12 +89,6 @@ export const SlickSlider = () => {
           ))}
         </Slider>
       )}
-
-      {slides?.length === 0 && !loading && <NoData />}
-
-      {loading && <Loading />}
-
-      {error && <ShowErrorMessage errorMessage={error} />}
     </div>
   );
 };

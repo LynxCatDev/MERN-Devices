@@ -7,7 +7,7 @@ import {
   DevicesDataProps,
   DevicesProps,
   FoundDevices,
-  SlidesProps
+  SlidesProps,
 } from '@/store/store.interface';
 
 // axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:5000/api';
@@ -32,12 +32,12 @@ export const fetchDevices = async (
   category?: string,
   sort?: string,
   limit?: number,
-  page?: number
+  page?: number,
 ): Promise<DevicesDataProps> => {
   try {
     const response = await axiosClassic.get('/devices', {
       // ...(category ? { params: { category } } : {}),
-      params: { q, category, sort, limit, page }
+      params: { q, category, sort, limit, page },
     });
 
     if (response.status !== 200) {
@@ -113,7 +113,7 @@ export const userRegistration = async (auth: AuthProps) => {
       last_name: auth.last_name,
       email: auth.email,
       password: auth.password,
-      role: auth.role
+      role: auth.role,
     });
     return response;
   } catch (error) {
@@ -126,7 +126,7 @@ export const userLogin = async (email: string, password: string) => {
   try {
     const response = await axiosClassic.post('/users/auth/login', {
       email,
-      password
+      password,
     });
     return response;
   } catch (error) {
@@ -138,7 +138,7 @@ export const userLogin = async (email: string, password: string) => {
 export const validateSession = async (refreshToken: string) => {
   try {
     const response = await axiosClassic.post('/users/auth/validate-user', {
-      refreshToken
+      refreshToken,
     });
     return response;
   } catch (error) {
@@ -159,7 +159,9 @@ export const addToFavorites = async (id: number) => {
 
 export const getUserFavorites = async (page: number) => {
   try {
-    const response = await axiosWithAuth.get('/users/favorites', { params: { page } });
+    const response = await axiosWithAuth.get('/users/favorites', {
+      params: { page },
+    });
     return response;
   } catch (error) {
     console.error(error);

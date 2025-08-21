@@ -1,3 +1,4 @@
+import { cache } from 'react';
 import {
   Categories,
   Collection,
@@ -6,26 +7,41 @@ import {
   RecommendedDevices,
   ServicesSection,
   ShopTitle,
-  SlickSlider
+  SlickSlider,
 } from '@/components';
 import { fetchCategories, fetchCollection, fetchDevices } from '@/services/api';
 
 import './page.scss';
+import { DevicesDataProps } from '@/store/store.interface';
+
+export const revalidate = 3600;
 
 const Home = async () => {
-  const categories = await fetchCategories();
-  const collection = await fetchCollection();
+  const getCategories = cache(fetchCategories);
+  const getCollection = cache(fetchCollection);
 
-  const recommendedDevices = (category: string) => {
+  const recommendedDevices = cache((category: string) => {
     return fetchDevices('', category, 'popularity', 3);
-  };
+  });
 
-  const [smartphones, laptops, gadgets, audio] = await Promise.all([
-    recommendedDevices('smartphones'),
-    recommendedDevices('laptops'),
-    recommendedDevices('gadgets'),
-    recommendedDevices('audio')
-  ]);
+  const [categories, collection, smartphones, laptops, gadgets, audio] =
+    await Promise.all([
+      getCategories(),
+      getCollection(),
+      recommendedDevices('smartphones'),
+      recommendedDevices('laptops'),
+      recommendedDevices('gadgets'),
+      recommendedDevices('audio'),
+    ]);
+
+  const renderDeviceSection = (
+    category: 'smartphones' | 'laptops' | 'gadgets' | 'audio',
+    devices: DevicesDataProps,
+  ) => {
+    return devices.data.length ? (
+      <RecommendedDevices category={category} devices={devices} />
+    ) : null;
+  };
 
   return (
     <main className="main">
@@ -34,12 +50,12 @@ const Home = async () => {
         <SlickSlider />
         <Categories categories={categories} />
         <Promotions />
-        <RecommendedDevices category="smartphones" devices={smartphones} />
+        {renderDeviceSection('smartphones', smartphones)}
         <ServicesSection />
-        <RecommendedDevices category="laptops" devices={laptops} />
+        {renderDeviceSection('laptops', laptops)}
         <Collection collection={collection} />
-        <RecommendedDevices category="gadgets" devices={gadgets} />
-        <RecommendedDevices category="audio" devices={audio} />
+        {renderDeviceSection('gadgets', gadgets)}
+        {renderDeviceSection('audio', audio)}
         <Features />
       </div>
     </main>

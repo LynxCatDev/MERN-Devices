@@ -1,25 +1,30 @@
-import { NextIntlClientProvider, useMessages } from 'next-intl';
+import { hasLocale, NextIntlClientProvider } from 'next-intl';
 import { Poppins } from 'next/font/google';
+import { notFound } from 'next/navigation';
+import { routing } from '@/i18n/routing';
 
 const poppins = Poppins({
   weight: ['400', '500', '600', '700', '800', '900'],
-  subsets: ['latin']
+  subsets: ['latin'],
 });
 
 import '../../globals.scss';
 
-export default function RegistrationLayout({
+export default async function RegistrationLayout({
   children,
-  params: { locale }
+  params,
 }: {
   children: React.ReactNode;
-  params: { locale: string };
+  params: Promise<{ locale: string }>;
 }) {
-  const messages = useMessages();
+  const { locale } = await params;
+  if (!hasLocale(routing.locales, locale)) {
+    notFound();
+  }
   return (
     <html lang="en">
       <link rel="icon" type="image/x-icon" href="/images/play.png" />
-      <NextIntlClientProvider locale={locale} messages={messages}>
+      <NextIntlClientProvider>
         <body className={poppins.className}>{children}</body>
       </NextIntlClientProvider>
     </html>
