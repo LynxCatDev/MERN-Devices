@@ -158,9 +158,9 @@ export const useUser = create<UserStore>((set) => ({
       if (response.data.accessToken) {
         setAccessToken(response.data.accessToken);
       }
-      if (response.data.refreshToken) {
-        setRefreshToken(response.data.refreshToken);
-      }
+      // if (response.data.refreshToken) {
+      //   setRefreshToken(response.data.refreshToken);
+      // }
 
       set({ profile: response.data });
     } catch (error) {
@@ -191,13 +191,13 @@ export const useUser = create<UserStore>((set) => ({
       });
     } catch (error) {
       const typedError = error as Error;
-      
+
       // Don't set error state for expected authentication failures
-      const isExpectedAuthError = 
+      const isExpectedAuthError =
         typedError.message === 'No refresh token provided' ||
         typedError.message === 'Invalid refresh token' ||
         typedError.message.includes('401');
-        
+
       if (!isExpectedAuthError) {
         set({ error: typedError.message });
       } else {
