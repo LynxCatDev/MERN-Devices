@@ -11,12 +11,12 @@ import { useUser } from '@/store/store';
 import { Button } from '../Button/Button';
 import { Icon } from '../Icon/Icon';
 import { Separator } from '../Separator/Separator';
-import { saveTokenStorage } from '@/services/auth-token.service';
 
 import './AuthForm.scss';
 
 export const AuthForm = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [profile, login, registration, error] = useUser(
     useShallow((state) => [
       state.profile,
@@ -56,29 +56,46 @@ export const AuthForm = () => {
       role: 'user',
     },
     validationSchema: Yup.object({
-      first_name: Yup.string()
-        // .required('First name is required')
-        .max(16, 'First name must not be more than 16 characters'),
-      last_name: Yup.string()
-        // .required('First name is required')
-        .max(16, 'First name must not be more than 16 characters'),
+      first_name: isRegistrationPage
+        ? Yup.string()
+            .required('First name is required')
+            .max(16, 'First name must not be more than 16 characters')
+        : Yup.string().max(
+            16,
+            'First name must not be more than 16 characters',
+          ),
+      last_name: isRegistrationPage
+        ? Yup.string()
+            .required('Last name is required')
+            .max(16, 'Last name must not be more than 16 characters')
+        : Yup.string().max(16, 'Last name must not be more than 16 characters'),
       email: Yup.string()
         .required('Email is required')
         .email('Invalid email address'),
       password: Yup.string()
         .required('Password is required')
         .min(6, 'Password must have at least 6 characters')
-        .max(18, 'Max password length is 18'),
-      // confirmPassword: Yup.string()
-      //   .oneOf([Yup.ref('password')], 'Confirm password must match')
-      //   .required('Confirm password is required')
+        .max(18, 'Max password length is 18')
+        .matches(
+          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
+          'Password must contain at least one uppercase letter, one lowercase letter, and one number',
+        ),
     }),
     onSubmit: (values: any) => {
-      console.log(values, 'form values');
-      if (isRegistrationPage) {
-        registration(values);
-      } else {
-        login(values.email, values.password);
+      if (isSubmitting) return;
+
+      setIsSubmitting(true);
+      try {
+        console.log(values, 'form values');
+        if (isRegistrationPage) {
+          registration(values);
+        } else {
+          login(values.email.trim().toLowerCase(), values.password);
+        }
+      } catch (error) {
+        console.error('Authentication error:', error);
+      } finally {
+        setIsSubmitting(false);
       }
     },
   });
@@ -86,16 +103,14 @@ export const AuthForm = () => {
   const buttonEnabled = !emailValidation.test(formik.values.email);
 
   useEffect(() => {
-    if (profile?.refreshToken) {
-      saveTokenStorage(profile.refreshToken);
+    if (profile?.user || profile?.accessToken) {
       push(`/${locale}`);
     }
-  }, [profile?.refreshToken]);
+  }, [profile?.user, profile?.accessToken]);
 
   return (
     <div className="login">
       <div className="login--description">
-        {/* <Logo logo={logo} hide /> */}
         <Link href={`/${locale}`}>
           <Icon type="logo" width="60" height="60" />
         </Link>
@@ -106,6 +121,7 @@ export const AuthForm = () => {
         className="login--form"
         autoComplete="off"
         onSubmit={formik.handleSubmit}
+        noValidate
       >
         {isRegistrationPage && (
           <>
@@ -166,7 +182,8 @@ export const AuthForm = () => {
             value={formik.values.email}
             onBlur={formik.handleBlur}
             placeholder={t('email')}
-            autoComplete="off"
+            autoComplete="email"
+            spellCheck="false"
           />
         </div>
 
@@ -216,9 +233,16 @@ export const AuthForm = () => {
             generalType="submit"
             size="auth"
             className="login--btn"
-            disabled={buttonEnabled}
+            disabled={buttonEnabled || isSubmitting}
+            isLoading={isSubmitting}
           >
-            {isLoginPage ? t('login') : t('register')}
+            {isSubmitting
+              ? isLoginPage
+                ? 'Signing in...'
+                : 'Creating account...'
+              : isLoginPage
+              ? t('login')
+              : t('register')}
           </Button>
         </div>
 

@@ -1,6 +1,7 @@
 import React from 'react';
 
 import './Button.scss';
+import { Loading } from '../Loading/Loading';
 
 interface Props {
   children: React.ReactNode;
@@ -9,6 +10,7 @@ interface Props {
   className?: string;
   type?: 'primary' | 'invert' | 'transparent' | 'icon' | 'black';
   disabled?: boolean;
+  isLoading?: boolean;
   generalType?: 'button' | 'submit';
   size?: 'small' | 'medium' | 'large' | 'auto' | 'auth';
 }
@@ -20,6 +22,7 @@ export const Button = ({
   type = 'primary',
   generalType = 'button',
   disabled,
+  isLoading = false,
   size = 'medium',
   ...props
 }: Props) => {
@@ -38,6 +41,7 @@ export const Button = ({
       {...props}
       type={generalType}
     >
+      {isLoading ? <Loading /> : ''}
       {children}
     </button>
   );

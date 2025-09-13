@@ -1,7 +1,7 @@
 import axios, { type CreateAxiosDefaults } from 'axios';
 
 import { errorCatch } from './error';
-import { getRefreshToken, removeFromStorage } from '@/services/auth-token.service';
+import { getAccessToken, removeFromStorage } from '@/services/auth-token.service';
 
 const options: CreateAxiosDefaults = {
   baseURL: process.env.NEXT_PUBLIC_API_BASE_URL  || 'http://localhost:5000/api',
@@ -14,9 +14,9 @@ const options: CreateAxiosDefaults = {
 const axiosClassic = axios.create(options);
 const axiosWithAuth = axios.create(options);
 
-axiosWithAuth.interceptors.request.use((config) => {
-  const refreshToken = getRefreshToken();
-  if (config?.headers && refreshToken) config.headers.Authorization = `Bearer ${refreshToken}`;
+axiosWithAuth.interceptors.request.use(async (config) => {
+  const accessToken = await getAccessToken();
+  if (config?.headers && accessToken) config.headers.Authorization = `Bearer ${accessToken}`;
 
   return config;
 });

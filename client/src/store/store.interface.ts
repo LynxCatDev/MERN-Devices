@@ -129,7 +129,13 @@ export interface DevicesStore {
   loadingFoundDevices: boolean;
   error: string | null;
   errorFoundDevices: string | null;
-  getDevices: (q?: string, category?: string, sort?: string, limit?: number, page?: number) => void;
+  getDevices: (
+    q?: string,
+    category?: string,
+    sort?: string,
+    limit?: number,
+    page?: number,
+  ) => void;
   // searchDevices: (query: string) => void;
 }
 
@@ -172,7 +178,7 @@ export interface UserStore {
   error: string | null;
   registration: (auth: AuthProps) => void;
   login: (email: string, password: string) => void;
-  validateSession: (accessToken: string) => void;
+  validateSession: () => void;
   userLogOut: () => void;
   addToFavorites: (id: number) => void;
   getUserFavorites: (page: number) => void;
