@@ -34,7 +34,7 @@ export class Users {
   @Prop()
   last_name: string;
 
-  @Prop()
+  @Prop({ unique: true, index: true })
   email: string;
 
   @Prop()

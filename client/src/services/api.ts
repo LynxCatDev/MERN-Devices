@@ -135,11 +135,20 @@ export const userLogin = async (email: string, password: string) => {
   }
 };
 
-export const validateSession = async (refreshToken: string) => {
+export const validateSession = async () => {
   try {
-    const response = await axiosClassic.post('/users/auth/validate-user', {
-      refreshToken,
-    });
+    // Now uses httpOnly cookies automatically sent with request
+    const response = await axiosClassic.post('/users/auth/validate-user');
+    return response;
+  } catch (error) {
+    console.error(error);
+    return error;
+  }
+};
+
+export const userLogOut = async () => {
+  try {
+    const response = await axiosWithAuth.post('/users/auth/logout');
     return response;
   } catch (error) {
     console.error(error);

@@ -1,5 +1,6 @@
 import { ApiResponseOptions } from '@nestjs/swagger';
 
+// For login/registration - returns both tokens
 export const okAuthResponse: ApiResponseOptions = {
   schema: {
     example: {
@@ -9,10 +10,20 @@ export const okAuthResponse: ApiResponseOptions = {
         last_name: 'Uzun',
         email: 'uzuntudor@gmail.com',
         role: 'admin',
-        created_at: 'Mon May 20 2024 16:36:05 GMT+0300 (Ora de vară a Europei de Est)'
+        created_at:
+          'Mon May 20 2024 16:36:05 GMT+0300 (Ora de vară a Europei de Est)',
       },
-      accessToken: 'accessToken',
-      refreshToken: 'refreshToken'
-    }
-  }
+      accessToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
+      // refreshToken should be httpOnly cookie, not in response body
+    },
+  },
+};
+
+// For logout
+export const okLogoutResponse: ApiResponseOptions = {
+  schema: {
+    example: {
+      message: 'Successfully logged out',
+    },
+  },
 };

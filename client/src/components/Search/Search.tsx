@@ -54,7 +54,7 @@ export const Search = () => {
     document.addEventListener('keydown', listener);
 
     return () => {
-      clearInterval(debounce);
+      clearTimeout(debounce);
       document.removeEventListener('keydown', listener);
     };
   }, [searchValue]);

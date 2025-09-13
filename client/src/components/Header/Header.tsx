@@ -1,12 +1,12 @@
 'use client';
 
-import { getRefreshToken } from '@/services/auth-token.service';
-import { useUser } from '@/store/store';
 import { useOutsideClick } from '@chakra-ui/hooks';
 import { useLocale, useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { useShallow } from 'zustand/react/shallow';
+import { getAccessToken } from '@/services/auth-token.service';
+import { useUser } from '@/store/store';
 import { toaster } from '@/components/Toaster/Toaster';
 import { Button } from '../Button/Button';
 import { Icon } from '../Icon/Icon';
@@ -23,7 +23,7 @@ export const Header = () => {
   const locale = useLocale();
   const t = useTranslations('Header');
   const tAuth = useTranslations('Auth');
-  const refreshToken = getRefreshToken();
+  const accessToken = getAccessToken();
   useOutsideClick({
     ref: showRef,
     handler: () => setShowProfileMenu(false),
@@ -39,8 +39,10 @@ export const Header = () => {
   );
 
   useEffect(() => {
-    if (refreshToken) {
-      validateSession(refreshToken);
+    // Only try to validate session if we have some indication user might be logged in
+    // This prevents unnecessary 401 errors on fresh page loads for new users
+    if (accessToken) {
+      validateSession();
     }
   }, []);
 
@@ -65,16 +67,17 @@ export const Header = () => {
   };
 
   useEffect(() => {
-    if (profileError) {
+    // Only show error toasts for unexpected errors, not for normal "not logged in" scenarios
+    if (
+      profileError &&
+      profileError !== 'No refresh token provided' &&
+      profileError !== 'Invalid refresh token'
+    ) {
       toaster.create({
         title: `${profileError}`,
-        // description: "We've created your account for you.",
         type: 'error',
         duration: 9000,
-        // isClosable: true,
-        // position: 'top-right',
       });
-      // removeFromStorage();
     }
   }, [profileError]);
 
@@ -134,7 +137,9 @@ export const Header = () => {
                   onClick={toggleProfileMenu}
                 >
                   <Icon type="user" />
-                  <span>{`${profile.user?.first_name} ${profile.user?.last_name}`}</span>
+                  {(profile.user?.first_name || profile.user?.last_name) && (
+                    <span>{`${profile.user?.first_name} ${profile.user?.last_name}`}</span>
+                  )}
                 </Button>
 
                 {showProfileMenu && (

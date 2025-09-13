@@ -6,6 +6,7 @@ import {
   UnprocessableEntityException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import { Request, Response } from 'express';
 import { JwtService } from '@nestjs/jwt';
 import { Model, Types } from 'mongoose';
 import bcrypt from 'bcrypt';
@@ -13,6 +14,7 @@ import { AuthUserDto } from './dto';
 import { Users, UsersDocument } from './schemas/users.schema';
 import { Devices, DevicesDocument } from '../devices/schemas/devices.schema';
 import { getPageNumber, getTotalPages, paginate } from '../../utils/utils';
+import { getCookieConfig } from '../../config/cookie.config';
 
 const errorMessage = {
   userExists: 'user already exist, please login',
@@ -52,10 +54,14 @@ export class UsersService {
   };
 
   //Register User
-  createUser = async (userDto: AuthUserDto) => {
+  createUser = async (userDto: AuthUserDto, res: Response) => {
     const { email, password } = userDto;
-    if (email) {
-      const emailUser = await this.users.findOne({ email });
+
+    // Sanitize email input
+    const sanitizedEmail = email?.trim().toLowerCase();
+
+    if (sanitizedEmail) {
+      const emailUser = await this.users.findOne({ email: sanitizedEmail });
 
       if (emailUser) {
         throw new UnprocessableEntityException({
@@ -64,32 +70,37 @@ export class UsersService {
       }
     }
 
-    const hashedPassword = await bcrypt.hash(password, 5);
-    // const token = await this.jwtService.sign(
-    //   { email },
-    //   {
-    //     expiresIn: '1h'
-    //     // secret: this._configService.get('JWT_SECRET'),
-    //   }
-    // );
+    const hashedPassword = await bcrypt.hash(password, 12);
+
     const user = await this.users.create({
       ...userDto,
+      email: sanitizedEmail,
       created_at: new Date(),
       password: hashedPassword,
     });
 
-    const tokens = await this.issueTokens(user._id);
+    const { accessToken, refreshToken } = this.issueTokens(user._id);
+
+    // Set refresh token as httpOnly cookie - Alternative method
+    res.cookie('refreshToken', refreshToken, getCookieConfig());
+
+    // Remove password from response
+    const { password: _, ...userWithoutPassword } = user.toObject();
 
     return {
-      user,
-      ...tokens,
+      user: userWithoutPassword,
+      accessToken, // Return access token in response body
+      refreshToken, // Return refresh token in response body for client storage
     };
   };
 
   //Login User
-  login = async (authUserDto: AuthUserDto) => {
+  login = async (authUserDto: AuthUserDto, res: Response) => {
     const { email, password } = authUserDto;
-    const user = await this.users.findOne({ email });
+
+    // Sanitize email input
+    const sanitizedEmail = email?.trim().toLowerCase();
+    const user = await this.users.findOne({ email: sanitizedEmail });
 
     if (!user) {
       throw new BadRequestException(errorMessage.invalidEmail);
@@ -100,36 +111,106 @@ export class UsersService {
       throw new UnauthorizedException(errorMessage.invalidPassword);
     }
 
-    const tokens = await this.issueTokens(user._id);
-    user.password = undefined;
+    const { accessToken, refreshToken } = this.issueTokens(user._id);
+
+    // Set refresh token as httpOnly cookie - Alternative method
+    res.cookie('refreshToken', refreshToken, getCookieConfig());
+
+    // Remove password from response
+    const { password: _, ...userWithoutPassword } = user.toObject();
+
     return {
-      user,
-      ...tokens,
+      user: userWithoutPassword,
+      accessToken, // Return access token in response body
+      refreshToken, // Return refresh token in response body for client storage
     };
   };
 
   //Validate user
-  async validateSession(tokenData: { refreshToken: string }) {
-    const token = await this.jwtService.verify(tokenData.refreshToken);
-    const user = await this.users.findOne({ _id: token.id });
+  async validateSession(req: any, res: Response) {
+    const refreshToken = req.cookies.refreshToken;
 
-    if (!user || !token) {
-      throw new UnauthorizedException(errorMessage.invalidToken);
+    if (!refreshToken) {
+      throw new UnauthorizedException('No refresh token provided');
     }
 
-    const profileUser = {
-      email: user.email,
-      first_name: user.first_name,
-      last_name: user.last_name,
-      id: user._id,
-      role: user.role,
-      isLoggedIn: true,
-      // favorites: user.favorites,
-      activeFavoritesIds:
-        user?.favorites?.data.map((favorite) => favorite.id) || [],
-    };
+    try {
+      const token = await this.jwtService.verify(refreshToken);
+      const user = await this.users.findOne({ _id: token.id });
 
-    return profileUser;
+      if (!user) {
+        throw new UnauthorizedException('User not found');
+      }
+
+      // Generate new access token
+      const { accessToken } = this.issueTokens(user._id);
+
+      const profileUser = {
+        email: user.email,
+        first_name: user.first_name,
+        last_name: user.last_name,
+        id: user._id,
+        role: user.role,
+        isLoggedIn: true,
+        activeFavoritesIds:
+          user?.favorites?.data.map((favorite) => favorite.id) || [],
+      };
+
+      return {
+        user: profileUser,
+        accessToken,
+      };
+    } catch (error) {
+      throw new UnauthorizedException('Invalid refresh token');
+    }
+  }
+
+  async logout(res: Response) {
+    res.clearCookie('refreshToken', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+    });
+    return { message: 'Successfully logged out' };
+  }
+
+  async refreshToken(req: Request, res: Response) {
+    try {
+      const refreshToken = req.cookies?.refreshToken;
+
+      if (!refreshToken) {
+        throw new UnauthorizedException('Refresh token not found');
+      }
+
+      // Verify refresh token and get user data
+      const refreshTokenData = await this.jwtService.verifyAsync(refreshToken);
+      const userId = refreshTokenData.id;
+
+      // Find user in database
+      const user = await this.users.findById(userId);
+      if (!user) {
+        throw new UnauthorizedException('User not found');
+      }
+
+      // Generate NEW access token (30 seconds) and NEW refresh token (7 days)
+      const { accessToken, refreshToken: newRefreshToken } =
+        this.issueTokens(userId);
+
+      // Set new refresh token as httpOnly cookie
+      res.cookie('refreshToken', newRefreshToken, getCookieConfig());
+
+      // Remove password from response
+      const { password: _, ...userWithoutPassword } = user.toObject();
+
+      return {
+        user: userWithoutPassword,
+        accessToken, // Return new access token
+        refreshToken: newRefreshToken, // Return new refresh token for client storage
+        message: 'Tokens refreshed successfully',
+      };
+    } catch (error) {
+      throw new UnauthorizedException('Invalid refresh token');
+    }
   }
 
   //Delete User
@@ -140,18 +221,13 @@ export class UsersService {
 
   //Add to favorites
   addToFavorites = async (deviceId: string, userId: string, page) => {
-    const user = await this.users.findOne({ _id: userId });
-
-     if (!userId) {
-      throw new ForbiddenException(errorMessage.invalidToken);
-    }
-    
-    const device = await this.devicesModel.findOne({ id: deviceId });
-    const userFavorites = user?.favorites?.data || [];
-
     if (!userId) {
       throw new ForbiddenException(errorMessage.invalidToken);
     }
+
+    const user = await this.users.findOne({ _id: userId });
+    const device = await this.devicesModel.findOne({ id: deviceId });
+    const userFavorites = user?.favorites?.data || [];
 
     const checkAddToFavorites = () => {
       if (userFavorites?.find((favorite) => favorite.id === device?.id)) {
@@ -208,7 +284,7 @@ export class UsersService {
     const data = { id: userId };
 
     const accessToken = this.jwtService.sign(data, {
-      expiresIn: '1h',
+      expiresIn: '15m',
     });
 
     const refreshToken = this.jwtService.sign(data, {

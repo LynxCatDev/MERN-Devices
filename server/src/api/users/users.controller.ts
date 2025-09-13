@@ -7,19 +7,28 @@ import {
   Param,
   Post,
   Query,
+  Req,
+  Res,
   UsePipes,
-  ValidationPipe
+  ValidationPipe,
 } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
   ApiOkResponse,
   ApiQuery,
-  ApiTags
+  ApiTags,
 } from '@nestjs/swagger';
+import { Request, Response } from 'express';
 import { UsersService } from './users.service';
 import { AuthUserDto, RevalidateUserDto } from './dto';
-import { badUserResponse, okAuthResponse, okUserResponse, okUsersResponse } from './api-response';
+import {
+  badUserResponse,
+  okAuthResponse,
+  okLogoutResponse,
+  okUserResponse,
+  okUsersResponse,
+} from './api-response';
 import { Auth } from './decorators/auth.decorator';
 import { CurrentUser } from './decorators/user.decorator';
 import { okAddToFavoritesResponse } from './api-response/add-to-favorites-response';
@@ -34,8 +43,11 @@ export class UsersController {
   @ApiOkResponse(okUserResponse)
   @ApiBadRequestResponse(badUserResponse)
   @Post('/auth/registration')
-  createUser(@Body() userDto: AuthUserDto) {
-    return this.users.createUser(userDto);
+  createUser(
+    @Body() userDto: AuthUserDto,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    return this.users.createUser(userDto, res);
   }
 
   @UsePipes(new ValidationPipe())
@@ -43,16 +55,39 @@ export class UsersController {
   @ApiOkResponse(okAuthResponse)
   @ApiBadRequestResponse(badUserResponse)
   @Post('/auth/login')
-  login(@Body() authUserDto: AuthUserDto) {
-    return this.users.login(authUserDto);
+  login(
+    @Body() authUserDto: AuthUserDto,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    return this.users.login(authUserDto, res);
   }
 
   @HttpCode(200)
   @ApiOkResponse(okAuthResponse)
   @ApiBadRequestResponse(badUserResponse)
   @Post('/auth/validate-user')
-  validateSession(@Body() tokenData: RevalidateUserDto) {
-    return this.users.validateSession(tokenData);
+  validateSession(
+    @Req() req: Request,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    return this.users.validateSession(req, res);
+  }
+
+  @Post('/auth/logout')
+  @ApiOkResponse(okLogoutResponse)
+  logout(@Res({ passthrough: true }) res: Response) {
+    return this.users.logout(res);
+  }
+
+  @HttpCode(200)
+  @ApiOkResponse(okAuthResponse)
+  @ApiBadRequestResponse(badUserResponse)
+  @Post('/auth/refresh')
+  refreshToken(
+    @Req() req: Request,
+    @Res({ passthrough: true }) res: Response
+  ) {
+    return this.users.refreshToken(req, res);
   }
 
   @HttpCode(200)
@@ -72,7 +107,7 @@ export class UsersController {
   addToFavorites(
     @Param('id') deviceId: string,
     @CurrentUser('_id') userId: string,
-    @Query('page') page: number
+    @Query('page') page: number,
   ) {
     return this.users.addToFavorites(deviceId, userId, page);
   }
@@ -85,19 +120,19 @@ export class UsersController {
     name: 'page',
     required: false,
     type: Number,
-    example: '1'
+    example: '1',
   })
   @ApiQuery({
     name: 'limit',
     required: false,
     type: Number,
-    example: '8'
+    example: '8',
   })
   @Get('favorites')
   getUserFavorites(
     @Query('limit') limit: number,
     @Query('page') page: number,
-    @CurrentUser('_id') userId: string
+    @CurrentUser('_id') userId: string,
   ) {
     return this.users.getUserFavorites(page, limit, userId);
   }
