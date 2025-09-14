@@ -165,7 +165,11 @@ export class UsersService {
     }
   }
 
-  async logout(res: Response) {
+  async logout(req: Request, res: Response) {
+    const refreshToken = req.cookies?.refreshToken;
+    if (!refreshToken) {
+      throw new UnauthorizedException('User is not logged in');
+    }
     res.clearCookie('refreshToken', getCookieConfig());
     return { message: 'Successfully logged out' };
   }

@@ -75,8 +75,8 @@ export class UsersController {
 
   @Post('/auth/logout')
   @ApiOkResponse(okLogoutResponse)
-  logout(@Res({ passthrough: true }) res: Response) {
-    return this.users.logout(res);
+  logout(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
+    return this.users.logout(req, res);
   }
 
   @HttpCode(200)
