@@ -19,10 +19,15 @@ export const Devices = ({ devices, loading }: ComponentDevicesDataProps) => {
 
   return (
     <div className="devices">
+      {loading && <Loading />}
       {devicesData?.length > 0 && (
         <div className="devices--items">
-          {devicesData.map((device) => (
-            <DevicesItem key={device.id} device={device} />
+          {devicesData.map((device, index) => (
+            <DevicesItem
+              key={device.id}
+              device={device}
+              priority={devices.page === 1 && index === 0}
+            />
           ))}
           <div className="devices--pagination">
             <Pagination
@@ -34,8 +39,6 @@ export const Devices = ({ devices, loading }: ComponentDevicesDataProps) => {
       )}
 
       {!devicesData?.length && !loading && <NoData />}
-
-      {loading && <Loading />}
     </div>
   );
 };

@@ -7,10 +7,12 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
+import { useShallow } from 'zustand/react/shallow';
 import { Icon } from '../Icon/Icon';
 import { Loading } from '../Loading/Loading';
 import { ShowErrorMessage } from '../ShowErrorMessage/ShowErrorMessage';
-import { useShallow } from 'zustand/react/shallow';
+import { NoData } from '../NoData/NoData';
+
 import './Search.scss';
 
 export const Search = () => {
@@ -84,6 +86,10 @@ export const Search = () => {
         <div className="found-devices">
           <h3>{t('products')}</h3>
 
+          {loading && <Loading />}
+
+          {!devicesSearchData?.length && !loading && <NoData />}
+
           {devicesSearchData?.length > 0 &&
             devicesSearchData.map((device, key) => (
               <Link
@@ -107,8 +113,6 @@ export const Search = () => {
                 </div>
               </Link>
             ))}
-
-          {loading && <Loading />}
 
           {error && <ShowErrorMessage errorMessage={error} />}
         </div>

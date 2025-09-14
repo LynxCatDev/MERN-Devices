@@ -12,9 +12,10 @@ import './Devices.scss';
 
 interface DeviceItemProps {
   device: DevicesProps;
+  priority?: boolean;
 }
 
-export const DevicesItem = ({ device }: DeviceItemProps) => {
+export const DevicesItem = ({ device, priority = false }: DeviceItemProps) => {
   const locale = useLocale();
   const t = useTranslations('Categories');
   const [imgSrc, setImgSrc] = useState(checkImageUrl(device?.imageUrl));
@@ -47,7 +48,7 @@ export const DevicesItem = ({ device }: DeviceItemProps) => {
               sizes="100vw"
               style={{ width: '100%', height: 'auto' }}
               onError={handleImageError}
-              priority={false}
+              priority={priority}
             />
           </Link>
           <Link href={`/${locale}/device/${device.link}`}>
