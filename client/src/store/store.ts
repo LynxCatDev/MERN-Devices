@@ -122,7 +122,7 @@ export const useUser = create<UserStore>((set) => ({
   error: null,
   registration: async (auth: AuthProps) => {
     try {
-      const response: any = await userRegistration(auth);
+      const response = await userRegistration(auth);
 
       if (response.status !== 200) {
         const message = response.data.message || response.data.error;
@@ -142,10 +142,10 @@ export const useUser = create<UserStore>((set) => ({
   },
   login: async (email: string, password: string) => {
     try {
-      const response: any = await userLogin(email, password);
+      const response = await userLogin(email, password);
 
       if (response.status !== 200) {
-        const message = response.data.message;
+        const message = response.data.message || response.data.error;
         throw new Error(`${message}`);
       }
 
@@ -162,9 +162,10 @@ export const useUser = create<UserStore>((set) => ({
   },
   validateSession: async () => {
     try {
-      const response: any = await validateSession();
+      const response = await validateSession();
+
       if (response.status !== 200) {
-        const message = response?.response?.data?.message;
+        const message = response.data.message || response.data.error;
         throw new Error(`${message}`);
       }
 

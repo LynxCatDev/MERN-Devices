@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { axiosClassic, axiosWithAuth } from './interceptors';
 import {
   AuthProps,
@@ -8,6 +8,7 @@ import {
   DevicesProps,
   FoundDevices,
   SlidesProps,
+  ValidateUserProps,
 } from '@/store/store.interface';
 
 // axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:5000/api';
@@ -106,43 +107,59 @@ export const fetchCollection = async (): Promise<CollectionProps[]> => {
   }
 };
 
-export const userRegistration = async (auth: AuthProps) => {
+export const userRegistration = async (
+  auth: AuthProps,
+): Promise<AxiosResponse<ValidateUserProps>> => {
   try {
-    const response = await axiosClassic.post('/users/auth/registration', {
-      first_name: auth.first_name,
-      last_name: auth.last_name,
-      email: auth.email,
-      password: auth.password,
-      role: auth.role,
-    });
+    const response = await axiosClassic.post<ValidateUserProps>(
+      '/users/auth/registration',
+      {
+        first_name: auth.first_name,
+        last_name: auth.last_name,
+        email: auth.email,
+        password: auth.password,
+        role: auth.role,
+      },
+    );
+
     return response;
   } catch (error) {
     console.error(error);
-    return error;
+    throw error;
   }
 };
 
-export const userLogin = async (email: string, password: string) => {
+export const userLogin = async (
+  email: string,
+  password: string,
+): Promise<AxiosResponse<ValidateUserProps>> => {
   try {
-    const response = await axiosClassic.post('/users/auth/login', {
-      email,
-      password,
-    });
+    const response = await axiosClassic.post<ValidateUserProps>(
+      '/users/auth/login',
+      {
+        email,
+        password,
+      },
+    );
     return response;
   } catch (error) {
     console.error(error);
-    return error;
+    throw error;
   }
 };
 
-export const validateSession = async () => {
+export const validateSession = async (): Promise<
+  AxiosResponse<ValidateUserProps>
+> => {
   try {
     // Now uses httpOnly cookies automatically sent with request
-    const response = await axiosClassic.post('/users/auth/validate-user');
+    const response = await axiosClassic.post<ValidateUserProps>(
+      '/users/auth/validate-user',
+    );
     return response;
   } catch (error) {
     console.error(error);
-    return error;
+    throw error;
   }
 };
 

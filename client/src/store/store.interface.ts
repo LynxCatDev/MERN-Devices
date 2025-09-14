@@ -165,9 +165,13 @@ export interface ValidateUserProps {
     email: string;
     role: string;
     favorites?: DevicesDataProps;
+    activeFavoritesIds?: number[];
+    isLoggedIn?: boolean;
   };
   accessToken?: string;
   refreshToken?: string;
+  message?: string;
+  error?: string;
 }
 
 export interface UserStore {
