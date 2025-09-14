@@ -166,11 +166,7 @@ export class UsersService {
   }
 
   async logout(res: Response) {
-    res.clearCookie('refreshToken', {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-    });
+    res.clearCookie('refreshToken', getCookieConfig());
     return { message: 'Successfully logged out' };
   }
 
@@ -203,9 +199,13 @@ export class UsersService {
       const { password: _, ...userWithoutPassword } = user.toObject();
 
       return {
-        user: userWithoutPassword,
+        user: {
+          ...userWithoutPassword,
+          activeFavoritesIds:
+            user?.favorites?.data.map((favorite) => favorite.id) || [],
+        },
         accessToken, // Return new access token
-        refreshToken: newRefreshToken, // Return new refresh token for client storage
+        // Note: refresh token is set as httpOnly cookie, not returned in body
         message: 'Tokens refreshed successfully',
       };
     } catch (error) {
