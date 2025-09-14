@@ -5,7 +5,11 @@ import { useLocale, useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { useShallow } from 'zustand/react/shallow';
-import { getAccessToken } from '@/services/auth-token.service';
+import {
+  getAccessToken,
+  isTokenExpired,
+  refreshTokens,
+} from '@/services/auth-token.service';
 import { useUser } from '@/store/store';
 import { toaster } from '@/components/Toaster/Toaster';
 import { Button } from '../Button/Button';
@@ -38,12 +42,18 @@ export const Header = () => {
     ]),
   );
 
-  useEffect(() => {
-    // Only try to validate session if we have some indication user might be logged in
-    // This prevents unnecessary 401 errors on fresh page loads for new users
+  const checkAccessToken = () => {
+    if (accessToken && isTokenExpired(accessToken)) {
+      refreshTokens();
+      return;
+    }
     if (accessToken) {
       validateSession();
     }
+  };
+
+  useEffect(() => {
+    checkAccessToken();
   }, []);
 
   const logout = () => {

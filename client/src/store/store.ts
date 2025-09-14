@@ -13,7 +13,6 @@ import {
 import {
   removeFromStorage,
   setAccessToken,
-  setRefreshToken,
 } from '@/services/auth-token.service';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
@@ -126,17 +125,13 @@ export const useUser = create<UserStore>((set) => ({
       const response: any = await userRegistration(auth);
 
       if (response.status !== 200) {
-        const message =
-          response.response.data.message || response.response.data.error;
+        const message = response.data.message || response.data.error;
         throw new Error(`${message}`);
       }
 
-      // Store both access and refresh tokens from response
+      // Store access token from response (refresh token handled by server cookies)
       if (response.data.accessToken) {
         setAccessToken(response.data.accessToken);
-      }
-      if (response.data.refreshToken) {
-        setRefreshToken(response.data.refreshToken);
       }
 
       set({ profile: response.data });
@@ -150,17 +145,14 @@ export const useUser = create<UserStore>((set) => ({
       const response: any = await userLogin(email, password);
 
       if (response.status !== 200) {
-        const message = response.response.data.message;
+        const message = response.data.message;
         throw new Error(`${message}`);
       }
 
-      // Store both access and refresh tokens from response
+      // Store access token from response (refresh token handled by server cookies)
       if (response.data.accessToken) {
         setAccessToken(response.data.accessToken);
       }
-      // if (response.data.refreshToken) {
-      //   setRefreshToken(response.data.refreshToken);
-      // }
 
       set({ profile: response.data });
     } catch (error) {
@@ -176,18 +168,15 @@ export const useUser = create<UserStore>((set) => ({
         throw new Error(`${message}`);
       }
 
-      // Store both access and refresh tokens from response
+      // Only store access token from response (refresh token is httpOnly)
       if (response.data.accessToken) {
         setAccessToken(response.data.accessToken);
-      }
-      if (response.data.refreshToken) {
-        setRefreshToken(response.data.refreshToken);
       }
 
       set({
         profile: { user: response.data.user },
         activeFavoritesIds: response.data.user.activeFavoritesIds,
-        error: null, // Clear any previous errors on successful validation
+        error: null,
       });
     } catch (error) {
       const typedError = error as Error;

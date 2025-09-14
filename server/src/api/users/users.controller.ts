@@ -21,7 +21,7 @@ import {
 } from '@nestjs/swagger';
 import { Request, Response } from 'express';
 import { UsersService } from './users.service';
-import { AuthUserDto, RevalidateUserDto } from './dto';
+import { AuthUserDto } from './dto';
 import {
   badUserResponse,
   okAuthResponse,
@@ -83,10 +83,7 @@ export class UsersController {
   @ApiOkResponse(okAuthResponse)
   @ApiBadRequestResponse(badUserResponse)
   @Post('/auth/refresh')
-  refreshToken(
-    @Req() req: Request,
-    @Res({ passthrough: true }) res: Response
-  ) {
+  refreshToken(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
     return this.users.refreshToken(req, res);
   }
 
