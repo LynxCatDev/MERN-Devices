@@ -41,7 +41,7 @@ const nextConfig = {
       },
       // Optimized images endpoint (optional, Next usually sets good headers already)
       {
-        source: '/_next/image',
+        source: '/_next/image/:path*',
         headers: [
           {
             key: 'Cache-Control',
@@ -75,6 +75,17 @@ const nextConfig = {
             key: 'Cache-Control',
             value: 'public, max-age=31536000, immutable',
           },
+        ],
+      },
+      {
+        source: '/:path*.css',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+          // optional but harmless:
+          // { key: 'Content-Type', value: 'text/css; charset=utf-8' },
         ],
       },
     ];
