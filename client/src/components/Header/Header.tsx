@@ -3,7 +3,7 @@
 import { useOutsideClick } from '@chakra-ui/hooks';
 import { useLocale, useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { useEffect, useRef, useState } from 'react';
+import { lazy, useEffect, useRef, useState } from 'react';
 import { useShallow } from 'zustand/react/shallow';
 import {
   getAccessToken,
@@ -14,11 +14,15 @@ import { useUser } from '@/store/store';
 import { toaster } from '@/components/Toaster/Toaster';
 import { Button } from '../Button/Button';
 import { Icon } from '../Icon/Icon';
-import { Menu } from '../Menu/Menu';
+// import { Menu } from '../Menu/Menu';
 import { Search } from '../Search/Search';
 import { TopBar } from '../Topbar/Topbar';
 
 import './Header.scss';
+
+const Menu = lazy(() =>
+  import('../Menu/Menu').then((m) => ({ default: m.Menu })),
+);
 
 export const Header = () => {
   const [showProfileMenu, setShowProfileMenu] = useState(false);

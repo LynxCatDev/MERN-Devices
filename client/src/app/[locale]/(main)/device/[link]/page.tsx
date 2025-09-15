@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Categories, DeviceInfo } from '@/components';
 import { fetchCategories, fetchDevice } from '@/services/api';
 import { baseUrl, checkImageUrl } from '@/helpers';
+import { cache } from 'react';
 
 type Props = {
   params: Promise<{ link: string; locale: string }>;
@@ -32,8 +33,12 @@ const DeviceInfoPage = async ({
   params: Promise<{ link: string }>;
 }) => {
   const { link } = await params;
-  const categories = await fetchCategories();
-  const device = await fetchDevice(link);
+  const [categoriesCache, deviceCache] = await Promise.all([
+    cache(fetchCategories),
+    cache(fetchDevice),
+  ]);
+  const categories = await categoriesCache();
+  const device = await deviceCache(link);
 
   return (
     <div className="device-info-page">

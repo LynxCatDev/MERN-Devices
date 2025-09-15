@@ -1,6 +1,3 @@
-'use client';
-
-import { useMemo } from 'react';
 import Link from 'next/link';
 import { useLocale, useTranslations } from 'next-intl';
 import { DevicesDataProps } from '@/store/store.interface';
@@ -17,14 +14,16 @@ export const RecommendedDevices = ({ devices, category }: Props) => {
   const tDevices = useTranslations('Devices');
   const locale = useLocale();
   const cardData = devicesCards[category];
-
-  const devicesData = useMemo(() => devices?.data, [devices?.data]);
+  const devicesData = devices?.data;
 
   return (
     <div className="devices">
       {cardData && (
         <Link href={`/${locale}/devices${cardData.link}`}>
-          <div className="devices--banner" style={{ backgroundImage: `url(${cardData.imgUrl})` }}>
+          <div
+            className="devices--banner"
+            style={{ backgroundImage: `url(${cardData.imgUrl})` }}
+          >
             {category && <h4>{t(`${category}`)}</h4>}
             {!!devicesData?.length && (
               <span>
@@ -37,7 +36,9 @@ export const RecommendedDevices = ({ devices, category }: Props) => {
 
       <div className="devices--items recommended-item">
         {!!devicesData?.length &&
-          devicesData.map((device) => <DevicesItem key={device.id} device={device} />)}
+          devicesData.map((device) => (
+            <DevicesItem key={device.id} device={device} />
+          ))}
       </div>
     </div>
   );

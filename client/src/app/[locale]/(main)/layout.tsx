@@ -1,12 +1,14 @@
 import { Footer, Header } from '@/components';
 import type { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 import { NextIntlClientProvider, hasLocale } from 'next-intl';
 import NextTopLoader from 'nextjs-toploader';
 import CacheProvider from 'react-inlinesvg/provider';
 import { Providers } from './providers';
 import { routing } from '@/i18n/routing';
-import { notFound } from 'next/navigation';
+
 import '../../globals.scss';
+
 export const metadata: Metadata = {
   title: 'TechnoHeart',
   description: 'Best devices you can find',

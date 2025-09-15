@@ -1,3 +1,5 @@
+'use client';
+
 import { checkImageUrl } from '@/helpers';
 import { useUser } from '@/store/store';
 import { DevicesProps } from '@/store/store.interface';

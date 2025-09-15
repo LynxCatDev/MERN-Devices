@@ -6,7 +6,7 @@ import { useCategories } from '@/store/store';
 import { useLocale, useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useShallow } from 'zustand/react/shallow';
 import './Menu.scss';
 
@@ -32,6 +32,10 @@ export const Menu = ({ showMenu, toggleMenu }: Props) => {
     getCategories();
   }, []);
 
+  useMemo(() => {
+    categories;
+  }, [categories]);
+
   const checkQuickLinksRedirect = (submenu: any, category: string) => {
     if (submenu.getInfo) {
       return `/${locale}/device/${submenu.properties}`;
@@ -51,7 +55,7 @@ export const Menu = ({ showMenu, toggleMenu }: Props) => {
   return (
     <div className="menu" style={!showMenu ? { display: 'none' } : {}}>
       <div className="menu--categories">
-        {categories &&
+        {!!categories.length &&
           categories.map((category) => (
             <div
               className="menu--category"

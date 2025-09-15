@@ -1,3 +1,4 @@
+import { cache } from 'react';
 import { Metadata } from 'next';
 import { Devices } from '@/components';
 import { fetchDevices } from '@/services/api';
@@ -18,7 +19,8 @@ const DevicesPage = async ({
 }) => {
   const { link } = await params;
   const { q, page } = await searchParams;
-  const devices = await fetchDevices(q, link, 'popularity', 8, page);
+  const devicesCache = cache(fetchDevices);
+  const devices = await devicesCache(q, link, 'popularity', 8, page);
 
   return (
     <div className="devices-page">

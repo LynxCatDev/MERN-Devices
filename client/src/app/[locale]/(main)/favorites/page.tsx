@@ -7,8 +7,6 @@ import { useLocale } from 'next-intl';
 import { useUser } from '@/store/store';
 import { Devices } from '@/components';
 
-export const revalidate = 900;
-
 const FavoritesPage = () => {
   const { push } = useRouter();
   const searchParams = useSearchParams();

@@ -1,14 +1,12 @@
-import { Module, MiddlewareConsumer, RequestMethod } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
-import { JwtModule } from '@nestjs/jwt';
 import { join } from 'path';
 import { CategoriesModule, DevicesModule, SlidersModule } from './api';
 import { CollectionModule } from './api/collection/collection.module';
 import { UsersModule } from './api/users/users.module';
 import { HealthModule } from './health/health.module';
-import { StaticCacheMiddleware } from './middleware/static-cache.middleware';
 
 @Module({
   imports: [
@@ -21,10 +19,10 @@ import { StaticCacheMiddleware } from './middleware/static-cache.middleware';
       serveStaticOptions: {
         maxAge: '15m',
         setHeaders: (res, path) => {
-          if (/\.(?:png|jpg|jpeg|webp|gif|svg|ico)$/i.test(path)) {
+          if (/\.(?:css|js|svg|jpe?g|png|webp|gif|ico|woff2?)$/i.test(path)) {
             res.setHeader(
               'Cache-Control',
-              'public, max-age=900, s-maxage=900, stale-while-revalidate=59, immutable'
+              'public, max-age=31536000, immutable',
             );
           }
         },
@@ -46,10 +44,4 @@ import { StaticCacheMiddleware } from './middleware/static-cache.middleware';
   controllers: [],
   providers: [],
 })
-export class AppModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(StaticCacheMiddleware)
-      .forRoutes({ path: '/api/images/*', method: RequestMethod.GET });
-  }
-}
+export class AppModule {}
