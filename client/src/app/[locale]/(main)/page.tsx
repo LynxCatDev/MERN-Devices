@@ -10,11 +10,11 @@ import {
   SlickSlider,
 } from '@/components';
 import { fetchCategories, fetchCollection, fetchDevices } from '@/services/api';
-
-import './page.scss';
 import { DevicesDataProps } from '@/store/store.interface';
 
-export const revalidate = 3600;
+import './page.scss';
+
+export const revalidate = 900;
 
 const Home = async () => {
   const getCategories = cache(fetchCategories);

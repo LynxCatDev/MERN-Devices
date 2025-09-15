@@ -24,6 +24,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
+export const revalidate = 900;
+
 const DeviceInfoPage = async ({
   params,
 }: {

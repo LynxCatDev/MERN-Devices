@@ -7,6 +7,8 @@ export const metadata: Metadata = {
   description: 'Select Category and Devices',
 };
 
+export const revalidate = 900;
+
 const DevicesPage = async ({
   params,
   searchParams,
