@@ -1,14 +1,17 @@
 import axios, { type CreateAxiosDefaults } from 'axios';
 
 import { errorCatch } from './error';
-import { getAccessToken, removeFromStorage } from '@/services/auth-token.service';
+import {
+  getAccessToken,
+  removeFromStorage,
+} from '@/services/auth-token.service';
 
 const options: CreateAxiosDefaults = {
-  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL  || 'http://localhost:5000/api',
+  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:5000/api',
   headers: {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
   },
-  withCredentials: true
+  withCredentials: true,
 };
 
 const axiosClassic = axios.create(options);
@@ -16,7 +19,8 @@ const axiosWithAuth = axios.create(options);
 
 axiosWithAuth.interceptors.request.use(async (config) => {
   const accessToken = await getAccessToken();
-  if (config?.headers && accessToken) config.headers.Authorization = `Bearer ${accessToken}`;
+  if (config?.headers && accessToken)
+    config.headers.Authorization = `Bearer ${accessToken}`;
 
   return config;
 });
@@ -43,7 +47,7 @@ axiosWithAuth.interceptors.response.use(
     }
 
     throw error;
-  }
+  },
 );
 
 export { axiosClassic, axiosWithAuth };

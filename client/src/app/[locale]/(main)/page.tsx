@@ -14,6 +14,7 @@ import { DevicesDataProps } from '@/store/store.interface';
 
 import './page.scss';
 
+//works only with nextjs fetch
 export const revalidate = 900;
 
 const Home = async () => {
