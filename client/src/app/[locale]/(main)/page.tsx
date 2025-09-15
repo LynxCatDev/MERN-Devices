@@ -48,7 +48,7 @@ const Home = async () => {
     <main className="main">
       <div className="main--wrapper">
         <ShopTitle />
-        {/* <SlickSlider /> */}
+        <SlickSlider />
         <Categories categories={categories} />
         <Promotions />
         {renderDeviceSection('smartphones', smartphones)}

@@ -7,7 +7,6 @@ import { useLocale } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect } from 'react';
-import { Loading } from '../Loading/Loading';
 import { NoData } from '../NoData/NoData';
 import { ShowErrorMessage } from '../ShowErrorMessage/ShowErrorMessage';
 import { useShallow } from 'zustand/react/shallow';
@@ -74,10 +73,10 @@ export const SlickSlider = () => {
     <div className="slick-wrapper">
       {slides?.length > 0 && (
         <Slider {...settings}>
-          {slides.map((slide) => (
+          {slides.map((slide, i) => (
             <Link href={`/${locale}/${slide.link}`} key={slide.id}>
               <Image
-                priority
+                priority={i === 0}
                 src={`${apiBaseUrl}/${slide.imgUrl}`}
                 alt={slide.altName}
                 width={0}

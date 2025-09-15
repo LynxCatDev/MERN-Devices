@@ -1,5 +1,6 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import { useOutsideClick } from '@chakra-ui/hooks';
 import { useLocale, useTranslations } from 'next-intl';
 import Link from 'next/link';
@@ -14,11 +15,15 @@ import { useUser } from '@/store/store';
 import { toaster } from '@/components/Toaster/Toaster';
 import { Button } from '../Button/Button';
 import { Icon } from '../Icon/Icon';
-import { Menu } from '../Menu/Menu';
 import { Search } from '../Search/Search';
 import { TopBar } from '../Topbar/Topbar';
 
 import './Header.scss';
+
+const Menu = dynamic(
+  () => import('@/components/Menu/Menu').then((m) => m.Menu),
+  { ssr: false, loading: () => <div style={{ height: 280 }} /> }, // tiny skeleton placeholder
+);
 
 export const Header = () => {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
