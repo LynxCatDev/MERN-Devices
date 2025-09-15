@@ -45,9 +45,8 @@ export const DevicesItem = ({ device, priority = false }: DeviceItemProps) => {
             <Image
               src={imgSrc}
               alt={device?.name}
-              width={0}
-              height={0}
-              sizes="100vw"
+              width={321}
+              height={321}
               style={{ width: '100%', height: 'auto' }}
               onError={handleImageError}
               priority={priority}

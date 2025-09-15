@@ -17,7 +17,9 @@ export const CategoriesItem = ({ category }: CategoriesItemProps) => {
     <Link
       className={`categories--card ${category.link.slice(1)}`}
       href={`/${locale}/devices${category.link}`}
-      onMouseOver={(e) => (e.currentTarget.style.color = `${category.shadowColor}`)}
+      onMouseOver={(e) =>
+        (e.currentTarget.style.color = `${category.shadowColor}`)
+      }
       onMouseOut={(e) => (e.currentTarget.style.color = '')}
     >
       <div
