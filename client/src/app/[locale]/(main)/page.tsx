@@ -1,4 +1,4 @@
-import { cache } from 'react';
+import { cache, lazy } from 'react';
 import {
   Categories,
   Collection,
@@ -7,12 +7,17 @@ import {
   RecommendedDevices,
   ServicesSection,
   ShopTitle,
-  SlickSlider,
 } from '@/components';
 import { fetchCategories, fetchCollection, fetchDevices } from '@/services/api';
 import { DevicesDataProps } from '@/store/store.interface';
 
 import './page.scss';
+
+const SlickSlider = lazy(() =>
+  import('@/components/SlickSlider/SlickSlider').then((m) => ({
+    default: m.SlickSlider,
+  })),
+);
 
 //works only with nextjs fetch
 export const revalidate = 900;

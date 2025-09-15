@@ -1,10 +1,11 @@
+import { memo } from 'react';
 import Link from 'next/link';
 import { useLocale, useTranslations } from 'next-intl';
 import { promotions } from '@/constants/promotions';
 
 import './Promotions.scss';
 
-export const Promotions = () => {
+export const Promotions = memo(() => {
   const t = useTranslations('General');
   const locale = useLocale();
 
@@ -13,7 +14,10 @@ export const Promotions = () => {
       <div className="promotions--wrapper">
         {promotions.slice(0, 2).map((promotion) => (
           <Link key={promotion.id} href={`/${locale}${promotion.link}`}>
-            <div className="promotions--bg" style={{ backgroundImage: `url(${promotion.imgUrl})` }}>
+            <div
+              className="promotions--bg"
+              style={{ backgroundImage: `url(${promotion.imgUrl})` }}
+            >
               <h4>{t(`${promotion.title}`)}</h4>
               <span>{t(`${promotion.description}`)}</span>
             </div>
@@ -25,4 +29,4 @@ export const Promotions = () => {
       </div>
     </div>
   );
-};
+});

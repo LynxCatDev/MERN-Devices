@@ -19,10 +19,10 @@ import { HealthModule } from './health/health.module';
       serveStaticOptions: {
         maxAge: '15m',
         setHeaders: (res, path) => {
-          if (/\.(?:png|jpg|jpeg|webp|gif|svg|ico)$/i.test(path)) {
+          if (/\.(?:css|js|svg|jpe?g|png|webp|gif|ico|woff2?)$/i.test(path)) {
             res.setHeader(
               'Cache-Control',
-              'public, max-age=900, s-maxage=900, stale-while-revalidate=59, immutable',
+              'public, max-age=31536000, immutable',
             );
           }
         },

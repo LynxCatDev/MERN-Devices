@@ -7,13 +7,14 @@ import { useLocale } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect } from 'react';
+import { Skeleton } from '@chakra-ui/react';
+import { useShallow } from 'zustand/react/shallow';
 import { NoData } from '../NoData/NoData';
 import { ShowErrorMessage } from '../ShowErrorMessage/ShowErrorMessage';
-import { useShallow } from 'zustand/react/shallow';
+
 import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
 import './SlickSlider.scss';
-import { Skeleton } from '@chakra-ui/react';
 
 export const SlickSlider = () => {
   const locale = useLocale();
@@ -79,10 +80,11 @@ export const SlickSlider = () => {
                 priority={i === 0}
                 src={`${apiBaseUrl}/${slide.imgUrl}`}
                 alt={slide.altName}
-                width={0}
-                height={0}
-                sizes="100vw"
-                style={{ width: '100%', height: 'auto' }}
+                fill={false}
+                width={1400}
+                height={520}
+                sizes="(min-width:1024px) 1200px, 100vw"
+                loading={i === 0 ? 'eager' : 'lazy'}
               />
             </Link>
           ))}
