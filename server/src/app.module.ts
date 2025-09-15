@@ -17,6 +17,18 @@ import { HealthModule } from './health/health.module';
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'public'),
       serveRoot: '/api/',
+      serveStaticOptions: {
+        // Default cache for static assets; images get custom header below
+        maxAge: '15m',
+        setHeaders: (res, path) => {
+          if (/\.(?:png|jpg|jpeg|webp|gif|svg|ico)$/i.test(path)) {
+            res.setHeader(
+              'Cache-Control',
+              'public, max-age=900, s-maxage=900, stale-while-revalidate=59, immutable',
+            );
+          }
+        },
+      },
     }),
     MongooseModule.forRoot(`${process.env.DATABASE_URL}`),
     // JwtModule.register({

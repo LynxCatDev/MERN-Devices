@@ -7,6 +7,7 @@ const withNextIntl = createNextIntlPlugin();
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   images: {
+    minimumCacheTTL: 900,
     remotePatterns: [
       {
         protocol: 'https',
@@ -21,7 +22,7 @@ const nextConfig: NextConfig = {
         pathname: '/**',
       },
     ],
-  }
+  },
 };
 
 export default withNextIntl(nextConfig);
