@@ -29,11 +29,6 @@ export default async function LocaleLayout({
     <CacheProvider>
       <html lang={locale}>
         <link rel="icon" type="image/x-icon" href="/images/play.png" />
-        <link
-          rel="preconnect"
-          href={process.env.NEXT_PUBLIC_API_BASE_URL}
-          crossOrigin=""
-        />
         <NextIntlClientProvider>
           <Providers>
             <body className="night">

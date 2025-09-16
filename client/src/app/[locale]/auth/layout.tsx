@@ -24,11 +24,6 @@ export default async function RegistrationLayout({
   return (
     <html lang="en">
       <link rel="icon" type="image/x-icon" href="/images/play.png" />
-      <link
-        rel="preconnect"
-        href={process.env.NEXT_PUBLIC_API_BASE_URL}
-        crossOrigin=""
-      />
       <NextIntlClientProvider>
         <body className={poppins.className}>{children}</body>
       </NextIntlClientProvider>
