@@ -6,7 +6,7 @@ import Slider, { Settings } from '@ant-design/react-slick';
 import { useLocale } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect, useMemo } from 'react';
+import { cache, useEffect, useMemo } from 'react';
 import { useShallow } from 'zustand/react/shallow';
 import { NoData } from '../NoData/NoData';
 import { ShowErrorMessage } from '../ShowErrorMessage/ShowErrorMessage';
@@ -27,7 +27,7 @@ export const SlickSlider = () => {
   );
 
   useEffect(() => {
-    getSlides();
+    cache(getSlides);
   }, []);
 
   const settings: Settings = useMemo(
