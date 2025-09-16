@@ -1,11 +1,10 @@
-import { memo } from 'react';
 import Link from 'next/link';
 import { useLocale, useTranslations } from 'next-intl';
 import { promotions } from '@/constants/promotions';
 
 import './Promotions.scss';
 
-export const Promotions = memo(() => {
+export const Promotions = () => {
   const t = useTranslations('General');
   const locale = useLocale();
 
@@ -29,4 +28,4 @@ export const Promotions = memo(() => {
       </div>
     </div>
   );
-});
+};

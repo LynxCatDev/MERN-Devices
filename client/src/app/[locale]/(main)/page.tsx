@@ -1,19 +1,30 @@
+import dynamic from 'next/dynamic';
 import { unstable_cache as nextCache } from 'next/cache';
 import { getLocale, getTranslations } from 'next-intl/server';
-import {
-  Categories,
-  Collection,
-  Features,
-  Promotions,
-  RecommendedDevices,
-  ServicesSection,
-  ShopTitle,
-} from '@/components';
+import { Collection, Features, ServicesSection, ShopTitle } from '@/components';
 import { fetchCategories, fetchCollection, fetchDevices } from '@/services/api';
 import { DevicesDataProps } from '@/store/store.interface';
 import { SlickSliderWrapper } from '@/components/SlickSlider/SlickSliderWrapper';
 
 import './page.scss';
+
+const Promotions = dynamic(
+  () => import('@/components/Promotions/Promotions').then((m) => m.Promotions),
+  { ssr: true },
+);
+
+const Categories = dynamic(
+  () => import('@/components/Categories/Categories').then((m) => m.Categories),
+  { ssr: true },
+);
+
+const RecommendedDevices = dynamic(
+  () =>
+    import('@/components/Devices/RecommendedDevices').then(
+      (m) => m.RecommendedDevices,
+    ),
+  { ssr: true },
+);
 
 //works only with nextjs fetch
 export const revalidate = 900;
