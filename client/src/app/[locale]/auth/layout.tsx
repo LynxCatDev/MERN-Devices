@@ -26,7 +26,7 @@ export default async function RegistrationLayout({
       <link rel="icon" type="image/x-icon" href="/images/play.png" />
       <link
         rel="preconnect"
-        href={process.env.NEXT_PUBLIC_API_BASE_URL}
+        href={`${process.env.NEXT_PUBLIC_API_BASE_URL}/api`}
         crossOrigin=""
       />
       <NextIntlClientProvider>
