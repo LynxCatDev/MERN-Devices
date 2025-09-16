@@ -42,21 +42,21 @@ export const SlickSlider = () => {
     lazyLoad: 'ondemand',
   };
 
-  if (loading)
-    return (
-      <div className="slick-wrapper">
-        <div className="slide-skeleton">
-          <Skeleton
-            height="100%"
-            width="100%"
-            position="absolute"
-            top="0"
-            left="0"
-            borderRadius="md"
-          />
-        </div>
-      </div>
-    );
+  // if (loading)
+  //   return (
+  //     <div className="slick-wrapper">
+  //       <div className="slide-skeleton">
+  //         <Skeleton
+  //           height="100%"
+  //           width="100%"
+  //           position="absolute"
+  //           top="0"
+  //           left="0"
+  //           borderRadius="md"
+  //         />
+  //       </div>
+  //     </div>
+  //   );
   if (error)
     return (
       <div className="slick-wrapper">
