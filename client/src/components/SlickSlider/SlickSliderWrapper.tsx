@@ -25,4 +25,4 @@ const SlickSlider = dynamic(
   },
 );
 
-export const SlickSliderWrapper = SlickSlider;
+export const SlickSliderWrapper = () => <SlickSlider />;

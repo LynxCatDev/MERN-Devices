@@ -6,8 +6,7 @@ import Slider, { Settings } from '@ant-design/react-slick';
 import { useLocale } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect } from 'react';
-import { Skeleton } from '@chakra-ui/react';
+import { useEffect, useMemo } from 'react';
 import { useShallow } from 'zustand/react/shallow';
 import { NoData } from '../NoData/NoData';
 import { ShowErrorMessage } from '../ShowErrorMessage/ShowErrorMessage';
@@ -31,16 +30,19 @@ export const SlickSlider = () => {
     getSlides();
   }, []);
 
-  const settings: Settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    arrows: false,
-    autoplay: true,
-    autoplaySpeed: 5000,
-    lazyLoad: 'ondemand',
-  };
+  const settings: Settings = useMemo(
+    () => ({
+      dots: true,
+      infinite: true,
+      speed: 500,
+      slidesToShow: 1,
+      arrows: false,
+      autoplay: true,
+      autoplaySpeed: 5000,
+      lazyLoad: 'ondemand',
+    }),
+    [],
+  );
 
   // if (loading)
   //   return (

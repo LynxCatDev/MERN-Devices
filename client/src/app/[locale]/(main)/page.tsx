@@ -1,4 +1,4 @@
-import { cache } from 'react';
+import { unstable_cache as nextCache } from 'next/cache';
 import { getLocale, getTranslations } from 'next-intl/server';
 import {
   Categories,
@@ -19,15 +19,22 @@ import './page.scss';
 export const revalidate = 900;
 
 const Home = async () => {
-  const getCategories = cache(fetchCategories);
-  const getCollection = cache(fetchCollection);
+  const getCategories = nextCache(fetchCategories, ['categories'], {
+    revalidate: 900,
+  });
+  const getCollection = nextCache(fetchCollection, ['collection'], {
+    revalidate: 900,
+  });
   const locale = await getLocale();
   const tCategories = await getTranslations('Categories');
   const tDevices = await getTranslations('Devices');
 
-  const recommendedDevices = cache((category: string) => {
-    return fetchDevices('', category, 'popularity', 3);
-  });
+  const recommendedDevices = (category: string) =>
+    nextCache(
+      () => fetchDevices('', category, 'popularity', 3),
+      ['recommendedDevices', category],
+      { revalidate: 900 },
+    )();
 
   const [categories, collection, smartphones, laptops, gadgets, audio] =
     await Promise.all([
