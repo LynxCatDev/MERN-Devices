@@ -2,6 +2,7 @@
 
 import { Skeleton } from '@chakra-ui/react';
 import dynamic from 'next/dynamic';
+import { useEffect, useState } from 'react';
 
 const SlickSlider = dynamic(
   () =>
@@ -25,4 +26,28 @@ const SlickSlider = dynamic(
   },
 );
 
-export const SlickSliderWrapper = () => <SlickSlider />;
+export const SlickSliderWrapper = () => {
+  const [showSlider, setShowSlider] = useState(false);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowSlider(true);
+    }, 2500);
+    return () => clearTimeout(timer);
+  }, []);
+  return showSlider ? (
+    <SlickSlider />
+  ) : (
+    <div className="slick-wrapper">
+      <div className="slide-skeleton">
+        <Skeleton
+          height="100%"
+          width="100%"
+          position="absolute"
+          top="0"
+          left="0"
+          borderRadius="md"
+        />
+      </div>
+    </div>
+  );
+};
