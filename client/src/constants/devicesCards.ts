@@ -1,20 +1,20 @@
 export const devicesCards = {
   smartphones: {
     link: '/smartphones',
-    imgUrl: '/images/phones_new.webp'
+    imgUrl: '/images/phones_new.webp',
   },
   laptops: {
     link: '/laptops',
-    imgUrl: '/images/laptop_new.webp'
+    imgUrl: '/images/laptop_new.webp',
   },
   gadgets: {
     link: '/gadgets',
-    imgUrl: '/images/gadget_new.webp'
+    imgUrl: '/images/gadget_new.webp',
   },
   audio: {
     link: '/audio',
-    imgUrl: '/images/audio-r.png'
-  }
+    imgUrl: '/images/audio-r.webp',
+  },
 };
 
 // export const devicesCards = [
