@@ -57,7 +57,8 @@ export const useCategories = create<CategoriesStore>()(
       error: null as CategoriesStore['error'],
       getCategories: async () => {
         try {
-          const response = await fetchCategories();
+          const response: CategoriesStore['categories'] =
+            await fetchCategories();
           set({ categories: response });
         } catch (error) {
           const typedError = error as Error;

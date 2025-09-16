@@ -18,7 +18,7 @@ export const Promotions = memo(() => {
               className="promotions--bg"
               style={{ backgroundImage: `url(${promotion.imgUrl})` }}
             >
-              <h4>{t(`${promotion.title}`)}</h4>
+              <h2>{t(`${promotion.title}`)}</h2>
               <span>{t(`${promotion.description}`)}</span>
             </div>
           </Link>
