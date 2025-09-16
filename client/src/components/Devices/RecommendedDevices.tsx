@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import { useLocale, useTranslations } from 'next-intl';
 import { DevicesDataProps } from '@/store/store.interface';
 import { DevicesItem } from './DevicesItem';
 import { devicesCards } from '@/constants/devicesCards';
@@ -7,12 +6,18 @@ import { devicesCards } from '@/constants/devicesCards';
 interface Props {
   devices: DevicesDataProps;
   category: keyof typeof devicesCards;
+  locale: string;
+  categoryTitle: string;
+  productsLabel: string;
 }
 
-export const RecommendedDevices = ({ devices, category }: Props) => {
-  const t = useTranslations('Categories');
-  const tDevices = useTranslations('Devices');
-  const locale = useLocale();
+export const RecommendedDevices = ({
+  devices,
+  category,
+  locale,
+  categoryTitle,
+  productsLabel,
+}: Props) => {
   const cardData = devicesCards[category];
   const devicesData = devices?.data;
 
@@ -24,10 +29,10 @@ export const RecommendedDevices = ({ devices, category }: Props) => {
             className="devices--banner"
             style={{ backgroundImage: `url(${cardData.imgUrl})` }}
           >
-            {category && <h4>{t(`${category}`)}</h4>}
+            {category && <h4>{categoryTitle}</h4>}
             {!!devicesData?.length && (
               <span>
-                {devicesData?.length}+ {tDevices('products')}
+                {devicesData?.length}+ {productsLabel}
               </span>
             )}
           </div>

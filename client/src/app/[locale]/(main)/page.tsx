@@ -1,4 +1,5 @@
-import { cache, lazy } from 'react';
+import { cache } from 'react';
+import { getLocale, getTranslations } from 'next-intl/server';
 import {
   Categories,
   Collection,
@@ -10,14 +11,9 @@ import {
 } from '@/components';
 import { fetchCategories, fetchCollection, fetchDevices } from '@/services/api';
 import { DevicesDataProps } from '@/store/store.interface';
+import { SlickSliderWrapper } from '@/components/SlickSlider/SlickSliderWrapper';
 
 import './page.scss';
-
-const SlickSlider = lazy(() =>
-  import('@/components/SlickSlider/SlickSlider').then((m) => ({
-    default: m.SlickSlider,
-  })),
-);
 
 //works only with nextjs fetch
 export const revalidate = 900;
@@ -25,6 +21,9 @@ export const revalidate = 900;
 const Home = async () => {
   const getCategories = cache(fetchCategories);
   const getCollection = cache(fetchCollection);
+  const locale = await getLocale();
+  const tCategories = await getTranslations('Categories');
+  const tDevices = await getTranslations('Devices');
 
   const recommendedDevices = cache((category: string) => {
     return fetchDevices('', category, 'popularity', 3);
@@ -44,16 +43,25 @@ const Home = async () => {
     category: 'smartphones' | 'laptops' | 'gadgets' | 'audio',
     devices: DevicesDataProps,
   ) => {
-    return devices.data.length ? (
-      <RecommendedDevices category={category} devices={devices} />
-    ) : null;
+    if (!devices.data.length) return null;
+    const categoryTitle = tCategories(category);
+    const productsLabel = tDevices('products');
+    return (
+      <RecommendedDevices
+        category={category}
+        devices={devices}
+        locale={locale}
+        categoryTitle={categoryTitle}
+        productsLabel={productsLabel}
+      />
+    );
   };
 
   return (
     <main className="main">
       <div className="main--wrapper">
         <ShopTitle />
-        <SlickSlider />
+        <SlickSliderWrapper />
         <Categories categories={categories} />
         <Promotions />
         {renderDeviceSection('smartphones', smartphones)}

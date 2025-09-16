@@ -85,6 +85,7 @@ export const SlickSlider = () => {
                 height={520}
                 sizes="(min-width:1024px) 1200px, 100vw"
                 loading={i === 0 ? 'eager' : 'lazy'}
+                fetchPriority={i === 0 ? 'high' : 'auto'}
               />
             </Link>
           ))}
