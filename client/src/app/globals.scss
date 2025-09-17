@@ -105,3 +105,11 @@ h3 {
   background: var(--device-dark-orange);
   border-radius: 2px;
 }
+
+@media screen and (max-width: 1500px) {
+  .main {
+    &--wrapper {
+      padding: 0 20px;
+    }
+  }
+}

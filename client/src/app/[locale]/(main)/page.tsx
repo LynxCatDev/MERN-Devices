@@ -77,19 +77,17 @@ const Home = async () => {
 
   return (
     <main className="main">
-      <div className="main--wrapper">
-        <ShopTitle />
-        <SlickSliderWrapper />
-        <Categories categories={categories} />
-        <Promotions />
-        {renderDeviceSection('smartphones', smartphones)}
-        <ServicesSection />
-        {renderDeviceSection('laptops', laptops)}
-        <Collection collection={collection} />
-        {renderDeviceSection('gadgets', gadgets)}
-        {renderDeviceSection('audio', audio)}
-        <Features />
-      </div>
+      <ShopTitle />
+      <SlickSliderWrapper />
+      <Categories categories={categories} />
+      <Promotions />
+      {renderDeviceSection('smartphones', smartphones)}
+      <ServicesSection />
+      {renderDeviceSection('laptops', laptops)}
+      <Collection collection={collection} />
+      {renderDeviceSection('gadgets', gadgets)}
+      {renderDeviceSection('audio', audio)}
+      <Features />
     </main>
   );
 };

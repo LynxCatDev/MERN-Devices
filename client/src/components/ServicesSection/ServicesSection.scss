@@ -20,6 +20,7 @@
     align-items: center;
     transition: all 0.3s;
     height: 100%;
+    gap: 8px;
 
     &:hover {
       color: var(--device-light-green);
@@ -49,6 +50,45 @@
 
     span {
       color: var(--device-medium-grey);
+    }
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .service-section {
+    grid-template-columns: repeat(1, 1fr);
+  }
+  .service {
+    &--card {
+      max-width: 500px;
+    }
+    > a {
+      gap: 16px;
+      text-align: center;
+    }
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .service {
+    img {
+      width: 40px !important;
+      height: 40px !important;
+    }
+
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    &--card {
+      h3 {
+        font-size: 20px;
+      }
+
+      span {
+        font-size: 14px;
+      }
     }
   }
 }

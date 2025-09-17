@@ -31,3 +31,27 @@
   padding-top: 37%;
   position: relative;
 }
+
+@media screen and (max-width: 992px) {
+  .slick-wrapper {
+    img {
+      height: 320px;
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .slick-wrapper {
+    img {
+      height: 280px;
+    }
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .slick-wrapper {
+    img {
+      height: 200px;
+    }
+  }
+}

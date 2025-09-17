@@ -46,3 +46,22 @@
     }
   }
 }
+
+@media screen and (max-width: 992px) {
+  .promotions {
+    &--wrapper {
+      grid-template-columns: repeat(1, 1fr);
+    }
+
+    &--bg {
+      height: 200px;
+    }
+
+    &--link {
+      a {
+        font-size: 16px;
+        padding: 8px 52px;
+      }
+    }
+  }
+}

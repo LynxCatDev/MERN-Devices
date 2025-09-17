@@ -2,3 +2,27 @@
   margin: 24px 0;
   text-align: center;
 }
+
+@media screen and (max-width: 992px) {
+  .shop-title {
+    h1 {
+      font-size: 28px;
+    }
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .shop-title {
+    h1 {
+      font-size: 20px;
+    }
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .shop-title {
+    h1 {
+      font-size: 18px;
+    }
+  }
+}

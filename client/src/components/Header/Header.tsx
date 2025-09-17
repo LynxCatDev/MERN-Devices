@@ -3,14 +3,14 @@
 import { useOutsideClick } from '@chakra-ui/hooks';
 import { useLocale, useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { lazy, useEffect, useRef, useState } from 'react';
+import { lazy, useEffect, useMemo, useRef, useState } from 'react';
 import { useShallow } from 'zustand/react/shallow';
 import {
   getAccessToken,
   isTokenExpired,
   refreshTokens,
 } from '@/services/auth-token.service';
-import { useUser } from '@/store/store';
+import { useDevices, useUser } from '@/store/store';
 import { toaster } from '@/components/Toaster/Toaster';
 import { Button } from '../Button/Button';
 import { Icon } from '../Icon/Icon';
@@ -44,6 +44,12 @@ export const Header = () => {
       state.userLogOut,
       state.error,
     ]),
+  );
+
+  const [devices] = useDevices(useShallow((state) => [state.devices]));
+  const devicesCount = useMemo(
+    () => devices?.data?.length || 0,
+    [devices?.data?.length],
   );
 
   const checkAccessToken = () => {
@@ -101,7 +107,11 @@ export const Header = () => {
       <div className="header">
         <div
           className="header--container"
-          style={showMenu ? { borderRadius: '16px 16px 0 0' } : {}}
+          style={{
+            ...(showMenu || devicesCount > 0
+              ? { borderRadius: '16px 16px 0 0' }
+              : {}),
+          }}
         >
           <div className="header--logo">
             <Link href={`/${locale}`}>
