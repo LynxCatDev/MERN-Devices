@@ -195,3 +195,71 @@
 .added-to-compare.button {
   background-color: var(--device-light-green);
 }
+
+@media screen and (max-width: 1200px) {
+  .device-product {
+    &--info {
+      gap: 16px;
+
+      &-image {
+        max-width: 400px;
+      }
+
+      &-specifications {
+        font-size: 16px;
+      }
+
+      &-buy {
+        font-size: 20px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .device-product {
+    &--info {
+      grid-template-columns: repeat(4, 1fr);
+
+      &-image {
+        grid-column-start: 1;
+        grid-column-end: 5;
+      }
+
+      &-specifications {
+        grid-column-start: 1;
+        grid-column-end: 3;
+      }
+
+      &-buy {
+        grid-column-start: 3;
+        grid-column-end: 5;
+      }
+    }
+
+    &--name {
+      text-align: center;
+
+      h1 {
+        font-size: 32px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .device-product {
+    &--info {
+      &-specifications {
+        grid-column-start: 1;
+        grid-column-end: 5;
+      }
+
+      &-buy {
+        grid-column-start: 1;
+        grid-column-end: 5;
+        padding: 16px;
+      }
+    }
+  }
+}

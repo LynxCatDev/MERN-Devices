@@ -6,7 +6,14 @@ import { useLocale, useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useEffect, useMemo, useState } from 'react';
+import {
+  forwardRef,
+  RefObject,
+  useEffect,
+  useImperativeHandle,
+  useMemo,
+  useState,
+} from 'react';
 import { useShallow } from 'zustand/react/shallow';
 import { Icon } from '../Icon/Icon';
 import { Loading } from '../Loading/Loading';
@@ -41,11 +48,33 @@ export const Search = () => {
   };
 
   useEffect(() => {
+    useDevices.setState({
+      loading: true,
+      devices: {
+        data: [],
+        totalCount: 0,
+        page: 1,
+        totalPages: 1,
+        limit: 8,
+      },
+    });
     const debounce = setTimeout(() => {
       if (searchValue) {
         getDevices(searchValue, '', 'popularity', 10, 1);
       }
     }, 1000);
+
+    // if (!searchValue) {
+    //   useDevices.setState({
+    //     devices: {
+    //       data: [],
+    //       totalCount: 0,
+    //       page: 1,
+    //       totalPages: 1,
+    //       limit: 8,
+    //     },
+    //   });
+    // }
 
     const listener = (event: { code: string }) => {
       if (event.code === 'Enter' || event.code === 'NumpadEnter') {
@@ -65,13 +94,8 @@ export const Search = () => {
     <div className="search">
       <input
         type="text"
-        style={
-          searchValue && devicesSearchData?.length > 0
-            ? { borderRadius: '8px 8px 0 0' }
-            : {}
-        }
-        placeholder={t('search')}
-        value={searchValue}
+        // style={
+        //   searchVlue={searchValue}
         onChange={onSearchChange}
       />
 
