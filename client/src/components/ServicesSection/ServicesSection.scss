@@ -20,6 +20,7 @@
     align-items: center;
     transition: all 0.3s;
     height: 100%;
+    gap: 8px;
 
     &:hover {
       color: var(--device-light-green);

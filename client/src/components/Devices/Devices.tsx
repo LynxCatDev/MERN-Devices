@@ -21,7 +21,7 @@ export const Devices = ({ devices, loading }: ComponentDevicesDataProps) => {
     <div className="devices">
       {loading && <Loading />}
       {devicesData?.length > 0 && (
-        <div className="devices--items">
+        <div className="devices--items show-items-page">
           {devicesData.map((device, index) => (
             <DevicesItem
               key={device.id}
@@ -29,6 +29,7 @@ export const Devices = ({ devices, loading }: ComponentDevicesDataProps) => {
               priority={devices.page === 1 && index === 0}
             />
           ))}
+
           <div className="devices--pagination">
             <Pagination
               currentPage={devices.page}

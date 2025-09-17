@@ -168,7 +168,7 @@ header {
   .header {
     &--container {
       height: auto;
-      padding: 4px;
+      padding: 8px;
     }
 
     &--logo {
@@ -242,10 +242,20 @@ header {
 
 @media screen and (max-width: 576px) {
   .header {
+    &--container {
+      padding: 4px;
+    }
+
     &--user {
+      position: initial;
+
       span {
         display: none;
       }
     }
+  }
+
+  .profile-menu {
+    background-color: rgba(32, 32, 32, 0.52);
   }
 }

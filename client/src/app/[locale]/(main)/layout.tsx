@@ -39,7 +39,7 @@ export default async function LocaleLayout({
             <body className="night">
               <NextTopLoader showSpinner={false} height={4} />
               <Header />
-              {children}
+              <div className="main--wrapper">{children}</div>
               <Footer />
             </body>
           </Providers>
