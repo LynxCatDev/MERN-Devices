@@ -123,6 +123,7 @@
 .recommended-item {
   grid-template-columns: repeat(3, 1fr);
   width: 75%;
+  overflow-x: auto;
 }
 
 .options-devices-card-wrapper {
@@ -206,5 +207,55 @@
 
   svg {
     fill: #fff;
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .devices {
+    &--banner {
+      height: 100%;
+    }
+  }
+
+  .device {
+    &--item {
+      max-width: 200px;
+    }
+
+    &--title {
+      font-size: 14px;
+      text-align: center;
+    }
+
+    &--price-wrapper {
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      height: auto;
+    }
+
+    &--price {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .devices {
+    > a {
+      display: none;
+    }
+
+    &--items {
+      width: 100%;
+    }
+  }
+
+  .device {
+    &--item {
+      max-width: 100%;
+    }
   }
 }

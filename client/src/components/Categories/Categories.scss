@@ -39,84 +39,39 @@
   &--title {
     word-wrap: break-word;
   }
+}
 
-  // .phones:hover {
-  //   color: #3fa2cd;
+@media screen and (max-width: 992px) {
+  .categories {
+    &--wrapper {
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+    }
+    &--card {
+      font-size: 14px;
+      width: 80px;
+    }
+  }
+}
 
-  //   .categories__img {
-  //     box-shadow: 0 0 16px 8px #3fa2cd;
-  //   }
-  // }
+@media screen and (max-width: 768px) {
+  .categories {
+    &--wrapper {
+      gap: 4px;
+      overflow-x: auto;
+    }
 
-  // .laptops:hover {
-  //   color: #58e600;
+    &--card {
+      font-size: 12px;
+      width: 70px;
+    }
+  }
+}
 
-  //   .categories__img {
-  //     box-shadow: 0 0 16px 8px #58e600;
-  //   }
-  // }
-
-  // .gadgets:hover {
-  //   color: #e85b10;
-
-  //   .categories__img {
-  //     box-shadow: 0 0 16px 8px #e85b10;
-  //   }
-  // }
-
-  // .apple:hover {
-  //   color: #e53b26;
-
-  //   .categories__img {
-  //     box-shadow: 0 0 16px 8px #e53b26;
-  //   }
-  // }
-
-  // .audio:hover {
-  //   color: #d93c8d;
-
-  //   .categories__img {
-  //     box-shadow: 0 0 16px 8px #d93c8d;
-  //   }
-  // }
-
-  // .sport-and-health:hover {
-  //   color: #8c57a7;
-
-  //   .categories__img {
-  //     box-shadow: 0 0 16px 8px #8c57a7;
-  //   }
-  // }
-
-  // .personal-transport:hover {
-  //   color: #32e5e5;
-
-  //   .categories__img {
-  //     box-shadow: 0 0 16px 8px #32e5e5;
-  //   }
-  // }
-
-  // .tv-photo-optics:hover {
-  //   color: #2146c1;
-
-  //   .categories__img {
-  //     box-shadow: 0 0 16px 8px #2146c1;
-  //   }
-  // }
-
-  // .accessories:hover {
-  //   color: #844d97;
-
-  //   .categories__img {
-  //     box-shadow: 0 0 16px 8px #844d97;
-  //   }
-  // }
-
-  // .appliances:hover {
-  //   color: #36bcbe;
-
-  //   .categories__img {
-  //     box-shadow: 0 0 16px 8px #36bcbe;
-  //   }
-  // }
+@media screen and (max-width: 576px) {
+  .categories {
+    &--card {
+      width: 60px;
+    }
+  }
 }

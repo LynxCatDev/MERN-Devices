@@ -157,3 +157,95 @@ header {
     margin-bottom: 8px;
   }
 }
+
+@media screen and (max-width: 1500px) {
+  header {
+    padding: 0 20px;
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .header {
+    &--container {
+      height: auto;
+      padding: 4px;
+    }
+
+    &--logo {
+      padding-left: 4px;
+
+      svg {
+        width: 20px;
+        height: 20px;
+      }
+    }
+
+    &--menu {
+      font-size: 14px;
+      padding: 2px;
+
+      svg {
+        width: 15px;
+        height: 15px;
+        margin-right: 2px;
+      }
+    }
+
+    &--main-menu {
+      > div {
+        margin: 0 4px !important;
+
+        > a {
+          padding: 2px 4px;
+        }
+
+        .logged-in {
+          padding: 2px 4px;
+        }
+      }
+      svg {
+        width: 15px;
+        height: 15px;
+      }
+    }
+
+    &--user {
+      span {
+        font-size: 14px;
+      }
+    }
+  }
+
+  .menu {
+    &--category {
+      > a {
+        padding: 2px !important;
+      }
+
+      &--title {
+        font-size: 14px;
+      }
+    }
+  }
+
+  .profile-menu {
+    padding: 4px 0;
+
+    > button,
+    > a {
+      padding: 0;
+      margin-bottom: 4px;
+      font-size: 14px;
+    }
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .header {
+    &--user {
+      span {
+        display: none;
+      }
+    }
+  }
+}

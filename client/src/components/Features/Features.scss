@@ -78,3 +78,55 @@
 .support--fourth {
   background-image: url('/images/cash.png');
 }
+
+@media screen and (max-width: 1500px) {
+  .features {
+    grid-template-columns: repeat(2, 1fr);
+
+    &--item {
+      border-right: none;
+      border-bottom: 2px solid var(--device-dark);
+      padding: 16px 0;
+
+      &:last-child {
+        border-bottom: 2px solid var(--device-dark);
+      }
+
+      &:nth-child(n) {
+        border-right: 2px solid var(--device-dark);
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .features {
+    .support {
+      height: 30px;
+      width: 30px;
+      background-size: cover;
+      transition: all 0.3s ease-in;
+    }
+
+    .title {
+      font-size: 16px;
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .features {
+    grid-template-columns: repeat(1, 1fr);
+    padding: 16px 32px;
+
+    &--item {
+      &:nth-child(n) {
+        border-right: none;
+      }
+
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+  }
+}

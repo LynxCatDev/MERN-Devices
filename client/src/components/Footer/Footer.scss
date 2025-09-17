@@ -71,3 +71,31 @@
     }
   }
 }
+
+@media screen and (max-width: 1500px) {
+  .footer {
+    padding: 0 20px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .upper-footer {
+    margin-bottom: 4px;
+
+    a,
+    span {
+      font-size: 14px;
+    }
+
+    h5 {
+      font-size: 12px;
+      margin: 4px 0;
+    }
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .upper-footer {
+    flex-wrap: wrap;
+  }
+}

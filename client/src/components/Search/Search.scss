@@ -76,3 +76,37 @@
     margin: 0 8px;
   }
 }
+
+@media screen and (max-width: 992px) {
+  .search {
+    margin: 0 4px;
+    max-width: 250px;
+
+    input {
+      height: auto;
+      padding-left: 8px;
+      font-size: 16px;
+
+      &::placeholder {
+        color: var(--device-dark-grey);
+        font-size: 14px;
+      }
+    }
+
+    > a {
+      width: 20px;
+      height: 20px;
+
+      svg {
+        width: 12px;
+        height: 12px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .search {
+    max-width: 200px;
+  }
+}
