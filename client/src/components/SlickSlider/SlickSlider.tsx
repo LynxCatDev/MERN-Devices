@@ -45,7 +45,7 @@ export const SlickSlider = () => {
     [],
   );
 
-  // if (loading) return <SlickSliderSkeleton />;
+  if (loading) return <SlickSliderSkeleton />;
   if (error)
     return (
       <div className="slick-wrapper">
