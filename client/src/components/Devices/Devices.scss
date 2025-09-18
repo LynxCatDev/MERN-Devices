@@ -283,4 +283,16 @@
       max-width: 100%;
     }
   }
+
+  .device {
+    &--item {
+      &--skeleton {
+        max-width: 200px;
+
+        &:last-child {
+          display: none;
+        }
+      }
+    }
+  }
 }

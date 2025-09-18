@@ -1,35 +1,45 @@
 import dynamic from 'next/dynamic';
 import { unstable_cache as nextCache } from 'next/cache';
 import { getLocale, getTranslations } from 'next-intl/server';
-import { Features, ShopTitle } from '@/components';
+import { Features, Loading, ShopTitle } from '@/components';
+import { RecommendedDevicesSkeleton } from '@/components/Devices/RecommendedDevicesSkeleton';
+import { CategoriesSkeleton } from '@/components/Categories/CategoriesSkeleton';
+import { PromotionsSkeleton } from '@/components/Promotions/PromotionsSkeleton';
 import { fetchCategories, fetchCollection, fetchDevices } from '@/services/api';
 import { DevicesDataProps } from '@/store/store.interface';
 import { SlickSliderWrapper } from '@/components/SlickSlider/SlickSliderWrapper';
 
 import './page.scss';
 
-const Promotions = dynamic(() =>
-  import('@/components/Promotions/Promotions').then((m) => m.Promotions),
+const Promotions = dynamic(
+  () => import('@/components/Promotions/Promotions').then((m) => m.Promotions),
+  { loading: () => <PromotionsSkeleton /> },
 );
 
-const Categories = dynamic(() =>
-  import('@/components/Categories/Categories').then((m) => m.Categories),
+const Categories = dynamic(
+  () => import('@/components/Categories/Categories').then((m) => m.Categories),
+  { loading: () => <CategoriesSkeleton /> },
 );
 
-const RecommendedDevices = dynamic(() =>
-  import('@/components/Devices/RecommendedDevices').then(
-    (m) => m.RecommendedDevices,
-  ),
+const RecommendedDevices = dynamic(
+  () =>
+    import('@/components/Devices/RecommendedDevices').then(
+      (m) => m.RecommendedDevices,
+    ),
+  { loading: () => <RecommendedDevicesSkeleton /> },
 );
 
-const ServicesSection = dynamic(() =>
-  import('@/components/ServicesSection/ServicesSection').then(
-    (m) => m.ServicesSection,
-  ),
+const ServicesSection = dynamic(
+  () =>
+    import('@/components/ServicesSection/ServicesSection').then(
+      (m) => m.ServicesSection,
+    ),
+  { loading: () => <Loading /> },
 );
 
-const Collection = dynamic(() =>
-  import('@/components/Collection/Collection').then((m) => m.Collection),
+const Collection = dynamic(
+  () => import('@/components/Collection/Collection').then((m) => m.Collection),
+  { loading: () => <Loading /> },
 );
 
 //works only with nextjs fetch
