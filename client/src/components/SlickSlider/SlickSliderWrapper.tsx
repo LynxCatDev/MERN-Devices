@@ -1,26 +1,24 @@
 'use client';
 
-import { lazy, Suspense, useEffect, useState } from 'react';
+import dynamic from 'next/dynamic';
+import { useEffect, useState } from 'react';
 import { SlickSliderSkeleton } from './SlickSliderSkeleton';
 
-const SlickSlider = lazy(() =>
-  import('@/components/SlickSlider/SlickSlider').then((m) => ({
-    default: m.SlickSlider,
-  })),
+const SlickSlider = dynamic(
+  () =>
+    import('@/components/SlickSlider/SlickSlider').then((m) => ({
+      default: m.SlickSlider,
+    })),
+  { ssr: false, loading: () => <SlickSliderSkeleton /> },
 );
 
 export const SlickSliderWrapper = () => {
-  // const [showSlider, setShowSlider] = useState(false);
-  // useEffect(() => {
-  //   const timer = setTimeout(() => {
-  //     setShowSlider(true);
-  //   }, 500);
-  //   return () => clearTimeout(timer);
-  // }, []);
-  // return showSlider ? <SlickSlider /> : <SlickSliderSkeleton />;
-  return (
-    <Suspense fallback={<SlickSliderSkeleton />}>
-      <SlickSlider />
-    </Suspense>
-  );
+  const [showSlider, setShowSlider] = useState(false);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowSlider(true);
+    }, 2500);
+    return () => clearTimeout(timer);
+  }, []);
+  return showSlider ? <SlickSlider /> : <SlickSliderSkeleton />;
 };

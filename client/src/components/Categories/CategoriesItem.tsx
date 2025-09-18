@@ -30,7 +30,7 @@ export const CategoriesItem = ({ category }: CategoriesItemProps) => {
         onMouseOut={(e) => (e.currentTarget.style.boxShadow = `none`)}
       >
         <Image
-          priority
+          priority={false}
           src={`${apiBaseUrl}${category?.imgUrl}`}
           alt={category.name}
           width={104}

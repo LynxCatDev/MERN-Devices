@@ -1,7 +1,7 @@
 import dynamic from 'next/dynamic';
 import { unstable_cache as nextCache } from 'next/cache';
 import { getLocale, getTranslations } from 'next-intl/server';
-import { Collection, Features, ServicesSection, ShopTitle } from '@/components';
+import { Features, ShopTitle } from '@/components';
 import { fetchCategories, fetchCollection, fetchDevices } from '@/services/api';
 import { DevicesDataProps } from '@/store/store.interface';
 import { SlickSliderWrapper } from '@/components/SlickSlider/SlickSliderWrapper';
@@ -20,6 +20,16 @@ const RecommendedDevices = dynamic(() =>
   import('@/components/Devices/RecommendedDevices').then(
     (m) => m.RecommendedDevices,
   ),
+);
+
+const ServicesSection = dynamic(() =>
+  import('@/components/ServicesSection/ServicesSection').then(
+    (m) => m.ServicesSection,
+  ),
+);
+
+const Collection = dynamic(() =>
+  import('@/components/Collection/Collection').then((m) => m.Collection),
 );
 
 //works only with nextjs fetch
