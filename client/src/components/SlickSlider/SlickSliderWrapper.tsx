@@ -1,31 +1,15 @@
 'use client';
 
-import { Skeleton } from '@chakra-ui/react';
 import dynamic from 'next/dynamic';
-import { lazy, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import { SlickSliderSkeleton } from './SlickSliderSkeleton';
 
-const SlickSlider = lazy(
+const SlickSlider = dynamic(
   () =>
     import('@/components/SlickSlider/SlickSlider').then((m) => ({
       default: m.SlickSlider,
     })),
-  // {
-  //   ssr: false,
-  //   loading: () => (
-  //     <div className="slick-wrapper">
-  //       <div className="slide-skeleton">
-  //         <Skeleton
-  //           height="100%"
-  //           width="100%"
-  //           position="absolute"
-  //           top="0"
-  //           left="0"
-  //           borderRadius="md"
-  //         />
-  //       </div>
-  //     </div>
-  //   ),
-  // },
+  { ssr: false, loading: () => <SlickSliderSkeleton /> },
 );
 
 export const SlickSliderWrapper = () => {
@@ -33,23 +17,8 @@ export const SlickSliderWrapper = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowSlider(true);
-    }, 1000);
+    }, 2500);
     return () => clearTimeout(timer);
   }, []);
-  return showSlider ? (
-    <SlickSlider />
-  ) : (
-    <div className="slick-wrapper">
-      <div className="slide-skeleton">
-        <Skeleton
-          height="100%"
-          width="100%"
-          position="absolute"
-          top="0"
-          left="0"
-          borderRadius="md"
-        />
-      </div>
-    </div>
-  );
+  return showSlider ? <SlickSlider /> : <SlickSliderSkeleton />;
 };

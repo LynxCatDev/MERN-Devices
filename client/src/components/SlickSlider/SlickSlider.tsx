@@ -14,6 +14,7 @@ import { ShowErrorMessage } from '../ShowErrorMessage/ShowErrorMessage';
 import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
 import './SlickSlider.scss';
+import { SlickSliderSkeleton } from './SlickSliderSkeleton';
 
 export const SlickSlider = () => {
   const locale = useLocale();
@@ -44,21 +45,7 @@ export const SlickSlider = () => {
     [],
   );
 
-  // if (loading)
-  //   return (
-  //     <div className="slick-wrapper">
-  //       <div className="slide-skeleton">
-  //         <Skeleton
-  //           height="100%"
-  //           width="100%"
-  //           position="absolute"
-  //           top="0"
-  //           left="0"
-  //           borderRadius="md"
-  //         />
-  //       </div>
-  //     </div>
-  //   );
+  // if (loading) return <SlickSliderSkeleton />;
   if (error)
     return (
       <div className="slick-wrapper">

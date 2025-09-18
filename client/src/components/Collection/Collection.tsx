@@ -27,6 +27,7 @@ export const Collection = ({ collection }: Props) => {
               sizes="100vw"
               style={{ width: '100%', height: '100%' }}
               loading="lazy"
+              priority={false}
             />
             <Link href={`/${locale}/devices${item.link}`}>
               <h3>{t(`${item.translate}`)}</h3>

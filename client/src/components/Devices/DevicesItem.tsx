@@ -49,7 +49,7 @@ export const DevicesItem = ({ device, priority = false }: DeviceItemProps) => {
               height={321}
               style={{ width: '100%', height: 'auto' }}
               onError={handleImageError}
-              priority={priority}
+              priority={false}
             />
           </Link>
           <Link href={`/${locale}/device/${device.link}`}>

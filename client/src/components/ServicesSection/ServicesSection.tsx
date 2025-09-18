@@ -20,6 +20,7 @@ export const ServicesSection = () => {
             height={0}
             style={{ width: 'auto', height: 'auto' }}
             loading="lazy"
+            priority={false}
           />
           <div className="service--card">
             <h3>{t('offer_day_title')}</h3>
@@ -39,6 +40,7 @@ export const ServicesSection = () => {
             height={0}
             style={{ width: 'auto', height: 'auto' }}
             loading="lazy"
+            priority={false}
           />
           <div className="service--card">
             <h3>Trade In</h3>
