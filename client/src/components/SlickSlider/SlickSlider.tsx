@@ -82,10 +82,10 @@ export const SlickSlider = () => {
                 priority={i === 0}
                 src={`${apiBaseUrl}/${slide.imgUrl}`}
                 alt={slide.altName}
-                fill={false}
-                width={1400}
-                height={520}
-                sizes="(min-width:1024px) 1200px, 100vw"
+                width="0"
+                height="0"
+                sizes="100vw"
+                style={{ width: '100%', height: 'auto' }}
                 loading={i === 0 ? 'eager' : 'lazy'}
                 fetchPriority={i === 0 ? 'high' : 'auto'}
               />
