@@ -45,11 +45,8 @@ export const Search = () => {
   };
 
   const clearSearchValue = () => {
-    console.log('clear');
     setSearchValue('');
   };
-
-  console.log(searchValue, 'searchValue');
 
   useEffect(() => {
     useDevices.setState({
