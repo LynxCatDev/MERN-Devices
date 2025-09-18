@@ -21,6 +21,7 @@ import { ShowErrorMessage } from '../ShowErrorMessage/ShowErrorMessage';
 import { NoData } from '../NoData/NoData';
 
 import './Search.scss';
+import { Button } from '../Button/Button';
 
 export const Search = () => {
   const [searchValue, setSearchValue] = useState<string>('');
@@ -44,8 +45,11 @@ export const Search = () => {
   };
 
   const clearSearchValue = () => {
+    console.log('clear');
     setSearchValue('');
   };
+
+  console.log(searchValue, 'searchValue');
 
   useEffect(() => {
     useDevices.setState({
@@ -93,11 +97,17 @@ export const Search = () => {
   return (
     <div className="search">
       <input
+        name="search-input"
         type="text"
-        // style={
-        //   searchVlue={searchValue}
+        value={searchValue}
         onChange={onSearchChange}
       />
+
+      {searchValue && (
+        <Button onClick={clearSearchValue} type="icon" size="small">
+          <Icon type="close" />
+        </Button>
+      )}
 
       <Link
         href={`/${locale}/search?q=${searchValue}`}
