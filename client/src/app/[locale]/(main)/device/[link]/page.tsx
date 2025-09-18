@@ -1,8 +1,17 @@
 import type { Metadata } from 'next';
-import { Categories, DeviceInfo } from '@/components';
+import { cache } from 'react';
+import dynamic from 'next/dynamic';
+import { DeviceInfo } from '@/components';
 import { fetchCategories, fetchDevice } from '@/services/api';
 import { baseUrl, checkImageUrl } from '@/helpers';
-import { cache } from 'react';
+import { CategoriesSkeleton } from '@/components/Categories/CategoriesSkeleton';
+
+const Categories = dynamic(
+  () => import('@/components/Categories/Categories').then((m) => m.Categories),
+  {
+    loading: () => <CategoriesSkeleton />,
+  },
+);
 
 type Props = {
   params: Promise<{ link: string; locale: string }>;

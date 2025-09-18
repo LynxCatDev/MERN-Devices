@@ -1,4 +1,5 @@
-import { Skeleton, SkeletonCircle } from '@chakra-ui/react';
+import { Skeleton } from '@chakra-ui/react';
+import './Categories.scss';
 
 export const CategoriesSkeleton = () => {
   const placeholders = Array.from({ length: 10 });
@@ -7,11 +8,8 @@ export const CategoriesSkeleton = () => {
       <div className="categories--wrapper">
         {placeholders.map((_, i) => (
           <div className="categories--card" key={i}>
-            <div
-              className="categories--img"
-              style={{ width: 115, height: 115 }}
-            >
-              <SkeletonCircle size="115px" />
+            <div className="categories--img categories--img-skeleton">
+              <Skeleton borderRadius="50%" width="100%" height="100%" />
             </div>
             <Skeleton height="16px" width="80px" borderRadius="8px" />
           </div>
