@@ -36,6 +36,12 @@
     }
   }
 
+  /* Skeleton circle should mirror actual image sizes across breakpoints */
+  &--img-skeleton {
+    width: 115px;
+    height: 115px;
+  }
+
   &--title {
     word-wrap: break-word;
   }
@@ -51,6 +57,10 @@
       font-size: 14px;
       width: 80px;
     }
+    &--img-skeleton {
+      width: 80px;
+      height: 80px;
+    }
   }
 }
 
@@ -65,6 +75,10 @@
       font-size: 12px;
       width: 70px;
     }
+    &--img-skeleton {
+      width: 70px;
+      height: 70px;
+    }
   }
 }
 
@@ -72,6 +86,10 @@
   .categories {
     &--card {
       width: 60px;
+    }
+    &--img-skeleton {
+      width: 60px;
+      height: 60px;
     }
   }
 }

@@ -1,10 +1,14 @@
-import { Skeleton, SkeletonText } from '@chakra-ui/react';
+import { Skeleton } from '@chakra-ui/react';
 
-export const RecommendedDevicesSkeleton = () => {
+interface Props {
+  itemsLength?: number;
+}
+
+export const RecommendedDevicesSkeleton = ({ itemsLength = 4 }: Props) => {
   return (
     <div className="devices">
       <div className="devices--items">
-        {[0, 1, 2, 3].map((i) => (
+        {[...Array(itemsLength)].map((_, i) => (
           <div className="device--item device--item--skeleton" key={i}>
             <Skeleton height="280px" borderRadius="16px 16px 0 0" />
             <div style={{ padding: '8px 24px' }}>
