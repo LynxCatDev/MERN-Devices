@@ -1,12 +1,19 @@
 import dynamic from 'next/dynamic';
 import { unstable_cache as nextCache } from 'next/cache';
 import { getLocale, getTranslations } from 'next-intl/server';
-import { Collection, Features, ServicesSection, ShopTitle } from '@/components';
+import {
+  Collection,
+  Features,
+  Loading,
+  ServicesSection,
+  ShopTitle,
+} from '@/components';
 import { fetchCategories, fetchCollection, fetchDevices } from '@/services/api';
 import { DevicesDataProps } from '@/store/store.interface';
 import { SlickSliderWrapper } from '@/components/SlickSlider/SlickSliderWrapper';
 
 import './page.scss';
+import { Suspense } from 'react';
 
 const Promotions = dynamic(
   () => import('@/components/Promotions/Promotions').then((m) => m.Promotions),
@@ -65,28 +72,45 @@ const Home = async () => {
     const categoryTitle = tCategories(category);
     const productsLabel = tDevices('products');
     return (
-      <RecommendedDevices
-        category={category}
-        devices={devices}
-        locale={locale}
-        categoryTitle={categoryTitle}
-        productsLabel={productsLabel}
-      />
+      <Suspense fallback={<Loading />}>
+        <RecommendedDevices
+          category={category}
+          devices={devices}
+          locale={locale}
+          categoryTitle={categoryTitle}
+          productsLabel={productsLabel}
+        />
+      </Suspense>
     );
   };
 
   return (
     <main className="main">
       <ShopTitle />
-      <SlickSliderWrapper />
-      <Categories categories={categories} />
+
+      <Suspense fallback={<Loading />}>
+        <SlickSliderWrapper />
+      </Suspense>
+
+      <Suspense fallback={<Loading />}>
+        <Categories categories={categories} />
+      </Suspense>
+
       <Promotions />
+
       {renderDeviceSection('smartphones', smartphones)}
+
       <ServicesSection />
+
       {renderDeviceSection('laptops', laptops)}
-      <Collection collection={collection} />
+
+      <Suspense fallback={<Loading />}>
+        <Collection collection={collection} />
+      </Suspense>
+
       {renderDeviceSection('gadgets', gadgets)}
       {renderDeviceSection('audio', audio)}
+
       <Features />
     </main>
   );
