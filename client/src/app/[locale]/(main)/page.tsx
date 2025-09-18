@@ -1,36 +1,25 @@
 import dynamic from 'next/dynamic';
 import { unstable_cache as nextCache } from 'next/cache';
 import { getLocale, getTranslations } from 'next-intl/server';
-import {
-  Collection,
-  Features,
-  Loading,
-  ServicesSection,
-  ShopTitle,
-} from '@/components';
+import { Collection, Features, ServicesSection, ShopTitle } from '@/components';
 import { fetchCategories, fetchCollection, fetchDevices } from '@/services/api';
 import { DevicesDataProps } from '@/store/store.interface';
 import { SlickSliderWrapper } from '@/components/SlickSlider/SlickSliderWrapper';
 
 import './page.scss';
-import { Suspense } from 'react';
 
-const Promotions = dynamic(
-  () => import('@/components/Promotions/Promotions').then((m) => m.Promotions),
-  { ssr: true },
+const Promotions = dynamic(() =>
+  import('@/components/Promotions/Promotions').then((m) => m.Promotions),
 );
 
-const Categories = dynamic(
-  () => import('@/components/Categories/Categories').then((m) => m.Categories),
-  { ssr: true },
+const Categories = dynamic(() =>
+  import('@/components/Categories/Categories').then((m) => m.Categories),
 );
 
-const RecommendedDevices = dynamic(
-  () =>
-    import('@/components/Devices/RecommendedDevices').then(
-      (m) => m.RecommendedDevices,
-    ),
-  { ssr: true },
+const RecommendedDevices = dynamic(() =>
+  import('@/components/Devices/RecommendedDevices').then(
+    (m) => m.RecommendedDevices,
+  ),
 );
 
 //works only with nextjs fetch
@@ -72,15 +61,13 @@ const Home = async () => {
     const categoryTitle = tCategories(category);
     const productsLabel = tDevices('products');
     return (
-      <Suspense fallback={<Loading />}>
-        <RecommendedDevices
-          category={category}
-          devices={devices}
-          locale={locale}
-          categoryTitle={categoryTitle}
-          productsLabel={productsLabel}
-        />
-      </Suspense>
+      <RecommendedDevices
+        category={category}
+        devices={devices}
+        locale={locale}
+        categoryTitle={categoryTitle}
+        productsLabel={productsLabel}
+      />
     );
   };
 
@@ -88,13 +75,9 @@ const Home = async () => {
     <main className="main">
       <ShopTitle />
 
-      <Suspense fallback={<Loading />}>
-        <SlickSliderWrapper />
-      </Suspense>
+      <SlickSliderWrapper />
 
-      <Suspense fallback={<Loading />}>
-        <Categories categories={categories} />
-      </Suspense>
+      <Categories categories={categories} />
 
       <Promotions />
 
@@ -104,9 +87,7 @@ const Home = async () => {
 
       {renderDeviceSection('laptops', laptops)}
 
-      <Suspense fallback={<Loading />}>
-        <Collection collection={collection} />
-      </Suspense>
+      <Collection collection={collection} />
 
       {renderDeviceSection('gadgets', gadgets)}
       {renderDeviceSection('audio', audio)}
