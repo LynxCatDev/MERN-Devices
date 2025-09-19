@@ -10,7 +10,6 @@ import { DevicesDataProps } from '@/store/store.interface';
 import { SlickSliderWrapper } from '@/components/SlickSlider/SlickSliderWrapper';
 
 import './page.scss';
-import { Suspense } from 'react';
 
 const Promotions = dynamic(
   () => import('@/components/Promotions/Promotions').then((m) => m.Promotions),
@@ -73,14 +72,12 @@ const Home = async () => {
     const categoryTitle = tCategories(category);
     const productsLabel = tDevices('products');
     return (
-      <Suspense fallback={<RecommendedDevicesSkeleton itemsLength={3} />}>
-        <RecommendedDevices
-          category={category}
-          devices={devices}
-          categoryTitle={categoryTitle}
-          productsLabel={productsLabel}
-        />
-      </Suspense>
+      <RecommendedDevices
+        category={category}
+        devices={devices}
+        categoryTitle={categoryTitle}
+        productsLabel={productsLabel}
+      />
     );
   };
 
