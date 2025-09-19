@@ -4,7 +4,6 @@ import dynamic from 'next/dynamic';
 import { fetchCategories, fetchDevice } from '@/services/api';
 import { baseUrl, checkImageUrl } from '@/helpers';
 import { CategoriesSkeleton } from '@/components/Categories/CategoriesSkeleton';
-import { Loading } from '@/components';
 
 const Categories = dynamic(
   () => import('@/components/Categories/Categories').then((m) => m.Categories),
@@ -13,11 +12,8 @@ const Categories = dynamic(
   },
 );
 
-const DeviceInfo = dynamic(
-  () => import('@/components/Devices/DeviceInfo').then((m) => m.DeviceInfo),
-  {
-    loading: () => <Loading />,
-  },
+const DeviceInfo = dynamic(() =>
+  import('@/components/Devices/DeviceInfo').then((m) => m.DeviceInfo),
 );
 
 type Props = {

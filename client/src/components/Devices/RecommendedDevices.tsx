@@ -33,9 +33,10 @@ export const RecommendedDevices = ({
               src={cardData.imgUrl}
               alt={category}
               fill
-              sizes="(max-width: 992px) 100vw, 50vw"
+              sizes="(max-width: 992px) 100vw, 25vw"
               className="devices--banner-img"
               priority={false}
+              loading="lazy"
             />
             {category && <h4>{categoryTitle}</h4>}
             {!!devicesData?.length && (
