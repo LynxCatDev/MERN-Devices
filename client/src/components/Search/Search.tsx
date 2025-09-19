@@ -93,15 +93,23 @@ export const Search = () => {
 
   return (
     <div className="search">
+      <label htmlFor="search-input" className="visually-hidden"></label>
       <input
+        id="search-input"
         name="search-input"
         type="text"
         value={searchValue}
         onChange={onSearchChange}
+        placeholder="Find your device..."
       />
 
       {searchValue && (
-        <Button onClick={clearSearchValue} type="icon" size="small">
+        <Button
+          onClick={clearSearchValue}
+          type="icon"
+          size="small"
+          aria-label="clear search"
+        >
           <Icon type="close" />
         </Button>
       )}
@@ -109,6 +117,7 @@ export const Search = () => {
       <Link
         href={`/${locale}/search?q=${searchValue}`}
         onClick={clearSearchValue}
+        aria-label="search submit"
       >
         <Icon type="zoom" />
       </Link>

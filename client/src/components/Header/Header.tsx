@@ -114,7 +114,7 @@ export const Header = () => {
           }}
         >
           <div className="header--logo">
-            <Link href={`/${locale}`}>
+            <Link href={`/${locale}`} aria-label="Home">
               <Icon type="logo" />
             </Link>
           </div>
@@ -134,19 +134,19 @@ export const Header = () => {
 
           <div className="header--main-menu">
             <div className="header--favorites">
-              <Link href={checkUserForFavorites()}>
+              <Link href={checkUserForFavorites()} aria-label="Favorites">
                 <Icon type="heart" />
               </Link>
             </div>
 
             <div className="compare--devices">
-              <Link href={`/${locale}/compare`}>
+              <Link href={`/${locale}/compare`} aria-label="Compare devices">
                 <Icon type="compare" />
               </Link>
             </div>
 
             <div className="header--cart">
-              <Link href={`/${locale}/cart`}>
+              <Link href={`/${locale}/cart`} aria-label="Cart">
                 <Icon type="shopping-cart" />
               </Link>
             </div>
@@ -182,7 +182,7 @@ export const Header = () => {
               </div>
             ) : (
               <div className="header--user">
-                <Link href={`/${locale}/auth/login`}>
+                <Link href={`/${locale}/auth/login`} aria-label="Account login">
                   <Icon type="user" />
                   <span>{t('account')}</span>
                 </Link>

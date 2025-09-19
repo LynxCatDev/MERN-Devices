@@ -13,10 +13,12 @@ interface CategoriesItemProps {
 export const CategoriesItem = ({ category }: CategoriesItemProps) => {
   const locale = useLocale();
   const t = useTranslations('Categories');
+  const label = t(`${category.translate}`);
   return (
     <Link
       className={`categories--card ${category.link.slice(1)}`}
       href={`/${locale}/devices${category.link}`}
+      aria-label={label}
       onMouseOver={(e) =>
         (e.currentTarget.style.color = `${category.shadowColor}`)
       }
@@ -32,7 +34,7 @@ export const CategoriesItem = ({ category }: CategoriesItemProps) => {
         <Image
           priority={false}
           src={`${apiBaseUrl}${category?.imgUrl}`}
-          alt={category.name}
+          alt={label}
           width={104}
           height={104}
         />

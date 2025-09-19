@@ -41,10 +41,13 @@ export const DevicesItem = ({ device, priority = false }: DeviceItemProps) => {
     <div className="device--item">
       {device && (
         <>
-          <Link href={`/${locale}/device/${device.link}`}>
+          <Link
+            href={`/${locale}/device/${device.link}`}
+            aria-label={device.name}
+          >
             <Image
               src={imgSrc}
-              alt={device?.name}
+              alt=""
               width={321}
               height={321}
               style={{ width: '100%', height: 'auto' }}
@@ -76,8 +79,9 @@ export const DevicesItem = ({ device, priority = false }: DeviceItemProps) => {
             <div className="options-devices">
               <div className="compare-devices">
                 <Button
-                // onClick={() => addToCompare(product)}
-                // className={userCompareFind ? 'added-to-compare' : ''}
+                  aria-label={t('compare')}
+                  // onClick={() => addToCompare(product)}
+                  // className={userCompareFind ? 'added-to-compare' : ''}
                 >
                   <Icon type="compare" />
                 </Button>
@@ -89,6 +93,7 @@ export const DevicesItem = ({ device, priority = false }: DeviceItemProps) => {
                 <Button
                   onClick={() => addToFavorites(device.id)}
                   id={activeAddToFavorites ? 'added-to-favorites' : ''}
+                  aria-label={t('favorites')}
                 >
                   <Icon type="heart" />
                 </Button>
