@@ -2,6 +2,7 @@ import dynamic from 'next/dynamic';
 import { unstable_cache as nextCache } from 'next/cache';
 import { getTranslations } from 'next-intl/server';
 import { Features, Loading, ShopTitle } from '@/components';
+import { RecommendedDevicesSkeleton } from '@/components/Devices/RecommendedDevicesSkeleton';
 import { CategoriesSkeleton } from '@/components/Categories/CategoriesSkeleton';
 import { PromotionsSkeleton } from '@/components/Promotions/PromotionsSkeleton';
 import { fetchCategories, fetchCollection, fetchDevices } from '@/services/api';
@@ -25,7 +26,7 @@ const RecommendedDevices = dynamic(
     import('@/components/Devices/RecommendedDevices').then(
       (m) => m.RecommendedDevices,
     ),
-  // { loading: () => <RecommendedDevicesSkeleton /> },
+  { loading: () => <RecommendedDevicesSkeleton /> },
 );
 
 const ServicesSection = dynamic(
@@ -38,7 +39,7 @@ const ServicesSection = dynamic(
 
 const Collection = dynamic(
   () => import('@/components/Collection/Collection').then((m) => m.Collection),
-  { loading: () => <Loading /> },
+  { loading: () => null },
 );
 
 //works only with nextjs fetch
@@ -98,16 +99,16 @@ const Home = async () => {
 
       <Promotions />
 
-      {renderDeviceSection('smartphones', smartphones)}
+      {/* {renderDeviceSection('smartphones', smartphones)} */}
 
       <ServicesSection />
 
-      {renderDeviceSection('laptops', laptops)}
+      {/* {renderDeviceSection('laptops', laptops)} */}
 
       <Collection collection={collection} />
 
-      {renderDeviceSection('gadgets', gadgets)}
-      {renderDeviceSection('audio', audio)}
+      {/* {renderDeviceSection('gadgets', gadgets)}
+      {renderDeviceSection('audio', audio)} */}
 
       <Features />
     </main>

@@ -3,9 +3,11 @@ import Image from 'next/image';
 import { DevicesDataProps } from '@/store/store.interface';
 import { devicesCards } from '@/constants/devicesCards';
 import dynamic from 'next/dynamic';
+import { RecommendedDevicesSkeleton } from './RecommendedDevicesSkeleton';
 
-const DevicesItem = dynamic(() =>
-  import('./DevicesItem').then((mod) => mod.DevicesItem),
+const DevicesItem = dynamic(
+  () => import('./DevicesItem').then((mod) => mod.DevicesItem),
+  { loading: () => <RecommendedDevicesSkeleton /> },
 );
 
 interface Props {
