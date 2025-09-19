@@ -1,10 +1,10 @@
 import type { Metadata } from 'next';
 import { cache } from 'react';
 import dynamic from 'next/dynamic';
-import { DeviceInfoSkeleton } from '@/components/Devices/DeviceInfoSkeleton';
 import { fetchCategories, fetchDevice } from '@/services/api';
 import { baseUrl, checkImageUrl } from '@/helpers';
 import { CategoriesSkeleton } from '@/components/Categories/CategoriesSkeleton';
+import { Loading } from '@/components';
 
 const Categories = dynamic(
   () => import('@/components/Categories/Categories').then((m) => m.Categories),
@@ -16,7 +16,7 @@ const Categories = dynamic(
 const DeviceInfo = dynamic(
   () => import('@/components/Devices/DeviceInfo').then((m) => m.DeviceInfo),
   {
-    loading: () => <DeviceInfoSkeleton />,
+    loading: () => <Loading />,
   },
 );
 

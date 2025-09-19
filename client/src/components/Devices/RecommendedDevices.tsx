@@ -1,7 +1,12 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { DevicesDataProps } from '@/store/store.interface';
-import { DevicesItem } from './DevicesItem';
 import { devicesCards } from '@/constants/devicesCards';
+import dynamic from 'next/dynamic';
+
+const DevicesItem = dynamic(() =>
+  import('./DevicesItem').then((mod) => mod.DevicesItem),
+);
 
 interface Props {
   devices: DevicesDataProps;
@@ -23,10 +28,15 @@ export const RecommendedDevices = ({
     <div className="devices">
       {cardData && (
         <Link href={`/devices${cardData.link}`}>
-          <div
-            className="devices--banner"
-            style={{ backgroundImage: `url(${cardData.imgUrl})` }}
-          >
+          <div className="devices--banner">
+            <Image
+              src={cardData.imgUrl}
+              alt={category}
+              fill
+              sizes="(max-width: 992px) 100vw, 50vw"
+              className="devices--banner-img"
+              priority={false}
+            />
             {category && <h4>{categoryTitle}</h4>}
             {!!devicesData?.length && (
               <span>

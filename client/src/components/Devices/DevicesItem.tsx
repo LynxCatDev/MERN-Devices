@@ -7,7 +7,7 @@ import { Button } from '@chakra-ui/react';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useShallow } from 'zustand/react/shallow';
 import { Icon } from '../Icon/Icon';
 import './Devices.scss';
@@ -31,6 +31,11 @@ export const DevicesItem = ({ device, priority = false }: DeviceItemProps) => {
   const activeAddToFavorites = activeFavoritesIds?.find(
     (favoriteId) => favoriteId === device.id,
   );
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleImageError = () => {
     setImgSrc('/images/placeholder.webp');
@@ -90,7 +95,11 @@ export const DevicesItem = ({ device, priority = false }: DeviceItemProps) => {
               <div className="add-to-favorites">
                 <Button
                   onClick={() => addToFavorites(device.id)}
-                  id={activeAddToFavorites ? 'added-to-favorites' : ''}
+                  id={
+                    mounted && activeAddToFavorites
+                      ? 'added-to-favorites'
+                      : undefined
+                  }
                   aria-label={t('favorites')}
                 >
                   <Icon type="heart" />
