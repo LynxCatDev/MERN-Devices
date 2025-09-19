@@ -20,6 +20,7 @@ export const Promotions = () => {
                 sizes="(max-width: 992px) 100vw, 50vw"
                 priority={false}
                 className="promotions--bg-img"
+                loading="lazy"
               />
               <h2>{t(`${promotion.title}`)}</h2>
               <span>{t(`${promotion.description}`)}</span>
