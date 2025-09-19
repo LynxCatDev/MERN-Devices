@@ -20,10 +20,10 @@ export const CategoriesItem = ({ category }: CategoriesItemProps) => {
       href={`/devices${category.link}`}
       aria-label={label}
       style={{ '--shadow-color': category.shadowColor } as CSSProperties}
-      onMouseOver={(e) =>
-        (e.currentTarget.style.color = `${category.shadowColor}`)
-      }
-      onMouseOut={(e) => (e.currentTarget.style.color = '')}
+      // onMouseOver={(e) =>
+      //   (e.currentTarget.style.color = `${category.shadowColor}`)
+      // }
+      // onMouseOut={(e) => (e.currentTarget.style.color = '')}
     >
       <div
         className="categories--img"
