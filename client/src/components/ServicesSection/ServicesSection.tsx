@@ -15,8 +15,10 @@ export const ServicesSection = () => {
           <Image
             src="/images/offer-day.webp"
             alt="offer-day"
-            width={60}
-            height={60}
+            width="0"
+            height="0"
+            sizes="100vw"
+            style={{ width: '100%', height: 'auto' }}
             loading="lazy"
             priority={false}
           />
