@@ -4,15 +4,10 @@ import { useMemo } from 'react';
 import { NoData } from '../NoData/NoData';
 import { Pagination } from '../Pagination/Pagination';
 import { DevicesDataProps } from '@/store/store.interface';
+import { DevicesItem } from './DevicesItem';
 import { Loading } from '../Loading/Loading';
 
-const DevicesItem = dynamic(
-  () => import('./DevicesItem').then((mod) => mod.DevicesItem),
-  { ssr: false },
-);
-
 import './Devices.scss';
-import dynamic from 'next/dynamic';
 
 interface ComponentDevicesDataProps {
   devices: DevicesDataProps;
