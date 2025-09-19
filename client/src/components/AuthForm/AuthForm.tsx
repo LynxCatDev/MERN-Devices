@@ -214,6 +214,8 @@ export const AuthForm = () => {
             type="button"
             className="password-see-btn"
             onClick={() => setShowPassword(!showPassword)}
+            aria-label={showPassword ? 'Hide password' : 'Show password'}
+            title={showPassword ? 'Hide password' : 'Show password'}
           >
             <Icon type={showPassword ? 'password-seen' : 'password-hide'} />
           </button>

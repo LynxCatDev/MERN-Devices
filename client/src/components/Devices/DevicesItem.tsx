@@ -56,15 +56,15 @@ export const DevicesItem = ({ device, priority = false }: DeviceItemProps) => {
           </Link>
           <div className="device--price-wrapper options-devices-card-wrapper">
             <div className="device--price">
+              <h5>
+                {device.price} {t('lei')}
+              </h5>
+
               {device.credit && (
                 <span>
                   {device.credit} {t('credit')}
                 </span>
               )}
-
-              <h5>
-                {device.price} {t('lei')}
-              </h5>
 
               {device.cashback && (
                 <span>

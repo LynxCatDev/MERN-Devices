@@ -95,7 +95,7 @@
 
   &--price {
     h5 {
-      margin: 8px 0;
+      font-size: 20px;
     }
 
     span {
@@ -105,9 +105,10 @@
       color: var(--device-white);
       background-color: var(--device-rose);
       width: max-content;
+      margin: 8px 0;
     }
 
-    span:first-child {
+    span:nth-child(2) {
       background-color: var(--device-light-green);
     }
   }

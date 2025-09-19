@@ -26,7 +26,15 @@ export const TopBar = () => {
   return (
     <div className="top-bar">
       <div className="top-bar--mode">
-        <Button onClick={toggleTheme}>
+        <Button
+          onClick={toggleTheme}
+          aria-label={
+            theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'
+          }
+          title={
+            theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'
+          }
+        >
           <Icon type={`${theme === 'dark' ? 'light-mode' : 'dark-mode'}`} />
         </Button>
       </div>
