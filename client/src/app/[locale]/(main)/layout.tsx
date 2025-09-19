@@ -1,19 +1,13 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import dynamic from 'next/dynamic';
 import { NextIntlClientProvider, hasLocale } from 'next-intl';
 import NextTopLoader from 'nextjs-toploader';
 import CacheProvider from 'react-inlinesvg/provider';
-import { Footer } from '@/components';
+import { Footer, Header } from '@/components';
 import { Providers } from './providers';
 import { routing } from '@/i18n/routing';
 
 import '../../globals.scss';
-
-const Header = dynamic(() => import('@/components').then((mod) => mod.Header), {
-  ssr: true,
-  loading: () => null,
-});
 
 export const metadata: Metadata = {
   title: 'TechnoHeart',
