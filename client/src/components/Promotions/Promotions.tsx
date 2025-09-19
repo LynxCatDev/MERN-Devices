@@ -20,6 +20,7 @@ export const Promotions = () => {
                 sizes="(max-width: 992px) 100vw, 50vw"
                 priority
                 className="promotions--bg-img"
+                fetchPriority="high"
               />
               <h2>{t(`${promotion.title}`)}</h2>
               <span>{t(`${promotion.description}`)}</span>
