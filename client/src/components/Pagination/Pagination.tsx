@@ -9,19 +9,25 @@ interface IPagination {
   currentPage: number;
   maxVisiblePages?: number;
 }
-export const Pagination = ({ totalPages, currentPage, maxVisiblePages = 3 }: IPagination) => {
+export const Pagination = ({
+  totalPages,
+  currentPage,
+  maxVisiblePages = 3,
+}: IPagination) => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const q = searchParams.get('q');
 
   const getQuery = (page: number) => ({
     q,
-    page
+    page,
   });
   const renderPageLink = (pageNumber: number) => (
     <Link
       href={{ pathname, query: getQuery(pageNumber) }}
       className={currentPage === pageNumber ? 'active' : ''}
+      aria-label={`Go to page ${pageNumber}`}
+      aria-current={currentPage === pageNumber ? 'page' : undefined}
       key={pageNumber}
     >
       {pageNumber}
@@ -35,7 +41,10 @@ export const Pagination = ({ totalPages, currentPage, maxVisiblePages = 3 }: IPa
       return null;
     }
 
-    const startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+    const startPage = Math.max(
+      1,
+      currentPage - Math.floor(maxVisiblePages / 2),
+    );
     const endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
 
     if (startPage > 1) {
@@ -44,7 +53,7 @@ export const Pagination = ({ totalPages, currentPage, maxVisiblePages = 3 }: IPa
         pageLinks.push(
           <span className="ellipsis" key="start-ellipsis">
             ...
-          </span>
+          </span>,
         );
       }
     }
@@ -59,7 +68,7 @@ export const Pagination = ({ totalPages, currentPage, maxVisiblePages = 3 }: IPa
         pageLinks.push(
           <span className="ellipsis" key="end-ellipsis">
             ...
-          </span>
+          </span>,
         );
       }
       pageLinks.push(renderPageLink(totalPages));
@@ -70,7 +79,11 @@ export const Pagination = ({ totalPages, currentPage, maxVisiblePages = 3 }: IPa
   return (
     <div className="pagination">
       {currentPage > 1 && (
-        <Link href={{ pathname, query: getQuery(currentPage - 1) }} className="controls">
+        <Link
+          href={{ pathname, query: getQuery(currentPage - 1) }}
+          className="controls"
+          aria-label="Go to previous page"
+        >
           Prev
         </Link>
       )}
@@ -78,7 +91,11 @@ export const Pagination = ({ totalPages, currentPage, maxVisiblePages = 3 }: IPa
       {renderPageLinks()}
 
       {currentPage < totalPages && (
-        <Link href={{ pathname, query: getQuery(currentPage + 1) }} className="controls">
+        <Link
+          href={{ pathname, query: getQuery(currentPage + 1) }}
+          className="controls"
+          aria-label="Go to next page"
+        >
           Next
         </Link>
       )}

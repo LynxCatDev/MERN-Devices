@@ -158,6 +158,9 @@ export const Header = () => {
                   }`}
                   size="auto"
                   onClick={toggleProfileMenu}
+                  aria-label={
+                    showProfileMenu ? 'Close profile menu' : 'Open profile menu'
+                  }
                 >
                   <Icon type="user" />
                   {(profile.user?.first_name || profile.user?.last_name) && (
@@ -173,7 +176,11 @@ export const Header = () => {
                     >
                       {tAuth('profile')}
                     </Link>
-                    <Button size="small" onClick={logout}>
+                    <Button
+                      size="small"
+                      onClick={logout}
+                      aria-label={tAuth('logout')}
+                    >
                       {tAuth('logout')}
                     </Button>
                   </div>

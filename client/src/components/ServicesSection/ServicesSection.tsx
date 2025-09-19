@@ -11,7 +11,7 @@ export const ServicesSection = () => {
   return (
     <div className="service-section">
       <div className="smart-protection service">
-        <Link href={`/protection`}>
+        <Link href={`/protection`} aria-label="Smart Protection details">
           <Image
             src="/images/offer-day.webp"
             alt="offer-day"
@@ -31,7 +31,7 @@ export const ServicesSection = () => {
         </Link>
       </div>
       <div className="trade-in service">
-        <Link href={`/tradein`}>
+        <Link href={`/tradein`} aria-label="Trade-in details">
           <Image
             src="/images/trade-in.webp"
             alt="trade-in"

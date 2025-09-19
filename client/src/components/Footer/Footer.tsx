@@ -30,7 +30,7 @@ export const Footer = () => {
       </div>
       <div className="lower-footer">
         <div className="lower-footer--logo">
-          <Link href="/">
+          <Link href="/" aria-label="Go to homepage">
             <Icon type="logo" />
           </Link>
         </div>
@@ -38,13 +38,28 @@ export const Footer = () => {
           <h5>{`© ${new Date().getFullYear()}. ${t('copyright')}`}</h5>
         </div>
         <div className="lower-footer--media">
-          <Link href="https://www.facebook.com">
+          <Link
+            href="https://www.facebook.com"
+            aria-label="Visit our Facebook"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <Icon type="facebook" />
           </Link>
-          <Link href="https://www.youtube.com">
+          <Link
+            href="https://www.youtube.com"
+            aria-label="Visit our YouTube"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <Icon type="youtube" />
           </Link>
-          <Link href="https://www.instagram.com">
+          <Link
+            href="https://www.instagram.com"
+            aria-label="Visit our Instagram"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <Icon type="instagram" />
           </Link>
         </div>
