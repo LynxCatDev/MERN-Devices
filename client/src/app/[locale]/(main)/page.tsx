@@ -2,7 +2,6 @@ import dynamic from 'next/dynamic';
 import { unstable_cache as nextCache } from 'next/cache';
 import { getTranslations } from 'next-intl/server';
 import { Features, Loading, ShopTitle } from '@/components';
-import { RecommendedDevicesSkeleton } from '@/components/Devices/RecommendedDevicesSkeleton';
 import { CategoriesSkeleton } from '@/components/Categories/CategoriesSkeleton';
 import { PromotionsSkeleton } from '@/components/Promotions/PromotionsSkeleton';
 import { fetchCategories, fetchCollection, fetchDevices } from '@/services/api';
@@ -26,7 +25,7 @@ const RecommendedDevices = dynamic(
     import('@/components/Devices/RecommendedDevices').then(
       (m) => m.RecommendedDevices,
     ),
-  { loading: () => <RecommendedDevicesSkeleton /> },
+  // { loading: () => <RecommendedDevicesSkeleton /> },
 );
 
 const ServicesSection = dynamic(

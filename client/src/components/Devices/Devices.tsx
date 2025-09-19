@@ -5,9 +5,9 @@ import { DevicesItem } from './DevicesItem';
 import { NoData } from '../NoData/NoData';
 import { Pagination } from '../Pagination/Pagination';
 import { DevicesDataProps } from '@/store/store.interface';
+import { Loading } from '../Loading/Loading';
 
 import './Devices.scss';
-import { Loading } from '../Loading/Loading';
 
 interface ComponentDevicesDataProps {
   devices: DevicesDataProps;

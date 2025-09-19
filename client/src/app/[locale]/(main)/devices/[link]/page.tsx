@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 import dynamic from 'next/dynamic';
 import { fetchCategories, fetchDevices } from '@/services/api';
 import { CategoriesSkeleton } from '@/components/Categories/CategoriesSkeleton';
-import { RecommendedDevicesSkeleton } from '@/components/Devices/RecommendedDevicesSkeleton';
+import { Devices } from '@/components';
 
 export const metadata: Metadata = {
   title: 'TechnoHeart - Devices',
@@ -16,13 +16,6 @@ const Categories = dynamic(
   () => import('@/components/Categories/Categories').then((m) => m.Categories),
   {
     loading: () => <CategoriesSkeleton />,
-  },
-);
-
-const Devices = dynamic(
-  () => import('@/components/Devices/Devices').then((m) => m.Devices),
-  {
-    loading: () => <RecommendedDevicesSkeleton itemsLength={8} />,
   },
 );
 

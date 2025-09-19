@@ -14,7 +14,7 @@
   }
 
   &--banner {
-    background-size: cover;
+    position: relative;
     height: 520px;
     text-align: center;
     color: var(--device-light);
@@ -22,13 +22,23 @@
     margin-right: 16px;
     border-radius: 16px;
     transition: all 0.3s ease-in;
+    overflow: hidden;
+
+    .devices--banner-img {
+      object-fit: cover;
+      z-index: 0;
+    }
 
     h4 {
+      position: relative;
+      z-index: 1;
       margin-bottom: 12px;
       font-size: 24px;
     }
 
     span {
+      position: relative;
+      z-index: 1;
       font-size: 18px;
     }
 
