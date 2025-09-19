@@ -1,10 +1,10 @@
 'use client';
 
 import { useMemo } from 'react';
-import { DevicesItem } from './DevicesItem';
 import { NoData } from '../NoData/NoData';
 import { Pagination } from '../Pagination/Pagination';
 import { DevicesDataProps } from '@/store/store.interface';
+import { DevicesItem } from './DevicesItem';
 import { Loading } from '../Loading/Loading';
 
 import './Devices.scss';
