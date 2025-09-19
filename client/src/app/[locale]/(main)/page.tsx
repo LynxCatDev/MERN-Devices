@@ -71,12 +71,20 @@ const Home = async () => {
     const categoryTitle = tCategories(category);
     const productsLabel = tDevices('products');
     return (
-      <RecommendedDevices
-        category={category}
-        devices={devices}
-        categoryTitle={categoryTitle}
-        productsLabel={productsLabel}
-      />
+      <section
+        style={{
+          contentVisibility: 'auto',
+          containIntrinsicSize: '800px',
+          contain: 'layout paint style',
+        }}
+      >
+        <RecommendedDevices
+          category={category}
+          devices={devices}
+          categoryTitle={categoryTitle}
+          productsLabel={productsLabel}
+        />
+      </section>
     );
   };
 
