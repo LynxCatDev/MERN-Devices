@@ -28,12 +28,14 @@ export const CategoriesItem = ({ category }: CategoriesItemProps) => {
       <div className="categories--img">
         <Image
           priority={false}
+          loading="lazy"
           src={`${apiBaseUrl}${category?.imgUrl}`}
           alt={label}
-          width={0}
-          height={0}
+          width={104}
+          height={104}
           sizes="(max-width: 576px) 60px, (max-width: 768px) 70px, (max-width: 992px) 80px, 115px"
           style={{ width: '100%', height: 'auto' }}
+          decoding="async"
         />
       </div>
 

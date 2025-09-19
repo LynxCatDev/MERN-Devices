@@ -31,8 +31,8 @@ export const RecommendedDevices = ({
               fill
               sizes="(max-width: 992px) 100vw, 25vw"
               className="devices--banner-img"
-              priority={false}
-              loading="lazy"
+              priority={category === 'smartphones'}
+              loading={category === 'smartphones' ? 'eager' : 'lazy'}
             />
             {category && <h4>{categoryTitle}</h4>}
             {!!devicesData?.length && (
