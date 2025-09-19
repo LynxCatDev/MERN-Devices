@@ -2,7 +2,7 @@ import { cache } from 'react';
 import { Metadata } from 'next';
 import dynamic from 'next/dynamic';
 import { fetchDevices } from '@/services/api';
-import { RecommendedDevicesSkeleton } from '@/components/Devices/RecommendedDevicesSkeleton';
+import { Loading } from '@/components';
 
 export const metadata: Metadata = {
   title: 'TechnoHeart - Search for Devices',
@@ -14,7 +14,7 @@ export const revalidate = 900;
 const Devices = dynamic(
   () => import('@/components/Devices/Devices').then((m) => m.Devices),
   {
-    loading: () => <RecommendedDevicesSkeleton itemsLength={8} />,
+    loading: () => <Loading />,
   },
 );
 

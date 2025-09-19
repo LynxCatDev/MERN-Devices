@@ -15,9 +15,10 @@ export const ServicesSection = () => {
           <Image
             src="/images/offer-day.webp"
             alt="offer-day"
-            width={48}
-            height={48}
-            style={{ height: 'auto' }}
+            width={0}
+            height={0}
+            sizes="48px"
+            style={{ width: 48, height: 'auto' }}
             loading="lazy"
             priority={false}
           />
@@ -35,9 +36,10 @@ export const ServicesSection = () => {
           <Image
             src="/images/trade-in.webp"
             alt="trade-in"
-            width={48}
-            height={48}
-            style={{ height: 'auto' }}
+            width={0}
+            height={0}
+            sizes="48px"
+            style={{ width: 48, height: 'auto' }}
             loading="lazy"
             priority={false}
           />
