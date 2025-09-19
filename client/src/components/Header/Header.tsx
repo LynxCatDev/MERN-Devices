@@ -3,7 +3,8 @@
 import { useOutsideClick } from '@chakra-ui/hooks';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { lazy, useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import dynamic from 'next/dynamic';
 import { useShallow } from 'zustand/react/shallow';
 import {
   getAccessToken,
@@ -14,19 +15,20 @@ import { useDevices, useUser } from '@/store/store';
 import { toaster } from '@/components/Toaster/Toaster';
 import { Button } from '../Button/Button';
 import { Icon } from '../Icon/Icon';
-// import { Menu } from '../Menu/Menu';
 import { Search } from '../Search/Search';
 import { TopBar } from '../Topbar/Topbar';
 
 import './Header.scss';
 
-const Menu = lazy(() =>
-  import('../Menu/Menu').then((m) => ({ default: m.Menu })),
-);
+const Menu = dynamic(() => import('../Menu/Menu').then((m) => m.Menu), {
+  ssr: false,
+  loading: () => null,
+});
 
 export const Header = () => {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const showRef = useRef(null);
   const t = useTranslations('Header');
   const tAuth = useTranslations('Auth');
@@ -62,6 +64,7 @@ export const Header = () => {
   };
 
   useEffect(() => {
+    setMounted(true);
     checkAccessToken();
   }, []);
 
@@ -78,7 +81,7 @@ export const Header = () => {
   };
 
   const checkUserForFavorites = () => {
-    if (profile?.user) {
+    if (mounted && profile?.user) {
       return `/favorites`;
     } else {
       return `/auth/login`;
@@ -107,7 +110,7 @@ export const Header = () => {
         <div
           className="header--container"
           style={{
-            ...(showMenu || devicesCount > 0
+            ...(showMenu || (mounted && devicesCount > 0)
               ? { borderRadius: '16px 16px 0 0' }
               : {}),
           }}
@@ -150,7 +153,7 @@ export const Header = () => {
               </Link>
             </div>
 
-            {profile?.user ? (
+            {mounted && profile?.user ? (
               <div className="header--user">
                 <Button
                   className={`logged-in ${
