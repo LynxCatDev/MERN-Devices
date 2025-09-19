@@ -99,16 +99,16 @@ const Home = async () => {
 
       <Promotions />
 
-      {/* {renderDeviceSection('smartphones', smartphones)} */}
+      {renderDeviceSection('smartphones', smartphones)}
 
       <ServicesSection />
 
-      {/* {renderDeviceSection('laptops', laptops)} */}
+      {renderDeviceSection('laptops', laptops)}
 
       <Collection collection={collection} />
 
-      {/* {renderDeviceSection('gadgets', gadgets)}
-      {renderDeviceSection('audio', audio)} */}
+      {renderDeviceSection('gadgets', gadgets)}
+      {renderDeviceSection('audio', audio)}
 
       <Features />
     </main>
