@@ -1,12 +1,11 @@
 import React from 'react';
 import Link from 'next/link';
-import { useLocale, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import { Icon } from '../Icon/Icon';
 
 import './Footer.scss';
 
 export const Footer = () => {
-  const locale = useLocale();
   const t = useTranslations('Footer');
 
   return (
@@ -21,12 +20,12 @@ export const Footer = () => {
           <h5>{t('customer_support')}</h5>
           <span>{t('tel')}: + 373 79890000</span>
           <span>advertising@technoheart.md</span>
-          <Link href={`/${locale}/contacts`}>{t('contacts')}</Link>
+          <Link href={`/contacts`}>{t('contacts')}</Link>
         </div>
         <div>
           <h5>{t('services')}</h5>
-          <Link href={`/${locale}/protection`}>Smart Protection</Link>
-          <Link href={`/${locale}/tradein`}>Trade-in</Link>
+          <Link href={`/protection`}>Smart Protection</Link>
+          <Link href={`/tradein`}>Trade-in</Link>
         </div>
       </div>
       <div className="lower-footer">

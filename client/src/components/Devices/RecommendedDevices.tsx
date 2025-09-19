@@ -6,7 +6,6 @@ import { devicesCards } from '@/constants/devicesCards';
 interface Props {
   devices: DevicesDataProps;
   category: keyof typeof devicesCards;
-  locale: string;
   categoryTitle: string;
   productsLabel: string;
 }
@@ -14,7 +13,6 @@ interface Props {
 export const RecommendedDevices = ({
   devices,
   category,
-  locale,
   categoryTitle,
   productsLabel,
 }: Props) => {
@@ -24,7 +22,7 @@ export const RecommendedDevices = ({
   return (
     <div className="devices">
       {cardData && (
-        <Link href={`/${locale}/devices${cardData.link}`}>
+        <Link href={`/devices${cardData.link}`}>
           <div
             className="devices--banner"
             style={{ backgroundImage: `url(${cardData.imgUrl})` }}

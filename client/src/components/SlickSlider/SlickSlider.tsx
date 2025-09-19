@@ -3,18 +3,18 @@
 import { apiBaseUrl } from '@/helpers/baseUrl';
 import { useSlider } from '@/store/store';
 import Slider, { Settings } from '@ant-design/react-slick';
-import { useLocale } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
 import { cache, useEffect, useMemo } from 'react';
 import { useShallow } from 'zustand/react/shallow';
+import { useLocale } from 'next-intl';
 import { NoData } from '../NoData/NoData';
 import { ShowErrorMessage } from '../ShowErrorMessage/ShowErrorMessage';
+import { SlickSliderSkeleton } from './SlickSliderSkeleton';
 
 import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
 import './SlickSlider.scss';
-import { SlickSliderSkeleton } from './SlickSliderSkeleton';
 
 export const SlickSlider = () => {
   const locale = useLocale();

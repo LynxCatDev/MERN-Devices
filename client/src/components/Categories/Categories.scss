@@ -18,6 +18,10 @@
     margin-right: 8px;
     font-size: 20px;
     transition: all 0.3s;
+
+    &:hover {
+      color: var(--shadow-color);
+    }
   }
 
   &--img {
@@ -28,6 +32,10 @@
     border-radius: 50%;
     margin-bottom: 8px;
     transition: all 0.3s ease-out;
+
+    &:hover {
+      box-shadow: 0 0 16px 8px var(--shadow-color);
+    }
 
     img {
       max-width: 100%;

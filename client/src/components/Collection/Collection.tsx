@@ -1,4 +1,4 @@
-import { useLocale, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import Image from 'next/image';
 import { checkImageUrl } from '@/helpers';
@@ -12,7 +12,6 @@ interface Props {
 
 export const Collection = ({ collection }: Props) => {
   const t = useTranslations('General');
-  const locale = useLocale();
 
   return (
     <div className="collection">
@@ -29,10 +28,10 @@ export const Collection = ({ collection }: Props) => {
               loading="lazy"
               priority={false}
             />
-            <Link href={`/${locale}/devices${item.link}`}>
+            <Link href={`/devices${item.link}`}>
               <h3>{t(`${item.translate}`)}</h3>
             </Link>
-            <Link href={`/${locale}/devices${item.link}`}>{t('details')}</Link>
+            <Link href={`/devices${item.link}`}>{t('details')}</Link>
           </div>
         ))}
     </div>

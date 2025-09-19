@@ -1,6 +1,6 @@
 import dynamic from 'next/dynamic';
 import { unstable_cache as nextCache } from 'next/cache';
-import { getLocale, getTranslations } from 'next-intl/server';
+import { getTranslations } from 'next-intl/server';
 import { Features, Loading, ShopTitle } from '@/components';
 import { RecommendedDevicesSkeleton } from '@/components/Devices/RecommendedDevicesSkeleton';
 import { CategoriesSkeleton } from '@/components/Categories/CategoriesSkeleton';
@@ -52,7 +52,6 @@ const Home = async () => {
   const getCollection = nextCache(fetchCollection, ['collection'], {
     revalidate: 900,
   });
-  const locale = await getLocale();
   const tCategories = await getTranslations('Categories');
   const tDevices = await getTranslations('Devices');
 
@@ -84,7 +83,6 @@ const Home = async () => {
       <RecommendedDevices
         category={category}
         devices={devices}
-        locale={locale}
         categoryTitle={categoryTitle}
         productsLabel={productsLabel}
       />

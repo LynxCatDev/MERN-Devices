@@ -1,8 +1,9 @@
 'use client';
 
+import { CSSProperties } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useLocale, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import { CategoriesProps } from '@/store/store.interface';
 import { apiBaseUrl } from '@/helpers/baseUrl';
 
@@ -11,16 +12,18 @@ interface CategoriesItemProps {
 }
 
 export const CategoriesItem = ({ category }: CategoriesItemProps) => {
-  const locale = useLocale();
   const t = useTranslations('Categories');
+  const label = t(`${category.translate}`);
   return (
     <Link
       className={`categories--card ${category.link.slice(1)}`}
-      href={`/${locale}/devices${category.link}`}
-      onMouseOver={(e) =>
-        (e.currentTarget.style.color = `${category.shadowColor}`)
-      }
-      onMouseOut={(e) => (e.currentTarget.style.color = '')}
+      href={`/devices${category.link}`}
+      aria-label={label}
+      style={{ '--shadow-color': category.shadowColor } as CSSProperties}
+      // onMouseOver={(e) =>
+      //   (e.currentTarget.style.color = `${category.shadowColor}`)
+      // }
+      // onMouseOut={(e) => (e.currentTarget.style.color = '')}
     >
       <div
         className="categories--img"
@@ -32,7 +35,7 @@ export const CategoriesItem = ({ category }: CategoriesItemProps) => {
         <Image
           priority={false}
           src={`${apiBaseUrl}${category?.imgUrl}`}
-          alt={category.name}
+          alt={label}
           width={104}
           height={104}
         />

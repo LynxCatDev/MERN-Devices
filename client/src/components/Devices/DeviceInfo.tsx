@@ -41,17 +41,16 @@ export const DeviceInfo = ({ device }: DeviceInfoProps) => {
 
   const redirectDeviceColors = (color: string) => {
     if (device.colors.length === 1) {
-      return `/${locale}/device/${device.link}`;
+      return `/device/${device.link}`;
     } else if (!device.memoryOptions.length) {
-      return `/${locale}/device/${device.link
+      return `/device/${device.link
         .split('-')
         .slice(0, -1)
         .join('-')}-${color}`;
     } else {
-      return `/${locale}/device/${device.link
-        .split('-')
-        .slice(0, -3)
-        .join('-')}-${device.hardDrive}-gb-${color}`;
+      return `/device/${device.link.split('-').slice(0, -3).join('-')}-${
+        device.hardDrive
+      }-gb-${color}`;
     }
   };
 
@@ -183,8 +182,8 @@ export const DeviceInfo = ({ device }: DeviceInfoProps) => {
                     <Link
                       href={
                         device.memoryOptions.length === 1
-                          ? `/${locale}/device/${device.link}`
-                          : `/${locale}/device/${device.link
+                          ? `/device/${device.link}`
+                          : `/device/${device.link
                               .split('-')
                               .slice(0, -3)
                               .join(
@@ -245,7 +244,7 @@ export const DeviceInfo = ({ device }: DeviceInfoProps) => {
                 {`${device.price} ${tCategories('lei')}`}
               </div>
             )}
-            <Link href={`/${locale}/checkout`} className="device-product--buy">
+            <Link href={`/checkout`} className="device-product--buy">
               {tCategories('buy')}
             </Link>
             {device?.credit && (
@@ -259,10 +258,7 @@ export const DeviceInfo = ({ device }: DeviceInfoProps) => {
               } ${tCategories('lei')}`}</div>
             )}
             {device?.credit && (
-              <Link
-                href={`/${locale}/credit`}
-                className="device-product--credit"
-              >
+              <Link href={`/credit`} className="device-product--credit">
                 {tCategories('buy_credit')}
               </Link>
             )}

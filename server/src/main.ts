@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import cookieParser from 'cookie-parser';
+import compression from 'compression';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
@@ -8,6 +9,12 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.setGlobalPrefix('api');
   app.use(cookieParser());
+  app.use(
+    compression({
+      // reasonable defaults; brotli handled by reverse proxies if present
+      level: 6,
+    }),
+  );
   app.enableCors({
     origin: process.env.CLIENT_URL,
     credentials: true,
