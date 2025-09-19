@@ -13,7 +13,7 @@ interface CategoriesItemProps {
 
 export const CategoriesItem = ({ category }: CategoriesItemProps) => {
   const t = useTranslations('Categories');
-  const label = t(`${category.name}`);
+  const label = category.name;
   return (
     <Link
       className={`categories--card ${category.link.slice(1)}`}
@@ -29,7 +29,7 @@ export const CategoriesItem = ({ category }: CategoriesItemProps) => {
         <Image
           priority
           fetchPriority="high"
-          loading="lazy"
+          loading="eager"
           src={`${apiBaseUrl}${category?.imgUrl}`}
           alt={label}
           width={104}
