@@ -2,31 +2,23 @@
 
 import { checkImageUrl } from '@/helpers';
 import { useDevices } from '@/store/store';
-import { useLocale, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import {
-  forwardRef,
-  RefObject,
-  useEffect,
-  useImperativeHandle,
-  useMemo,
-  useState,
-} from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useShallow } from 'zustand/react/shallow';
 import { Icon } from '../Icon/Icon';
 import { Loading } from '../Loading/Loading';
 import { ShowErrorMessage } from '../ShowErrorMessage/ShowErrorMessage';
 import { NoData } from '../NoData/NoData';
+import { Button } from '../Button/Button';
 
 import './Search.scss';
-import { Button } from '../Button/Button';
 
 export const Search = () => {
   const [searchValue, setSearchValue] = useState<string>('');
   const t = useTranslations('Devices');
-  const locale = useLocale();
   const router = useRouter();
 
   const [devices, getDevices, loading, error] = useDevices(
@@ -79,11 +71,11 @@ export const Search = () => {
 
     const listener = (event: { code: string }) => {
       if (event.code === 'Enter' || event.code === 'NumpadEnter') {
-        router.push(`/${locale}/search?q=${searchValue}`);
+        router.push(`/search?q=${searchValue}`);
         clearSearchValue();
       }
     };
-    document.addEventListener('keydown', listener);
+    document.addEventListener('keydown', listener, { passive: true });
 
     return () => {
       clearTimeout(debounce);
@@ -115,7 +107,7 @@ export const Search = () => {
       )}
 
       <Link
-        href={`/${locale}/search?q=${searchValue}`}
+        href={`/search?q=${searchValue}`}
         onClick={clearSearchValue}
         aria-label="search submit"
       >
@@ -133,7 +125,7 @@ export const Search = () => {
           {devicesSearchData?.length > 0 &&
             devicesSearchData.map((device, key) => (
               <Link
-                href={`/${locale}/device/${device.link}`}
+                href={`/device/${device.link}`}
                 onClick={clearSearchValue}
                 className="found-devices--item"
                 key={key}

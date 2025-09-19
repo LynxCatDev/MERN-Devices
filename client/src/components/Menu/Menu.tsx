@@ -3,7 +3,7 @@
 import { quickLinks } from '@/constants/quickLinks';
 import { apiBaseUrl } from '@/helpers';
 import { useCategories } from '@/store/store';
-import { useLocale, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
@@ -17,7 +17,6 @@ interface Props {
 
 export const Menu = ({ showMenu, toggleMenu }: Props) => {
   const [showQuickLinks, setShowQuickLinks] = useState('');
-  const locale = useLocale();
   const tCategories = useTranslations('Categories');
   const [categories, getCategories, loading, error] = useCategories(
     useShallow((state) => [
@@ -38,17 +37,17 @@ export const Menu = ({ showMenu, toggleMenu }: Props) => {
 
   const checkQuickLinksRedirect = (submenu: any, category: string) => {
     if (submenu.getInfo) {
-      return `/${locale}/device/${submenu.properties}`;
+      return `/device/${submenu.properties}`;
     } else if (submenu?.properties && !submenu.categoryLink) {
-      return `/${locale}/devices/${category}/${submenu.properties}`;
+      return `/devices/${category}/${submenu.properties}`;
     } else if (submenu?.properties) {
-      return `/${locale}/devices/${submenu.categoryLink}/${submenu.properties}`;
+      return `/devices/${submenu.categoryLink}/${submenu.properties}`;
     } else if (submenu?.categoryLink) {
-      return `/${locale}/devices/${submenu.categoryLink}`;
+      return `/devices/${submenu.categoryLink}`;
     } else if (typeof submenu === 'string') {
-      return `/${locale}/devices/${submenu.toLowerCase().split(' ').join('-')}`;
+      return `/devices/${submenu.toLowerCase().split(' ').join('-')}`;
     } else {
-      return `/${locale}/devices/${category}`;
+      return `/devices/${category}`;
     }
   };
 
@@ -62,10 +61,7 @@ export const Menu = ({ showMenu, toggleMenu }: Props) => {
               onMouseOver={() => setShowQuickLinks(`${category.link.slice(1)}`)}
               key={category.id}
             >
-              <Link
-                onClick={toggleMenu}
-                href={`/${locale}/devices${category.link}`}
-              >
+              <Link onClick={toggleMenu} href={`/devices${category.link}`}>
                 <Image
                   priority
                   src={`${apiBaseUrl}${category?.imgUrl}`}

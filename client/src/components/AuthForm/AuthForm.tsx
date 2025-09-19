@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { useLocale, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useShallow } from 'zustand/react/shallow';
@@ -26,7 +26,6 @@ export const AuthForm = () => {
     ]),
   );
   const t = useTranslations('Auth');
-  const locale = useLocale();
   const { push } = useRouter();
   const pathname = usePathname();
   const isRegistrationPage = pathname?.includes('registration');
@@ -104,14 +103,14 @@ export const AuthForm = () => {
 
   useEffect(() => {
     if (profile?.user || profile?.accessToken) {
-      push(`/${locale}`);
+      push(`/`);
     }
   }, [profile?.user, profile?.accessToken]);
 
   return (
     <div className="login">
       <div className="login--description">
-        <Link href={`/${locale}`}>
+        <Link href="/">
           <Icon type="logo" width="60" height="60" />
         </Link>
 
@@ -254,9 +253,9 @@ export const AuthForm = () => {
           </span>
 
           {isRegistrationPage ? (
-            <Link href={`/${locale}/auth/login`}>{t('login')}</Link>
+            <Link href="/auth/login">{t('login')}</Link>
           ) : (
-            <Link href={`/${locale}/auth/registration`}>{t('register')}</Link>
+            <Link href="/auth/registration">{t('register')}</Link>
           )}
         </div>
       </form>

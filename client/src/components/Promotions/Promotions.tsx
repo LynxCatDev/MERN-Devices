@@ -1,18 +1,16 @@
 import Link from 'next/link';
-import { useLocale, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import { promotions } from '@/constants/promotions';
 
 import './Promotions.scss';
 
 export const Promotions = () => {
   const t = useTranslations('General');
-  const locale = useLocale();
-
   return (
     <div className="promotions">
       <div className="promotions--wrapper">
         {promotions.slice(0, 2).map((promotion) => (
-          <Link key={promotion.id} href={`/${locale}${promotion.link}`}>
+          <Link key={promotion.id} href={`${promotion.link}`}>
             <div
               className="promotions--bg"
               style={{ backgroundImage: `url(${promotion.imgUrl})` }}
@@ -24,7 +22,7 @@ export const Promotions = () => {
         ))}
       </div>
       <div className="promotions--link">
-        <Link href={`/${locale}/promotions`}>{t('promotions_link')}</Link>
+        <Link href={`/promotions`}>{t('promotions_link')}</Link>
       </div>
     </div>
   );

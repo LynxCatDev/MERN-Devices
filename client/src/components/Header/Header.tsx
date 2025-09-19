@@ -1,7 +1,7 @@
 'use client';
 
 import { useOutsideClick } from '@chakra-ui/hooks';
-import { useLocale, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { lazy, useEffect, useMemo, useRef, useState } from 'react';
 import { useShallow } from 'zustand/react/shallow';
@@ -28,7 +28,6 @@ export const Header = () => {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const showRef = useRef(null);
-  const locale = useLocale();
   const t = useTranslations('Header');
   const tAuth = useTranslations('Auth');
   const accessToken = getAccessToken();
@@ -80,9 +79,9 @@ export const Header = () => {
 
   const checkUserForFavorites = () => {
     if (profile?.user) {
-      return `/${locale}/favorites`;
+      return `/favorites`;
     } else {
-      return `/${locale}/auth/login`;
+      return `/auth/login`;
     }
   };
 
@@ -114,7 +113,7 @@ export const Header = () => {
           }}
         >
           <div className="header--logo">
-            <Link href={`/${locale}`} aria-label="Home">
+            <Link href={`/`} aria-label="Home">
               <Icon type="logo" />
             </Link>
           </div>
@@ -140,13 +139,13 @@ export const Header = () => {
             </div>
 
             <div className="compare--devices">
-              <Link href={`/${locale}/compare`} aria-label="Compare devices">
+              <Link href={`/compare`} aria-label="Compare devices">
                 <Icon type="compare" />
               </Link>
             </div>
 
             <div className="header--cart">
-              <Link href={`/${locale}/cart`} aria-label="Cart">
+              <Link href={`/cart`} aria-label="Cart">
                 <Icon type="shopping-cart" />
               </Link>
             </div>
@@ -170,7 +169,7 @@ export const Header = () => {
                   <div className="profile-menu" ref={showRef}>
                     <Link
                       onClick={() => setShowProfileMenu(false)}
-                      href={`/${locale}/profile`}
+                      href={`/profile`}
                     >
                       {tAuth('profile')}
                     </Link>
@@ -182,7 +181,7 @@ export const Header = () => {
               </div>
             ) : (
               <div className="header--user">
-                <Link href={`/${locale}/auth/login`} aria-label="Account login">
+                <Link href={`/auth/login`} aria-label="Account login">
                   <Icon type="user" />
                   <span>{t('account')}</span>
                 </Link>

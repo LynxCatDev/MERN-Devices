@@ -3,14 +3,12 @@
 import { useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useShallow } from 'zustand/react/shallow';
-import { useLocale } from 'next-intl';
 import { useUser } from '@/store/store';
 import { Devices } from '@/components';
 
 const FavoritesPage = () => {
   const { push } = useRouter();
   const searchParams = useSearchParams();
-  const locale = useLocale();
   const page = Number(searchParams.get('page'));
   const [userFavorites, getUserFavorites, loading, error] = useUser(
     useShallow((state) => [
@@ -25,7 +23,7 @@ const FavoritesPage = () => {
 
   useEffect(() => {
     if (checkFavoritesDataExist) {
-      push(`/${locale}/favorites`);
+      push(`/favorites`);
     } else if (page !== userFavorites?.page) {
       getUserFavorites(page || 1);
     }

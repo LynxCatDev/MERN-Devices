@@ -4,7 +4,7 @@ import { checkImageUrl } from '@/helpers';
 import { useUser } from '@/store/store';
 import { DevicesProps } from '@/store/store.interface';
 import { Button } from '@chakra-ui/react';
-import { useLocale, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -18,7 +18,6 @@ interface DeviceItemProps {
 }
 
 export const DevicesItem = ({ device, priority = false }: DeviceItemProps) => {
-  const locale = useLocale();
   const t = useTranslations('Categories');
   const [imgSrc, setImgSrc] = useState(checkImageUrl(device?.imageUrl));
   const [activeFavoritesIds, addToFavorites, loading, error] = useUser(
@@ -41,13 +40,10 @@ export const DevicesItem = ({ device, priority = false }: DeviceItemProps) => {
     <div className="device--item">
       {device && (
         <>
-          <Link
-            href={`/${locale}/device/${device.link}`}
-            aria-label={device.name}
-          >
+          <Link href={`/device/${device.link}`} aria-label={device.name}>
             <Image
               src={imgSrc}
-              alt=""
+              alt={device.name}
               width={321}
               height={321}
               style={{ width: '100%', height: 'auto' }}
@@ -55,7 +51,7 @@ export const DevicesItem = ({ device, priority = false }: DeviceItemProps) => {
               priority={false}
             />
           </Link>
-          <Link href={`/${locale}/device/${device.link}`}>
+          <Link href={`/device/${device.link}`}>
             <div className="device--title">{device.name}</div>
           </Link>
           <div className="device--price-wrapper options-devices-card-wrapper">

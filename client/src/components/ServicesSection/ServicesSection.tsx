@@ -1,18 +1,17 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { useLocale, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import { Icon } from '../Icon/Icon';
 
 import './ServicesSection.scss';
 
 export const ServicesSection = () => {
   const t = useTranslations('General');
-  const locale = useLocale();
 
   return (
     <div className="service-section">
       <div className="smart-protection service">
-        <Link href={`/${locale}/protection`}>
+        <Link href={`/protection`}>
           <Image
             src="/images/offer-day.webp"
             alt="offer-day"
@@ -32,7 +31,7 @@ export const ServicesSection = () => {
         </Link>
       </div>
       <div className="trade-in service">
-        <Link href={`/${locale}/tradein`}>
+        <Link href={`/tradein`}>
           <Image
             src="/images/trade-in.webp"
             alt="trade-in"

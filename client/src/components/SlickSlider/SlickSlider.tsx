@@ -3,21 +3,19 @@
 import { apiBaseUrl } from '@/helpers/baseUrl';
 import { useSlider } from '@/store/store';
 import Slider, { Settings } from '@ant-design/react-slick';
-import { useLocale } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
 import { cache, useEffect, useMemo } from 'react';
 import { useShallow } from 'zustand/react/shallow';
 import { NoData } from '../NoData/NoData';
 import { ShowErrorMessage } from '../ShowErrorMessage/ShowErrorMessage';
+import { SlickSliderSkeleton } from './SlickSliderSkeleton';
 
 import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
 import './SlickSlider.scss';
-import { SlickSliderSkeleton } from './SlickSliderSkeleton';
 
 export const SlickSlider = () => {
-  const locale = useLocale();
   const [slides, getSlides, loading, error] = useSlider(
     useShallow((state) => [
       state.slides,
@@ -64,7 +62,7 @@ export const SlickSlider = () => {
       {slides?.length > 0 && (
         <Slider {...settings}>
           {slides.map((slide, i) => (
-            <Link href={`/${locale}/${slide.link}`} key={slide.id}>
+            <Link href={`/${slide.link}`} key={slide.id}>
               <Image
                 priority={i === 0}
                 src={`${apiBaseUrl}/${slide.imgUrl}`}

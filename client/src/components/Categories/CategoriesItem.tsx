@@ -1,8 +1,9 @@
 'use client';
 
+import { CSSProperties } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useLocale, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import { CategoriesProps } from '@/store/store.interface';
 import { apiBaseUrl } from '@/helpers/baseUrl';
 
@@ -11,14 +12,14 @@ interface CategoriesItemProps {
 }
 
 export const CategoriesItem = ({ category }: CategoriesItemProps) => {
-  const locale = useLocale();
   const t = useTranslations('Categories');
   const label = t(`${category.translate}`);
   return (
     <Link
       className={`categories--card ${category.link.slice(1)}`}
-      href={`/${locale}/devices${category.link}`}
+      href={`/devices${category.link}`}
       aria-label={label}
+      style={{ '--shadow-color': category.shadowColor } as CSSProperties}
       onMouseOver={(e) =>
         (e.currentTarget.style.color = `${category.shadowColor}`)
       }
