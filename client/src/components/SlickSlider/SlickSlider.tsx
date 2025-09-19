@@ -69,9 +69,8 @@ export const SlickSlider = () => {
                 priority={i === 0}
                 src={`${apiBaseUrl}/${slide.imgUrl}`}
                 alt={slide.altName}
-                width="0"
-                height="0"
-                sizes="100vw"
+                width={1400}
+                height={520}
                 style={{ width: '100%', height: 'auto' }}
                 loading={i === 0 ? 'eager' : 'lazy'}
                 fetchPriority={i === 0 ? 'high' : 'auto'}

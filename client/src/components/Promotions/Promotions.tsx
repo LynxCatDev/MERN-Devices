@@ -18,9 +18,8 @@ export const Promotions = () => {
                 alt={promotion.title}
                 fill
                 sizes="(max-width: 992px) 100vw, 50vw"
-                priority={false}
+                priority
                 className="promotions--bg-img"
-                loading="lazy"
               />
               <h2>{t(`${promotion.title}`)}</h2>
               <span>{t(`${promotion.description}`)}</span>
