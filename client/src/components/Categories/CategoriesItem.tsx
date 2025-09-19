@@ -25,19 +25,15 @@ export const CategoriesItem = ({ category }: CategoriesItemProps) => {
       // }
       // onMouseOut={(e) => (e.currentTarget.style.color = '')}
     >
-      <div
-        className="categories--img"
-        onMouseOver={(e) =>
-          (e.currentTarget.style.boxShadow = `0 0 16px 8px ${category.shadowColor}`)
-        }
-        onMouseOut={(e) => (e.currentTarget.style.boxShadow = `none`)}
-      >
+      <div className="categories--img">
         <Image
           priority={false}
           src={`${apiBaseUrl}${category?.imgUrl}`}
           alt={label}
-          width={104}
-          height={104}
+          width={0}
+          height={0}
+          sizes="(max-width: 576px) 60px, (max-width: 768px) 70px, (max-width: 992px) 80px, 115px"
+          style={{ width: '100%', height: 'auto' }}
         />
       </div>
 
