@@ -21,8 +21,8 @@ export const Collection = ({ collection }: Props) => {
             <Image
               src={checkImageUrl(item.imgUrl)}
               alt={item.name}
-              width={692}
-              height={462}
+              width={0}
+              height={0}
               sizes="100vw"
               style={{ width: '100%', height: '100%' }}
               loading="lazy"

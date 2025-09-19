@@ -1,7 +1,7 @@
 import dynamic from 'next/dynamic';
 import { unstable_cache as nextCache } from 'next/cache';
 import { getTranslations } from 'next-intl/server';
-import { Features, Loading, ShopTitle } from '@/components';
+import { Features, Loading, RecommendedDevices, ShopTitle } from '@/components';
 import { RecommendedDevicesSkeleton } from '@/components/Devices/RecommendedDevicesSkeleton';
 import { CategoriesSkeleton } from '@/components/Categories/CategoriesSkeleton';
 import { PromotionsSkeleton } from '@/components/Promotions/PromotionsSkeleton';
@@ -10,6 +10,7 @@ import { DevicesDataProps } from '@/store/store.interface';
 import { SlickSliderWrapper } from '@/components/SlickSlider/SlickSliderWrapper';
 
 import './page.scss';
+import { Suspense } from 'react';
 
 const Promotions = dynamic(
   () => import('@/components/Promotions/Promotions').then((m) => m.Promotions),
@@ -19,14 +20,6 @@ const Promotions = dynamic(
 const Categories = dynamic(
   () => import('@/components/Categories/Categories').then((m) => m.Categories),
   { loading: () => <CategoriesSkeleton /> },
-);
-
-const RecommendedDevices = dynamic(
-  () =>
-    import('@/components/Devices/RecommendedDevices').then(
-      (m) => m.RecommendedDevices,
-    ),
-  { loading: () => <RecommendedDevicesSkeleton /> },
 );
 
 const ServicesSection = dynamic(
@@ -80,12 +73,14 @@ const Home = async () => {
     const categoryTitle = tCategories(category);
     const productsLabel = tDevices('products');
     return (
-      <RecommendedDevices
-        category={category}
-        devices={devices}
-        categoryTitle={categoryTitle}
-        productsLabel={productsLabel}
-      />
+      <Suspense fallback={<RecommendedDevicesSkeleton itemsLength={3} />}>
+        <RecommendedDevices
+          category={category}
+          devices={devices}
+          categoryTitle={categoryTitle}
+          productsLabel={productsLabel}
+        />
+      </Suspense>
     );
   };
 
