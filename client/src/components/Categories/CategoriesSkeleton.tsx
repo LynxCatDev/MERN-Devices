@@ -11,7 +11,9 @@ export const CategoriesSkeleton = () => {
             <div className="categories--img categories--img-skeleton">
               <Skeleton borderRadius="50%" width="100%" height="100%" />
             </div>
-            <Skeleton height="16px" width="80px" borderRadius="8px" />
+            <div className="categories--title">
+              <Skeleton height="1em" width="80px" borderRadius="8px" />
+            </div>
           </div>
         ))}
       </div>
