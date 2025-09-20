@@ -64,7 +64,11 @@ export const SlickSlider = () => {
       {slides?.length > 0 && (
         <Slider {...settings}>
           {slides.map((slide, i) => (
-            <Link href={`/${locale}/${slide.link}`} key={slide.id}>
+            <Link
+              href={`/${locale}/${slide.link}`}
+              key={slide.id}
+              prefetch={false}
+            >
               <Image
                 priority={i === 0}
                 src={`${apiBaseUrl}/${slide.imgUrl}`}

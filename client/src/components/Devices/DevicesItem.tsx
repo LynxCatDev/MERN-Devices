@@ -45,7 +45,11 @@ export const DevicesItem = ({ device, priority = false }: DeviceItemProps) => {
     <div className="device--item">
       {device && (
         <>
-          <Link href={`/device/${device.link}`} aria-label={device.name}>
+          <Link
+            href={`/device/${device.link}`}
+            aria-label={device.name}
+            prefetch={false}
+          >
             <Image
               src={imgSrc}
               alt={device.name}
@@ -59,7 +63,7 @@ export const DevicesItem = ({ device, priority = false }: DeviceItemProps) => {
               decoding="async"
             />
           </Link>
-          <Link href={`/device/${device.link}`}>
+          <Link href={`/device/${device.link}`} prefetch={false}>
             <div className="device--title">{device.name}</div>
           </Link>
           <div className="device--price-wrapper options-devices-card-wrapper">

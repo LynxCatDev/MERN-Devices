@@ -11,7 +11,7 @@ export const Promotions = () => {
     <div className="promotions">
       <div className="promotions--wrapper">
         {promotions.slice(0, 2).map((promotion, idx) => (
-          <Link key={promotion.id} href={`${promotion.link}`}>
+          <Link key={promotion.id} href={`${promotion.link}`} prefetch>
             <div className="promotions--bg">
               <Image
                 src={promotion.imgUrl}
@@ -29,7 +29,9 @@ export const Promotions = () => {
         ))}
       </div>
       <div className="promotions--link">
-        <Link href={`/promotions`}>{t('promotions_link')}</Link>
+        <Link href={`/promotions`} prefetch={false}>
+          {t('promotions_link')}
+        </Link>
       </div>
     </div>
   );

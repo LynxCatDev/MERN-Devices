@@ -28,10 +28,20 @@ export const Collection = ({ collection }: Props) => {
               loading="lazy"
               priority={false}
             />
-            <Link href={`/devices${item.link}`}>
+            <Link
+              href={`/devices${item.link}`}
+              aria-label={item.name}
+              prefetch={false}
+            >
               <h3>{t(`${item.translate}`)}</h3>
             </Link>
-            <Link href={`/devices${item.link}`}>{t('details')}</Link>
+            <Link
+              href={`/devices${item.link}`}
+              prefetch={false}
+              aria-label={item.name}
+            >
+              {t('details')}
+            </Link>
           </div>
         ))}
     </div>
