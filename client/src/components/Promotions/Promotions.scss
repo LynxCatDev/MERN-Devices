@@ -52,7 +52,8 @@
       padding: 16px 102px;
       font-size: 20px;
       font-weight: 600;
-      transition: all 0.3s;
+      transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+      will-change: box-shadow;
 
       &:hover {
         box-shadow: 0 12px 8px -8px var(--device-black);
