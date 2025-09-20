@@ -96,15 +96,21 @@ const Home = async () => {
 
       <Categories categories={categories} />
 
-      <Promotions />
+      <section className="cv">
+        <Promotions />
+      </section>
 
       {renderDeviceSection('smartphones', smartphones)}
 
-      <ServicesSection />
+      <section className="cv">
+        <ServicesSection />
+      </section>
 
       {renderDeviceSection('laptops', laptops)}
 
-      <Collection collection={collection} />
+      <section className="cv">
+        <Collection collection={collection} />
+      </section>
 
       {renderDeviceSection('gadgets', gadgets)}
       {renderDeviceSection('audio', audio)}
