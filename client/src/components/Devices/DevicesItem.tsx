@@ -64,9 +64,9 @@ export const DevicesItem = ({ device, priority = false }: DeviceItemProps) => {
           </Link>
           <div className="device--price-wrapper options-devices-card-wrapper">
             <div className="device--price">
-              <h5>
+              <h3>
                 {device.price} {t('lei')}
-              </h5>
+              </h3>
 
               {device.credit && (
                 <span>

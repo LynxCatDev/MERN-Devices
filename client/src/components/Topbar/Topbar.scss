@@ -29,7 +29,8 @@
     transition: all 0.3s ease-in-out;
 
     &:hover {
-      color: var(--device-medium-grey);
+      color: #ffffff;
+      box-shadow: 0 0 0 2px #606060 inset;
     }
   }
 
@@ -59,5 +60,6 @@
 
 a.lang--active {
   background-color: #404040;
-  color: #fff;
+  color: #ffffff;
+  box-shadow: 0 0 0 2px #707070 inset;
 }

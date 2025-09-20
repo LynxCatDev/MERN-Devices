@@ -29,7 +29,7 @@
       z-index: 0;
     }
 
-    h4 {
+    h2 {
       position: relative;
       z-index: 1;
       margin-bottom: 12px;
@@ -104,22 +104,25 @@
   }
 
   &--price {
-    h5 {
+    h3 {
       font-size: 20px;
+      margin: 0;
     }
 
     span {
       padding: 2px 10px;
       display: block;
       border-radius: 16px;
-      color: var(--device-white);
+      color: #fff;
       background-color: var(--device-rose);
       width: max-content;
       margin: 8px 0;
+      filter: contrast(1.1);
     }
 
     span:nth-child(2) {
-      background-color: var(--device-light-green);
+      background-color: #2e7d32; /* darker green for contrast */
+      color: #fff;
     }
   }
 
@@ -192,7 +195,8 @@
   font-weight: 900;
   border-radius: 16px;
   z-index: 50;
-  color: var(--device-white);
+  color: #fff;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.6);
 }
 
 .favorites-info {
