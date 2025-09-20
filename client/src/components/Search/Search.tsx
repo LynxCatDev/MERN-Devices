@@ -110,6 +110,7 @@ export const Search = () => {
         href={`/search?q=${searchValue}`}
         onClick={clearSearchValue}
         aria-label="search submit"
+        prefetch={false}
       >
         <Icon type="zoom" />
       </Link>

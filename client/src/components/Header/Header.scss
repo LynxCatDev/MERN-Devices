@@ -48,7 +48,7 @@ header {
 
     > div {
       margin-left: 16px;
-      transition: all 0.3s;
+      transition: color 0.3s ease, background-color 0.3s ease;
 
       > a,
       > button,
@@ -88,7 +88,7 @@ header {
   &--user > a {
     background-color: var(--device-black-grey);
     border-radius: 8px;
-    transition: all 0.3s;
+    transition: color 0.3s ease, background-color 0.3s ease;
     height: 100%;
     display: flex;
     align-items: center;

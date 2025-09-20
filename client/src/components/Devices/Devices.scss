@@ -9,7 +9,8 @@
 
   > a {
     width: 25%;
-    transition: all 0.3s;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     border-radius: 16px;
   }
 
@@ -21,7 +22,7 @@
     padding: 32px 8px;
     margin-right: 16px;
     border-radius: 16px;
-    transition: all 0.3s ease-in;
+    transition: transform 0.3s ease-in, opacity 0.3s ease-in;
     overflow: hidden;
 
     .devices--banner-img {
@@ -59,7 +60,7 @@
       height: auto;
       object-fit: cover;
       transform: scale(0.95);
-      transition: all 0.3s ease-in-out;
+      transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
       border-radius: 16px 16px 0 0;
     }
   }
@@ -73,7 +74,7 @@
   &--item {
     background-color: var(--device-black);
     border-radius: 16px;
-    transition: all 0.3s ease-in-out;
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -172,7 +173,7 @@
 
   .add-to-favorites,
   .compare-devices {
-    transition: all 0.3s ease-in-out;
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
     position: relative;
 
     &:hover {
