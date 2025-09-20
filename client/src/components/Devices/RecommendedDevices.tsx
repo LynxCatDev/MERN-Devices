@@ -34,7 +34,7 @@ export const RecommendedDevices = ({
               priority={category === 'smartphones'}
               loading={category === 'smartphones' ? 'eager' : 'lazy'}
             />
-            {category && <h4>{categoryTitle}</h4>}
+            {category && <h2>{categoryTitle}</h2>}
             {!!devicesData?.length && (
               <span>
                 {devicesData?.length}+ {productsLabel}

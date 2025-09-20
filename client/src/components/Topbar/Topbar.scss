@@ -18,7 +18,7 @@
   a {
     background-color: #202020;
     border-radius: 8px;
-    color: #404040;
+    color: var(--device-white);
     font-weight: 400;
     font-size: 14px;
     padding: 9px;
@@ -29,7 +29,8 @@
     transition: all 0.3s ease-in-out;
 
     &:hover {
-      color: #fff;
+      color: #ffffff;
+      box-shadow: 0 0 0 2px #606060 inset;
     }
   }
 
@@ -59,5 +60,6 @@
 
 a.lang--active {
   background-color: #404040;
-  color: #fff;
+  color: #ffffff;
+  box-shadow: 0 0 0 2px #707070 inset;
 }
