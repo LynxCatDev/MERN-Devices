@@ -28,12 +28,22 @@ export default async function LocaleLayout({
   return (
     <CacheProvider>
       <html lang={locale}>
-        <link rel="icon" type="image/x-icon" href="/images/play.png" />
-        <link
-          rel="preconnect"
-          href={`${process.env.NEXT_PUBLIC_API_BASE_URL}/api`}
-          crossOrigin=""
-        />
+        <head>
+          <link rel="icon" type="image/x-icon" href="/images/play.png" />
+          {process.env.NEXT_PUBLIC_API_BASE_URL && (
+            <>
+              <link
+                rel="dns-prefetch"
+                href={process.env.NEXT_PUBLIC_API_BASE_URL}
+              />
+              <link
+                rel="preconnect"
+                href={process.env.NEXT_PUBLIC_API_BASE_URL}
+                crossOrigin=""
+              />
+            </>
+          )}
+        </head>
         <NextIntlClientProvider>
           <Providers>
             <body className="night">

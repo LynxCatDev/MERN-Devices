@@ -75,6 +75,12 @@ a:hover {
   // color: var(--device-blue);
 }
 
+/* Performance utility to skip rendering below-the-fold until scrolled into view */
+.cv {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 1000px;
+}
+
 h1,
 h2,
 h3,
