@@ -50,7 +50,6 @@
     }
   }
 
-  /* Skeleton circle should mirror actual image sizes across breakpoints */
   &--img-skeleton {
     width: 115px;
     height: 115px;
@@ -58,6 +57,11 @@
 
   &--title {
     word-wrap: break-word;
+    line-height: 1.2;
+    min-height: 1.2em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
 

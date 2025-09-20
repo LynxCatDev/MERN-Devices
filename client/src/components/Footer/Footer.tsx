@@ -12,18 +12,18 @@ export const Footer = () => {
     <div className="footer">
       <div className="upper-footer">
         <div>
-          <h5>{t('shop')}</h5>
+          <h2 className="footer-heading">{t('shop')}</h2>
           <span>{t('tel')}: + 373 79160000</span>
           <span>sales@technoheart.md</span>
         </div>
         <div>
-          <h5>{t('customer_support')}</h5>
+          <h2 className="footer-heading">{t('customer_support')}</h2>
           <span>{t('tel')}: + 373 79890000</span>
           <span>advertising@technoheart.md</span>
           <Link href={`/contacts`}>{t('contacts')}</Link>
         </div>
         <div>
-          <h5>{t('services')}</h5>
+          <h2 className="footer-heading">{t('services')}</h2>
           <Link href={`/protection`}>Smart Protection</Link>
           <Link href={`/tradein`}>Trade-in</Link>
         </div>
@@ -35,7 +35,7 @@ export const Footer = () => {
           </Link>
         </div>
         <div className="copyright">
-          <h5>{`© ${new Date().getFullYear()}. ${t('copyright')}`}</h5>
+          <p>{`© ${new Date().getFullYear()}. ${t('copyright')}`}</p>
         </div>
         <div className="lower-footer--media">
           <Link
