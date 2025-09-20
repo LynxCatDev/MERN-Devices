@@ -51,7 +51,7 @@
 
     > a {
       margin-right: 32px;
-      transition: all 0.3s ease-in;
+      transition: color 0.3s ease-in, background-color 0.3s ease-in;
 
       &:last-child {
         margin-right: 0;

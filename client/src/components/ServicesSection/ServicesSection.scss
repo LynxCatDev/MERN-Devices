@@ -12,7 +12,7 @@
   background-color: var(--device-black);
   border-radius: 16px;
   padding: 24px 40px;
-  transition: all 0.3s;
+  transition: color 0.3s ease, background-color 0.3s ease;
 
   &--image {
     position: relative;
@@ -26,7 +26,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    transition: all 0.3s;
+    transition: color 0.3s ease, background-color 0.3s ease;
     height: 100%;
     gap: 8px;
 

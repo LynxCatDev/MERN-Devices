@@ -26,7 +26,7 @@
     align-self: center;
     justify-self: center;
     text-align: center;
-    transition: all 0.3s ease-in-out;
+    transition: color 0.3s ease-in-out, background-color 0.3s ease-in-out;
 
     &:hover {
       color: #ffffff;
@@ -51,7 +51,7 @@
 
     svg {
       path {
-        transition: all 0.3s ease-in-out;
+        transition: color 0.3s ease-in-out, background-color 0.3s ease-in-out;
         fill: #808080 !important;
       }
     }
