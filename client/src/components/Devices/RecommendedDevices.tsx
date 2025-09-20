@@ -47,7 +47,11 @@ export const RecommendedDevices = ({
       <div className="devices--items recommended-item">
         {!!devicesData?.length &&
           devicesData.map((device) => (
-            <DevicesItem key={device.id} device={device} />
+            <DevicesItem
+              key={device.id}
+              device={device}
+              priority={category === 'smartphones'}
+            />
           ))}
       </div>
     </div>
