@@ -116,7 +116,7 @@ export const Header = () => {
           }}
         >
           <div className="header--logo">
-            <Link href={`/`} aria-label="Home">
+            <Link href={`/`} aria-label="Home" prefetch>
               <Icon type="logo" />
             </Link>
           </div>
@@ -136,19 +136,27 @@ export const Header = () => {
 
           <div className="header--main-menu">
             <div className="header--favorites">
-              <Link href={checkUserForFavorites()} aria-label="Favorites">
+              <Link
+                href={checkUserForFavorites()}
+                aria-label="Favorites"
+                prefetch={false}
+              >
                 <Icon type="heart" />
               </Link>
             </div>
 
             <div className="compare--devices">
-              <Link href={`/compare`} aria-label="Compare devices">
+              <Link
+                href={`/compare`}
+                aria-label="Compare devices"
+                prefetch={false}
+              >
                 <Icon type="compare" />
               </Link>
             </div>
 
             <div className="header--cart">
-              <Link href={`/cart`} aria-label="Cart">
+              <Link href={`/cart`} aria-label="Cart" prefetch={false}>
                 <Icon type="shopping-cart" />
               </Link>
             </div>
@@ -176,6 +184,7 @@ export const Header = () => {
                     <Link
                       onClick={() => setShowProfileMenu(false)}
                       href={`/profile`}
+                      prefetch={false}
                     >
                       {tAuth('profile')}
                     </Link>
@@ -191,7 +200,11 @@ export const Header = () => {
               </div>
             ) : (
               <div className="header--user">
-                <Link href={`/auth/login`} aria-label="Account login">
+                <Link
+                  href={`/auth/login`}
+                  aria-label="Account login"
+                  prefetch={false}
+                >
                   <Icon type="user" />
                   <span>{t('account')}</span>
                 </Link>

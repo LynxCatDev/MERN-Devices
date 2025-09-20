@@ -20,17 +20,23 @@ export const Footer = () => {
           <h2 className="footer-heading">{t('customer_support')}</h2>
           <span>{t('tel')}: + 373 79890000</span>
           <span>advertising@technoheart.md</span>
-          <Link href={`/contacts`}>{t('contacts')}</Link>
+          <Link href={`/contacts`} prefetch={false}>
+            {t('contacts')}
+          </Link>
         </div>
         <div>
           <h2 className="footer-heading">{t('services')}</h2>
-          <Link href={`/protection`}>Smart Protection</Link>
-          <Link href={`/tradein`}>Trade-in</Link>
+          <Link href={`/protection`} prefetch={false}>
+            Smart Protection
+          </Link>
+          <Link href={`/tradein`} prefetch={false}>
+            Trade-in
+          </Link>
         </div>
       </div>
       <div className="lower-footer">
         <div className="lower-footer--logo">
-          <Link href="/" aria-label="Go to homepage">
+          <Link href="/" aria-label="Go to homepage" prefetch={false}>
             <Icon type="logo" />
           </Link>
         </div>
@@ -43,6 +49,7 @@ export const Footer = () => {
             aria-label="Visit our Facebook"
             target="_blank"
             rel="noopener noreferrer"
+            prefetch={false}
           >
             <Icon type="facebook" />
           </Link>
@@ -51,6 +58,7 @@ export const Footer = () => {
             aria-label="Visit our YouTube"
             target="_blank"
             rel="noopener noreferrer"
+            prefetch={false}
           >
             <Icon type="youtube" />
           </Link>
@@ -59,6 +67,7 @@ export const Footer = () => {
             aria-label="Visit our Instagram"
             target="_blank"
             rel="noopener noreferrer"
+            prefetch={false}
           >
             <Icon type="instagram" />
           </Link>

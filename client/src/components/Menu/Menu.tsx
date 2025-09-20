@@ -6,7 +6,7 @@ import { useCategories } from '@/store/store';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect, useMemo, useState } from 'react';
+import { cache, useEffect, useMemo, useState } from 'react';
 import { useShallow } from 'zustand/react/shallow';
 import './Menu.scss';
 
@@ -28,7 +28,7 @@ export const Menu = ({ showMenu, toggleMenu }: Props) => {
   );
 
   useEffect(() => {
-    getCategories();
+    cache(getCategories);
   }, []);
 
   useMemo(() => {
