@@ -22,7 +22,7 @@ export default async function RegistrationLayout({
     notFound();
   }
   return (
-    <html lang="en">
+    <html lang={locale}>
       <head>
         <link rel="icon" type="image/x-icon" href="/images/play.png" />
         {process.env.NEXT_PUBLIC_API_BASE_URL && (

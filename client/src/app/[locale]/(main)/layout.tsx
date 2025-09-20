@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { NextIntlClientProvider, hasLocale } from 'next-intl';
+import { Poppins } from 'next/font/google';
 import NextTopLoader from 'nextjs-toploader';
 import CacheProvider from 'react-inlinesvg/provider';
 import { Footer, Header } from '@/components';
@@ -8,6 +9,11 @@ import { Providers } from './providers';
 import { routing } from '@/i18n/routing';
 
 import '../../globals.scss';
+
+const poppins = Poppins({
+  weight: ['400', '500', '600', '700', '800', '900'],
+  subsets: ['latin'],
+});
 
 export const metadata: Metadata = {
   title: 'TechnoHeart',
@@ -46,7 +52,7 @@ export default async function LocaleLayout({
         </head>
         <NextIntlClientProvider>
           <Providers>
-            <body className="night">
+            <body className={`night ${poppins.className}`}>
               <NextTopLoader showSpinner={false} height={4} />
               <Header />
               <div className="main--wrapper">{children}</div>
