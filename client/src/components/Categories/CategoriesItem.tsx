@@ -19,6 +19,7 @@ export const CategoriesItem = ({ category }: CategoriesItemProps) => {
       className={`categories--card ${category.link.slice(1)}`}
       href={`/devices${category.link}`}
       aria-label={label}
+      prefetch={false}
       style={{ '--shadow-color': category.shadowColor } as CSSProperties}
       // onMouseOver={(e) =>
       //   (e.currentTarget.style.color = `${category.shadowColor}`)

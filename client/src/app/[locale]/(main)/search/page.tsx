@@ -1,4 +1,4 @@
-import { cache } from 'react';
+import { unstable_cache as nextCache } from 'next/cache';
 import { Metadata } from 'next';
 import { fetchDevices } from '@/services/api';
 import { Devices } from '@/components';
@@ -19,7 +19,9 @@ const DevicesPage = async ({
 }) => {
   const { link } = await params;
   const { q, page } = await searchParams;
-  const devicesCache = cache(fetchDevices);
+  const devicesCache = nextCache(fetchDevices, ['devices'], {
+    revalidate: 900,
+  });
   const devices = await devicesCache(q, link, 'popularity', 8, page);
 
   return (

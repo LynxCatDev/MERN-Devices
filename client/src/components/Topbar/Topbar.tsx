@@ -42,18 +42,21 @@ export const TopBar = () => {
         <Link
           href={`/ro/${pathname.slice(3)}`}
           className={pathname.includes('/ro') ? 'lang--active' : ''}
+          prefetch={false}
         >
           ro
         </Link>
         <Link
           href={`/en/${pathname.slice(3)}`}
           className={pathname.includes('/en') ? 'lang--active' : ''}
+          prefetch={false}
         >
           en
         </Link>
         <Link
           href={`/ru/${pathname.slice(3)}`}
           className={pathname.includes('/ru') ? 'lang--active' : ''}
+          prefetch={false}
         >
           ru
         </Link>

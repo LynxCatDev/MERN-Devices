@@ -1,8 +1,13 @@
 import dynamic from 'next/dynamic';
 import { unstable_cache as nextCache } from 'next/cache';
 import { getTranslations } from 'next-intl/server';
-import { Features, Loading, RecommendedDevices, ShopTitle } from '@/components';
-import { CategoriesSkeleton } from '@/components/Categories/CategoriesSkeleton';
+import {
+  Categories,
+  Features,
+  Loading,
+  RecommendedDevices,
+  ShopTitle,
+} from '@/components';
 import { PromotionsSkeleton } from '@/components/Promotions/PromotionsSkeleton';
 import { fetchCategories, fetchCollection, fetchDevices } from '@/services/api';
 import { DevicesDataProps } from '@/store/store.interface';
@@ -15,10 +20,10 @@ const Promotions = dynamic(
   { loading: () => <PromotionsSkeleton /> },
 );
 
-const Categories = dynamic(
-  () => import('@/components/Categories/Categories').then((m) => m.Categories),
-  { loading: () => <CategoriesSkeleton /> },
-);
+// const Categories = dynamic(
+//   () => import('@/components/Categories/Categories').then((m) => m.Categories),
+//   { loading: () => <CategoriesSkeleton /> },
+// );
 
 const ServicesSection = dynamic(
   () =>

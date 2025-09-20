@@ -23,7 +23,7 @@ export const RecommendedDevices = ({
   return (
     <div className="devices">
       {cardData && (
-        <Link href={`/devices${cardData.link}`}>
+        <Link href={`/devices${cardData.link}`} prefetch={false}>
           <div className="devices--banner">
             <Image
               src={cardData.imgUrl}

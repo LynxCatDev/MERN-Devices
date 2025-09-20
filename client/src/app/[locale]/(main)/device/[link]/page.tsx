@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { cache } from 'react';
+import { unstable_cache as nextCache } from 'next/cache';
 import dynamic from 'next/dynamic';
 import { fetchCategories, fetchDevice } from '@/services/api';
 import { baseUrl, checkImageUrl } from '@/helpers';
@@ -43,8 +43,8 @@ const DeviceInfoPage = async ({
 }) => {
   const { link } = await params;
   const [categoriesCache, deviceCache] = await Promise.all([
-    cache(fetchCategories),
-    cache(fetchDevice),
+    nextCache(fetchCategories, ['categories'], { revalidate: 900 }),
+    nextCache(fetchDevice, ['device', link], { revalidate: 900 }),
   ]);
   const categories = await categoriesCache();
   const device = await deviceCache(link);
