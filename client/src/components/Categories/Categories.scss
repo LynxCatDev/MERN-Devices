@@ -4,7 +4,8 @@
 
   &--wrapper {
     display: grid;
-    grid-template-columns: repeat(auto-fill, 140px);
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    grid-gap: 8px;
     grid-template-rows: 1fr;
     justify-items: center;
   }
@@ -17,7 +18,7 @@
     width: 115px;
     margin-right: 8px;
     font-size: 20px;
-    transition: all 0.3s;
+    transition: color 0.3s;
 
     &:hover {
       color: var(--shadow-color);
@@ -31,9 +32,12 @@
     background-color: var(--device-black);
     border-radius: 50%;
     margin-bottom: 8px;
-    transition: all 0.3s ease-out;
+    transition: box-shadow 0.3s ease-out;
     width: 115px;
     height: 115px;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    position: relative;
 
     &:hover {
       box-shadow: 0 0 16px 8px var(--shadow-color);

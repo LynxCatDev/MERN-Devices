@@ -27,15 +27,15 @@ export const CategoriesItem = ({ category }: CategoriesItemProps) => {
     >
       <div className="categories--img">
         <Image
-          priority
-          fetchPriority="high"
-          loading="eager"
+          priority={false}
+          fetchPriority="low"
+          loading="lazy"
           src={`${apiBaseUrl}${category?.imgUrl}`}
-          alt={label}
-          width={104}
-          height={104}
-          sizes="(max-width: 576px) 60px, (max-width: 768px) 70px, (max-width: 992px) 80px, 115px"
-          // style={{ width: '100%', height: 'auto' }}
+          alt=""
+          aria-hidden="true"
+          fill
+          sizes="(max-width:576px) 60px, (max-width:768px) 70px, (max-width:992px) 80px, 115px"
+          style={{ objectFit: 'contain' }}
           decoding="async"
         />
       </div>

@@ -53,8 +53,10 @@ export const DevicesItem = ({ device, priority = false }: DeviceItemProps) => {
               height={321}
               style={{ width: '100%', height: 'auto' }}
               onError={handleImageError}
-              priority={false}
-              loading="lazy"
+              priority={priority}
+              fetchPriority={priority ? 'high' : 'auto'}
+              loading={priority ? 'eager' : 'lazy'}
+              decoding="async"
             />
           </Link>
           <Link href={`/device/${device.link}`}>
