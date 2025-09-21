@@ -27,8 +27,10 @@ export const SlickSlider = () => {
     ]),
   );
 
+  const getSlidesCached = cache(getSlides);
+
   useEffect(() => {
-    cache(getSlides);
+    getSlidesCached();
   }, []);
 
   const settings: Settings = useMemo(
@@ -78,7 +80,7 @@ export const SlickSlider = () => {
                 sizes="100vw"
                 loading={i === 0 ? 'eager' : 'lazy'}
                 fetchPriority={i === 0 ? 'high' : 'auto'}
-                quality={i === 0 ? 80 : 100}
+                quality={i === 0 ? 65 : 100}
               />
             </Link>
           ))}
