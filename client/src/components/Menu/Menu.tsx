@@ -27,8 +27,10 @@ export const Menu = ({ showMenu, toggleMenu }: Props) => {
     ]),
   );
 
+  const getCategoriesCache = cache(getCategories);
+
   useEffect(() => {
-    cache(getCategories);
+    getCategoriesCache();
   }, []);
 
   useMemo(() => {
