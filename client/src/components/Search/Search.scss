@@ -91,8 +91,13 @@
     margin: 0 4px;
     max-width: 300px;
 
+    svg {
+      width: 12px;
+      height: 12px;
+    }
+
     input {
-      height: auto;
+      height: 32px;
       padding-left: 8px;
       font-size: 16px;
 
@@ -102,14 +107,14 @@
       }
     }
 
-    > a {
-      width: 20px;
+    &--clear-button {
+      width: 30px !important;
       height: -webkit-fill-available;
+    }
 
-      svg {
-        width: 12px;
-        height: 12px;
-      }
+    > a {
+      width: 30px;
+      height: -webkit-fill-available;
     }
   }
 
@@ -135,8 +140,14 @@
   }
 }
 
-@media screen and (max-width: 576px) {
+@media screen and (max-width: 768px) {
   .search {
-    max-width: 200px;
+    max-width: 100%;
   }
 }
+
+// @media screen and (max-width: 576px) {
+//   .search {
+//     max-width: 100%;
+//   }
+// }

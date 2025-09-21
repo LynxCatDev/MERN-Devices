@@ -127,7 +127,7 @@ export const Header = () => {
             onMouseOut={() => setShowMenu(false)}
           >
             <Icon type="menu" />
-            {t('menu')}
+            <span>{t('menu')}</span>
 
             <Menu showMenu={showMenu} toggleMenu={toggleMenu} />
           </div>
