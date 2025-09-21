@@ -144,7 +144,7 @@ export const DeviceInfo = ({ device }: DeviceInfoProps) => {
               alt={device?.name}
               width={0}
               height={0}
-              sizes="100vw"
+              sizes="(max-width: 992px) 100vw, 50vw"
               style={{ width: '100%', height: 'auto' }}
               priority
               onError={handleImageError}

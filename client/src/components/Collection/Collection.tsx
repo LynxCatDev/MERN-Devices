@@ -23,7 +23,7 @@ export const Collection = ({ collection }: Props) => {
               alt={item.name}
               width={0}
               height={0}
-              sizes="100vw"
+              sizes="(max-width: 992px) 100vw, 50vw"
               style={{ width: '100%', height: '100%' }}
               loading="lazy"
               priority={false}

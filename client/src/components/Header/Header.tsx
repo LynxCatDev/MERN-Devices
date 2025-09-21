@@ -116,7 +116,7 @@ export const Header = () => {
           }}
         >
           <div className="header--logo">
-            <Link href={`/`} aria-label="Home" prefetch>
+            <Link href={`/`} aria-label="Home" prefetch={false}>
               <Icon type="logo" />
             </Link>
           </div>

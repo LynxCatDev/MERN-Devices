@@ -56,6 +56,7 @@ export const DevicesItem = ({ device, priority = false }: DeviceItemProps) => {
               width={321}
               height={321}
               style={{ width: '100%', height: 'auto' }}
+              sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
               onError={handleImageError}
               priority={priority}
               fetchPriority={priority ? 'high' : 'auto'}
