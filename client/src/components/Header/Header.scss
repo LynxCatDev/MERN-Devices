@@ -196,11 +196,11 @@ header {
         margin: 0 4px !important;
 
         > a {
-          padding: 2px 4px;
+          padding: 4px 8px;
         }
 
         .logged-in {
-          padding: 2px 4px;
+          padding: 4px 8px;
         }
       }
       svg {
@@ -240,14 +240,32 @@ header {
   }
 }
 
+@media screen and (max-width: 768px) {
+  .header {
+    max-width: 100%;
+
+    &--menu {
+      margin: 0 8px;
+
+      span {
+        display: none;
+      }
+    }
+  }
+}
+
 @media screen and (max-width: 576px) {
   .header {
-    &--container {
-      padding: 4px;
-    }
-
     &--user {
       position: initial;
+
+      span {
+        display: none;
+      }
+    }
+
+    &--menu {
+      margin: 0 8px;
 
       span {
         display: none;

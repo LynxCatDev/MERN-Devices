@@ -101,6 +101,7 @@ export const Search = () => {
           type="icon"
           size="small"
           aria-label="clear search"
+          className="search--clear-button"
         >
           <Icon type="close" />
         </Button>
