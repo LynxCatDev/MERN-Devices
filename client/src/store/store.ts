@@ -27,39 +27,66 @@ import {
   UserStore,
 } from './store.interface';
 
-export const useSlider = create<SlidesStore>((set) => ({
-  slides: [] as SlidesStore['slides'],
-  loading: true,
-  error: null as SlidesStore['error'],
-  getSlides: async () => {
-    try {
-      const response = await fetchSlides();
-      set({ slides: response });
-    } catch (error) {
-      const typedError = error as Error;
-      set({ error: typedError.message });
-    } finally {
-      set({ loading: false });
-    }
-  },
-}));
+export const useSlider = create<SlidesStore>()(
+  persist(
+    (set) => ({
+      slides: [] as SlidesStore['slides'],
+      loading: true,
+      error: null as SlidesStore['error'],
+      getSlides: async () => {
+        try {
+          const response = await fetchSlides();
+          set({ slides: response });
+        } catch (error) {
+          const typedError = error as Error;
+          set({ error: typedError.message });
+        } finally {
+          set({ loading: false });
+        }
+      },
+    }),
+    {
+      name: 'slides',
+      storage: createJSONStorage(() => localStorage),
+      partialize: (state) => ({
+        categories: state.slides,
+      }),
+      // Skip hydration on server
+      skipHydration: true,
+    },
+  ),
+);
 
-export const useCategories = create<CategoriesStore>((set) => ({
-  categories: [] as CategoriesStore['categories'],
-  loading: true,
-  error: null as CategoriesStore['error'],
-  getCategories: async () => {
-    try {
-      const response: CategoriesStore['categories'] = await fetchCategories();
-      set({ categories: response });
-    } catch (error) {
-      const typedError = error as Error;
-      set({ error: typedError.message });
-    } finally {
-      set({ loading: false });
-    }
-  },
-}));
+export const useCategories = create<CategoriesStore>()(
+  persist(
+    (set) => ({
+      categories: [] as CategoriesStore['categories'],
+      loading: true as boolean,
+      error: null as CategoriesStore['error'],
+      getCategories: async () => {
+        try {
+          const response: CategoriesStore['categories'] =
+            await fetchCategories();
+          set({ categories: response });
+        } catch (error) {
+          const typedError = error as Error;
+          set({ error: typedError.message });
+        } finally {
+          set({ loading: false });
+        }
+      },
+    }),
+    {
+      name: 'categories',
+      storage: createJSONStorage(() => localStorage),
+      partialize: (state) => ({
+        categories: state.categories,
+      }),
+      // Skip hydration on server
+      skipHydration: true,
+    },
+  ),
+);
 
 export const useTheme = create<ThemeStore>()(
   persist(
@@ -76,43 +103,56 @@ export const useTheme = create<ThemeStore>()(
   ),
 );
 
-export const useDevices = create<DevicesStore>((set) => ({
-  devices: null as DevicesStore['devices'],
-  foundDevices: [] as DevicesStore['foundDevices'],
-  loading: true,
-  loadingFoundDevices: true,
-  error: null as DevicesStore['error'],
-  errorFoundDevices: null as DevicesStore['errorFoundDevices'],
-  getDevices: async (
-    q?: string,
-    category?: string,
-    sort?: string,
-    limit?: number,
-    page?: number,
-  ) => {
-    try {
-      const response = await fetchDevices(q, category, sort, limit, page);
-      set({ devices: response });
-    } catch (error) {
-      const typedError = error as Error;
-      set({ error: typedError.message });
-    } finally {
-      set({ loading: false });
-    }
-  },
-  searchDevices: async (query: string) => {
-    set({ loadingFoundDevices: true });
-    try {
-      const response = await searchDevices(query);
-      set({ foundDevices: response });
-    } catch (error) {
-      const typedError = error as Error;
-      set({ errorFoundDevices: typedError.message });
-    } finally {
-      set({ loadingFoundDevices: false });
-    }
-  },
-}));
+export const useDevices = create<DevicesStore>()(
+  persist(
+    (set) => ({
+      devices: null as DevicesStore['devices'],
+      foundDevices: [] as DevicesStore['foundDevices'],
+      loading: true,
+      loadingFoundDevices: true,
+      error: null as DevicesStore['error'],
+      errorFoundDevices: null as DevicesStore['errorFoundDevices'],
+      getDevices: async (
+        q?: string,
+        category?: string,
+        sort?: string,
+        limit?: number,
+        page?: number,
+      ) => {
+        try {
+          const response = await fetchDevices(q, category, sort, limit, page);
+          set({ devices: response });
+        } catch (error) {
+          const typedError = error as Error;
+          set({ error: typedError.message });
+        } finally {
+          set({ loading: false });
+        }
+      },
+      searchDevices: async (query: string) => {
+        set({ loadingFoundDevices: true });
+        try {
+          const response = await searchDevices(query);
+          set({ foundDevices: response });
+        } catch (error) {
+          const typedError = error as Error;
+          set({ errorFoundDevices: typedError.message });
+        } finally {
+          set({ loadingFoundDevices: false });
+        }
+      },
+    }),
+    {
+      name: 'devices',
+      storage: createJSONStorage(() => localStorage),
+      partialize: (state) => ({
+        categories: state.devices,
+      }),
+      // Skip hydration on server
+      skipHydration: true,
+    },
+  ),
+);
 
 export const useUser = create<UserStore>()(
   persist(

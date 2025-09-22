@@ -58,36 +58,6 @@ export default async function LocaleLayout({
           <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
           <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
           {/* Preload critical images to break image loading chain */}
-          <link
-            rel="preload"
-            href="/images/phones_new.webp"
-            as="image"
-            type="image/webp"
-            fetchPriority="high"
-          />
-          <link
-            rel="preload"
-            href="/images/laptop_new.webp"
-            as="image"
-            type="image/webp"
-            fetchPriority="high"
-          />
-          <link
-            rel="preload"
-            href="/images/gadget_new.webp"
-            as="image"
-            type="image/webp"
-            fetchPriority="low"
-          />
-
-          {/* Preload critical fonts */}
-          <link
-            rel="preload"
-            href="https://fonts.gstatic.com/s/poppins/v20/pxiEyp8kv8JHgFVrJJfecnFHGPc.woff2"
-            as="font"
-            type="font/woff2"
-            crossOrigin=""
-          />
 
           <link rel="icon" type="image/x-icon" href="/images/play.png" />
 
