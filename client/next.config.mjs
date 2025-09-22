@@ -37,10 +37,50 @@ const nextConfig = {
       },
     ],
   },
-  webpack(config, { isServer }) {
+  webpack(config, { isServer, dev }) {
     config.infrastructureLogging = {
       level: 'error', // Only show errors, not warnings/info
     };
+
+    // Optimize bundle splitting for production
+    if (!dev && !isServer) {
+      config.optimization = {
+        ...config.optimization,
+        splitChunks: {
+          chunks: 'all',
+          cacheGroups: {
+            vendor: {
+              test: /[\\/]node_modules[\\/]/,
+              name: 'vendors',
+              priority: 10,
+              chunks: 'all',
+            },
+            common: {
+              name: 'common',
+              minChunks: 2,
+              priority: 5,
+              chunks: 'all',
+              reuseExistingChunk: true,
+            },
+            // Separate chunk for large libraries
+            react: {
+              test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
+              name: 'react',
+              priority: 20,
+              chunks: 'all',
+            },
+            // Separate chunk for UI libraries
+            ui: {
+              test: /[\\/]node_modules[\\/](@chakra-ui|@emotion)[\\/]/,
+              name: 'ui',
+              priority: 15,
+              chunks: 'all',
+            },
+          },
+        },
+      };
+    }
+
     return config;
   },
   async headers() {
