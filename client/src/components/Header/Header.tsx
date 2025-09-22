@@ -3,8 +3,7 @@
 import { useOutsideClick } from '@chakra-ui/hooks';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { useEffect, useMemo, useRef, useState } from 'react';
-import dynamic from 'next/dynamic';
+import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import { useShallow } from 'zustand/react/shallow';
 import {
   getAccessToken,
@@ -20,10 +19,9 @@ import { TopBar } from '../Topbar/Topbar';
 
 import './Header.scss';
 
-const Menu = dynamic(() => import('../Menu/Menu').then((m) => m.Menu), {
-  ssr: false,
-  loading: () => null,
-});
+const Menu = lazy(() =>
+  import('../Menu/Menu').then((m) => ({ default: m.Menu })),
+);
 
 export const Header = () => {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
@@ -129,7 +127,9 @@ export const Header = () => {
             <Icon type="menu" />
             <span>{t('menu')}</span>
 
-            <Menu showMenu={showMenu} toggleMenu={toggleMenu} />
+            <Suspense fallback={null}>
+              <Menu showMenu={showMenu} toggleMenu={toggleMenu} />
+            </Suspense>
           </div>
 
           <Search />

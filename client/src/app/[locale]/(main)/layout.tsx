@@ -48,17 +48,6 @@ export default async function LocaleLayout({
     <CacheProvider>
       <html lang={locale}>
         <head>
-          {/* Critical resource hints to break dependency chains */}
-          <link rel="preconnect" href="https://fonts.googleapis.com" />
-          <link
-            rel="preconnect"
-            href="https://fonts.gstatic.com"
-            crossOrigin=""
-          />
-          <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
-          <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
-          {/* Preload critical images to break image loading chain */}
-
           <link rel="icon" type="image/x-icon" href="/images/play.png" />
 
           {process.env.NEXT_PUBLIC_API_BASE_URL && (
