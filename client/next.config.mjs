@@ -5,7 +5,6 @@ const withNextIntl = createNextIntlPlugin();
 const nextConfig = {
   reactStrictMode: true,
   compress: true,
-  poweredByHeader: false,
   generateEtags: true,
   experimental: {
     optimizePackageImports: [
@@ -15,6 +14,7 @@ const nextConfig = {
       'framer-motion',
       '@ant-design/react-slick',
     ],
+    cssChunking: true,
   },
   images: {
     deviceSizes: [360, 414, 640, 750, 828, 1080, 1200, 1920],
@@ -37,49 +37,10 @@ const nextConfig = {
       },
     ],
   },
-  webpack(config, { isServer, dev }) {
+  webpack(config) {
     config.infrastructureLogging = {
       level: 'error', // Only show errors, not warnings/info
     };
-
-    // Optimize bundle splitting for production
-    if (!dev && !isServer) {
-      config.optimization = {
-        ...config.optimization,
-        splitChunks: {
-          chunks: 'all',
-          cacheGroups: {
-            vendor: {
-              test: /[\\/]node_modules[\\/]/,
-              name: 'vendors',
-              priority: 10,
-              chunks: 'all',
-            },
-            common: {
-              name: 'common',
-              minChunks: 2,
-              priority: 5,
-              chunks: 'all',
-              reuseExistingChunk: true,
-            },
-            // Separate chunk for large libraries
-            react: {
-              test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
-              name: 'react',
-              priority: 20,
-              chunks: 'all',
-            },
-            // Separate chunk for UI libraries
-            ui: {
-              test: /[\\/]node_modules[\\/](@chakra-ui|@emotion)[\\/]/,
-              name: 'ui',
-              priority: 15,
-              chunks: 'all',
-            },
-          },
-        },
-      };
-    }
 
     return config;
   },
@@ -140,8 +101,6 @@ const nextConfig = {
             key: 'Cache-Control',
             value: 'public, max-age=31536000, immutable',
           },
-          // optional but harmless:
-          // { key: 'Content-Type', value: 'text/css; charset=utf-8' },
         ],
       },
     ];
