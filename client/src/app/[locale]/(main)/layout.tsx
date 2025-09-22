@@ -13,17 +13,8 @@ import '../../globals.scss';
 const poppins = Poppins({
   weight: ['400', '500', '600', '700', '800', '900'],
   subsets: ['latin'],
-  display: 'swap',
+  display: 'optional',
   preload: true,
-  fallback: [
-    'system-ui',
-    '-apple-system',
-    'BlinkMacSystemFont',
-    'Segoe UI',
-    'Roboto',
-    'Arial',
-    'sans-serif',
-  ],
   adjustFontFallback: true,
   variable: '--font-poppins',
 });
