@@ -13,6 +13,19 @@ import '../../globals.scss';
 const poppins = Poppins({
   weight: ['400', '500', '600', '700', '800', '900'],
   subsets: ['latin'],
+  display: 'swap',
+  preload: true,
+  fallback: [
+    'system-ui',
+    '-apple-system',
+    'BlinkMacSystemFont',
+    'Segoe UI',
+    'Roboto',
+    'Arial',
+    'sans-serif',
+  ],
+  adjustFontFallback: true,
+  variable: '--font-poppins',
 });
 
 export const metadata: Metadata = {
@@ -35,7 +48,49 @@ export default async function LocaleLayout({
     <CacheProvider>
       <html lang={locale}>
         <head>
+          {/* Critical resource hints to break dependency chains */}
+          <link rel="preconnect" href="https://fonts.googleapis.com" />
+          <link
+            rel="preconnect"
+            href="https://fonts.gstatic.com"
+            crossOrigin=""
+          />
+          <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+          <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+          {/* Preload critical images to break image loading chain */}
+          <link
+            rel="preload"
+            href="/images/phones_new.webp"
+            as="image"
+            type="image/webp"
+            fetchPriority="high"
+          />
+          <link
+            rel="preload"
+            href="/images/laptop_new.webp"
+            as="image"
+            type="image/webp"
+            fetchPriority="high"
+          />
+          <link
+            rel="preload"
+            href="/images/gadget_new.webp"
+            as="image"
+            type="image/webp"
+            fetchPriority="low"
+          />
+
+          {/* Preload critical fonts */}
+          <link
+            rel="preload"
+            href="https://fonts.gstatic.com/s/poppins/v20/pxiEyp8kv8JHgFVrJJfecnFHGPc.woff2"
+            as="font"
+            type="font/woff2"
+            crossOrigin=""
+          />
+
           <link rel="icon" type="image/x-icon" href="/images/play.png" />
+
           {process.env.NEXT_PUBLIC_API_BASE_URL && (
             <>
               <link
