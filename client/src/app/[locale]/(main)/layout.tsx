@@ -57,14 +57,6 @@ export default async function LocaleLayout({
           />
           <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
           <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
-
-          {/* Preload critical CSS - highest priority */}
-          <link
-            rel="preload"
-            href="/_next/static/css/app/[locale]/(main)/layout.css"
-            as="style"
-          />
-
           {/* Preload critical images to break image loading chain */}
           <link
             rel="preload"

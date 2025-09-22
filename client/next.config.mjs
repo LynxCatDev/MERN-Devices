@@ -45,17 +45,6 @@ const nextConfig = {
   },
   async headers() {
     return [
-      // Early Hints for critical resources on main pages
-      {
-        source: '/:locale(en|ro|ru)',
-        headers: [
-          {
-            key: 'Link',
-            value:
-              '</images/phones_new.webp>; rel=preload; as=image; type=image/webp; fetchpriority=high, </images/laptop_new.webp>; rel=preload; as=image; type=image/webp; fetchpriority=high, <https://fonts.googleapis.com>; rel=preconnect, <https://fonts.gstatic.com>; rel=preconnect; crossorigin',
-          },
-        ],
-      },
       // Next build assets
       {
         source: '/_next/static/:path*',
