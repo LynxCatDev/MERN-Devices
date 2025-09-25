@@ -6,7 +6,7 @@ import { Loading } from '../Loading/Loading';
 interface Props {
   children: React.ReactNode;
   value?: string | number;
-  onClick?: () => void;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   className?: string;
   type?: 'primary' | 'invert' | 'transparent' | 'icon' | 'black';
   disabled?: boolean;
@@ -26,18 +26,22 @@ export const Button = ({
   size = 'medium',
   ...props
 }: Props) => {
-  // const onClickHandler = (): void => {
-  //   if (onClick !== undefined) {
-  //     return onClick();
-  //   }
-  // };
+  const handleClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
+    if (disabled || isLoading) {
+      // Block clicks on disabled/loading state
+      e.preventDefault();
+      e.stopPropagation();
+      return;
+    }
+    onClick?.(e);
+  };
 
   return (
     <button
       className={`button button-type-${type} button-type-${size} ${
         disabled ? 'disabled' : ''
       } ${className}`}
-      onClick={onClick}
+      onClick={(e) => handleClick(e)}
       {...props}
       type={generalType}
     >
