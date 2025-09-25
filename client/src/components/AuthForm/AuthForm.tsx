@@ -99,7 +99,7 @@ export const AuthForm = () => {
     },
   });
 
-  const buttonEnabled = !emailValidation.test(formik.values.email);
+  const buttonEnabled = emailValidation.test(formik.values.email);
 
   useEffect(() => {
     if (profile?.user || profile?.accessToken) {
@@ -232,7 +232,7 @@ export const AuthForm = () => {
             generalType="submit"
             size="auth"
             className="login--btn"
-            disabled={buttonEnabled || isSubmitting}
+            disabled={!buttonEnabled || isSubmitting}
             isLoading={isSubmitting}
           >
             {isLoginPage ? t('login') : t('register')}

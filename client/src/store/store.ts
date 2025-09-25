@@ -253,7 +253,20 @@ export const useUser = create<UserStore>()((set) => ({
     set({ profile: null });
     removeFromStorage();
     await userLogOut();
-    // window.location.replace('/');
+    if (typeof window !== 'undefined') {
+      const { pathname } = window.location;
+      // Detect locale from the first path segment
+      const isAlreadyHome =
+        pathname === '/' ||
+        pathname === '/en' ||
+        pathname === '/ro' ||
+        pathname === '/ru';
+
+      // Only redirect if not already on the (locale) home page
+      if (!isAlreadyHome) {
+        window.location.replace('/');
+      }
+    }
   },
   addToFavorites: async (id: number) => {
     try {
