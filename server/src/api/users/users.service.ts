@@ -65,7 +65,7 @@ export class UsersService {
 
       if (emailUser) {
         throw new UnprocessableEntityException({
-          error: errorMessage.emailUnique,
+          message: errorMessage.emailUnique,
         });
       }
     }

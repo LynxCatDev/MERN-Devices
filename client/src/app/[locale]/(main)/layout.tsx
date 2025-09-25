@@ -5,6 +5,7 @@ import { Poppins } from 'next/font/google';
 import NextTopLoader from 'nextjs-toploader';
 import CacheProvider from 'react-inlinesvg/provider';
 import { Footer, Header } from '@/components';
+import { Toaster } from '@/components/Toaster/Toaster';
 import { Providers } from './providers';
 import { routing } from '@/i18n/routing';
 
@@ -62,6 +63,8 @@ export default async function LocaleLayout({
               <Header />
               <div className="main--wrapper">{children}</div>
               <Footer />
+              {/* Mount global toaster once */}
+              <Toaster />
             </body>
           </Providers>
         </NextIntlClientProvider>

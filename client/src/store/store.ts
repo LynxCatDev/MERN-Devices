@@ -26,6 +26,7 @@ import {
   UserResponse,
   UserStore,
 } from './store.interface';
+import { AxiosError } from 'axios';
 
 export const useSlider = create<SlidesStore>()(
   persist(
@@ -154,168 +155,184 @@ export const useDevices = create<DevicesStore>()(
   ),
 );
 
-export const useUser = create<UserStore>()(
-  persist(
-    (set) => ({
-      profile: null as UserStore['profile'],
-      userFavorites: null as UserStore['userFavorites'],
-      activeFavoritesIds: null as UserStore['activeFavoritesIds'],
-      loading: true,
-      error: null as UserStore['error'],
-      registration: async (auth: AuthProps) => {
-        try {
-          const response = await userRegistration(auth);
+export const useUser = create<UserStore>()((set) => ({
+  profile: null as UserStore['profile'],
+  userFavorites: null as UserStore['userFavorites'],
+  activeFavoritesIds: null as UserStore['activeFavoritesIds'],
+  loading: true,
+  error: null as UserStore['error'],
+  registration: async (auth: AuthProps) => {
+    try {
+      const response = await userRegistration(auth);
+      console.log(response, 'response on registration');
 
-          if (response.status !== 200) {
-            const message = response.data.message || response.data.error;
-            throw new Error(`${message}`);
-          }
+      if (response.status !== 200) {
+        const message = response.data.message || response.data.error;
+        console.log(message, 'message');
+        throw new Error(`${message}`);
+      }
 
-          // Store access token from response (refresh token handled by server cookies)
-          if (response.data.accessToken) {
-            setAccessToken(response.data.accessToken);
-          }
+      // Store access token from response (refresh token handled by server cookies)
+      if (response.data.accessToken) {
+        setAccessToken(response.data.accessToken);
+      }
 
-          set({ profile: response.data });
-        } catch (error) {
-          const typedError = error as Error;
-          set({ error: typedError.message });
-        }
-      },
-      login: async (email: string, password: string) => {
-        try {
-          const response = await userLogin(email, password);
+      set({ profile: response.data });
+    } catch (error) {
+      const typedError = error as AxiosError;
+      set({
+        error:
+          (typedError.response && (typedError.response.data as any)?.message) ||
+          typedError.message,
+      });
+    }
+  },
+  login: async (email: string, password: string) => {
+    try {
+      const response = await userLogin(email, password);
 
-          if (response.status !== 200) {
-            const message = response.data.message || response.data.error;
-            throw new Error(`${message}`);
-          }
+      if (response.status !== 200) {
+        const message = response.data.message || response.data.error;
+        throw new Error(`${message}`);
+      }
 
-          // Store access token from response (refresh token handled by server cookies)
-          if (response.data.accessToken) {
-            setAccessToken(response.data.accessToken);
-          }
+      // Store access token from response (refresh token handled by server cookies)
+      if (response.data.accessToken) {
+        setAccessToken(response.data.accessToken);
+      }
 
-          set({ profile: response.data });
-        } catch (error) {
-          const typedError = error as Error;
-          set({ error: typedError.message });
-        }
-      },
-      validateSession: async () => {
-        try {
-          const response = await validateSession();
+      set({ profile: response.data });
+    } catch (error) {
+      const typedError = error as AxiosError;
+      set({
+        error:
+          (typedError.response && (typedError.response.data as any)?.message) ||
+          typedError.message,
+      });
+    }
+  },
+  validateSession: async () => {
+    try {
+      const response = await validateSession();
 
-          if (response.status !== 200) {
-            const message = response.data.message || response.data.error;
-            throw new Error(`${message}`);
-          }
+      if (response.status !== 200) {
+        const message = response.data.message || response.data.error;
+        throw new Error(`${message}`);
+      }
 
-          // Only store access token from response (refresh token is httpOnly)
-          if (response.data.accessToken) {
-            setAccessToken(response.data.accessToken);
-          }
+      // Only store access token from response (refresh token is httpOnly)
+      if (response.data.accessToken) {
+        setAccessToken(response.data.accessToken);
+      }
 
-          set({
-            profile: { user: response.data.user },
-            activeFavoritesIds: response.data.user.activeFavoritesIds,
-            error: null,
-          });
-        } catch (error) {
-          const typedError = error as Error;
+      set({
+        profile: { user: response.data.user },
+        activeFavoritesIds: response.data.user.activeFavoritesIds,
+        error: null,
+      });
+    } catch (error) {
+      const typedError = error as Error;
 
-          // Don't set error state for expected authentication failures
-          const isExpectedAuthError =
-            typedError.message === 'No refresh token provided' ||
-            typedError.message === 'Invalid refresh token' ||
-            typedError.message.includes('401');
+      // Don't set error state for expected authentication failures
+      const isExpectedAuthError =
+        typedError.message === 'No refresh token provided' ||
+        typedError.message === 'Invalid refresh token' ||
+        typedError.message.includes('401');
 
-          if (!isExpectedAuthError) {
-            set({ error: typedError.message });
-          } else {
-            // Clear any existing profile on auth failure
-            set({ profile: null, error: null });
-          }
-        } finally {
-          set({ loading: false });
-        }
-      },
-      userLogOut: async () => {
-        set({ profile: null });
-        removeFromStorage();
-        await userLogOut();
+      if (!isExpectedAuthError) {
+        set({ error: typedError.message });
+      } else {
+        // Clear any existing profile on auth failure
+        set({ profile: null, error: null });
+      }
+    } finally {
+      set({ loading: false });
+    }
+  },
+  userLogOut: async () => {
+    set({ profile: null });
+    removeFromStorage();
+    await userLogOut();
+    if (typeof window !== 'undefined') {
+      const { pathname } = window.location;
+      // Detect locale from the first path segment
+      const isAlreadyHome =
+        pathname === '/' ||
+        pathname === '/en' ||
+        pathname === '/ro' ||
+        pathname === '/ru';
+
+      // Only redirect if not already on the (locale) home page
+      if (!isAlreadyHome) {
         window.location.replace('/');
-      },
-      addToFavorites: async (id: number) => {
-        try {
-          const response: UserResponse = await addToFavorites(id);
-          if (response.status !== 200) {
-            const message = response?.response?.data?.message;
-            throw new Error(`${message}`);
+      }
+    }
+  },
+  addToFavorites: async (id: number) => {
+    try {
+      const response: UserResponse = await addToFavorites(id);
+      if (response.status !== 200) {
+        const message = response?.response?.data?.message;
+        throw new Error(`${message}`);
+      }
+
+      const responseFavoriteId = Number(response?.data?.id);
+
+      const checkFavorites = (favorites: DevicesProps[]) => {
+        if (favorites?.length > 0) {
+          const newFavorites = [...favorites, response.data];
+          if (
+            favorites?.find((favorite) => favorite.id === responseFavoriteId)
+          ) {
+            const filteredFavorites = favorites?.filter(
+              (favorite) => favorite.id !== responseFavoriteId,
+            );
+            return filteredFavorites;
+          } else {
+            return newFavorites;
           }
-
-          const responseFavoriteId = Number(response?.data?.id);
-
-          const checkFavorites = (favorites: DevicesProps[]) => {
-            if (favorites?.length > 0) {
-              const newFavorites = [...favorites, response.data];
-              if (
-                favorites?.find(
-                  (favorite) => favorite.id === responseFavoriteId,
-                )
-              ) {
-                const filteredFavorites = favorites?.filter(
-                  (favorite) => favorite.id !== responseFavoriteId,
-                );
-                return filteredFavorites;
-              } else {
-                return newFavorites;
-              }
-            }
-          };
-
-          const checkFavoritesIds = (activeFavoritesIds: number[]) => {
-            const newFavoritesIds = [...activeFavoritesIds, responseFavoriteId];
-            if (
-              activeFavoritesIds?.find(
-                (favoriteId) => favoriteId === responseFavoriteId,
-              )
-            ) {
-              const filteredFavoritesIds = activeFavoritesIds?.filter(
-                (favoriteId) => favoriteId !== responseFavoriteId,
-              );
-              return filteredFavoritesIds;
-            } else {
-              return newFavoritesIds;
-            }
-          };
-
-          set((state: any) => ({
-            userFavorites: {
-              ...state?.userFavorites,
-              data: checkFavorites(state?.userFavorites?.data),
-            },
-            activeFavoritesIds: checkFavoritesIds(state.activeFavoritesIds),
-          }));
-        } catch (error) {
-          const typedError = error as Error;
-          set({ error: typedError.message });
         }
-      },
-      getUserFavorites: async (page: number) => {
-        try {
-          const response: UserResponse = await getUserFavorites(page);
-          if (response.status !== 200) {
-            const message = response?.response?.data?.message;
-            throw new Error(`${message}`);
-          }
-          set({ userFavorites: response.data.favorites });
-        } catch (error) {
-          const typedError = error as Error;
-          set({ error: typedError.message });
+      };
+
+      const checkFavoritesIds = (activeFavoritesIds: number[]) => {
+        const newFavoritesIds = [...activeFavoritesIds, responseFavoriteId];
+        if (
+          activeFavoritesIds?.find(
+            (favoriteId) => favoriteId === responseFavoriteId,
+          )
+        ) {
+          const filteredFavoritesIds = activeFavoritesIds?.filter(
+            (favoriteId) => favoriteId !== responseFavoriteId,
+          );
+          return filteredFavoritesIds;
+        } else {
+          return newFavoritesIds;
         }
-      },
-    }),
-    { name: 'user', storage: createJSONStorage(() => localStorage) },
-  ),
-);
+      };
+
+      set((state: any) => ({
+        userFavorites: {
+          ...state?.userFavorites,
+          data: checkFavorites(state?.userFavorites?.data),
+        },
+        activeFavoritesIds: checkFavoritesIds(state.activeFavoritesIds),
+      }));
+    } catch (error) {
+      const typedError = error as Error;
+      set({ error: typedError.message });
+    }
+  },
+  getUserFavorites: async (page: number) => {
+    try {
+      const response: UserResponse = await getUserFavorites(page);
+      if (response.status !== 200) {
+        const message = response?.response?.data?.message;
+        throw new Error(`${message}`);
+      }
+      set({ userFavorites: response.data.favorites });
+    } catch (error) {
+      const typedError = error as Error;
+      set({ error: typedError.message });
+    }
+  },
+}));

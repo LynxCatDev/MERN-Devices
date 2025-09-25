@@ -99,7 +99,7 @@ export const AuthForm = () => {
     },
   });
 
-  const buttonEnabled = !emailValidation.test(formik.values.email);
+  const buttonEnabled = emailValidation.test(formik.values.email);
 
   useEffect(() => {
     if (profile?.user || profile?.accessToken) {
@@ -139,11 +139,10 @@ export const AuthForm = () => {
                 placeholder={t('first_name')}
                 autoComplete="off"
               />
-
-              {formik.submitCount > 0 && formik.errors.first_name && (
-                <p>{formik.errors.first_name}</p>
-              )}
             </div>
+            {formik.submitCount > 0 && formik.errors.first_name && (
+              <div className="error-message">{formik.errors.first_name}</div>
+            )}
 
             <div className="login--input-wrapper">
               <span>
@@ -160,11 +159,10 @@ export const AuthForm = () => {
                 placeholder={t('last_name')}
                 autoComplete="off"
               />
-
-              {formik.submitCount > 0 && formik.errors.last_name && (
-                <p>{formik.errors.last_name}</p>
-              )}
             </div>
+            {formik.submitCount > 0 && formik.errors.last_name && (
+              <div className="error-message">{formik.errors.last_name}</div>
+            )}
           </>
         )}
 
@@ -187,7 +185,7 @@ export const AuthForm = () => {
         </div>
 
         {formik.submitCount > 0 && formik.errors.email && (
-          <div>{formik.errors.email}</div>
+          <div className="error-message">{formik.errors.email}</div>
         )}
 
         <div className="login--input-wrapper">
@@ -206,10 +204,6 @@ export const AuthForm = () => {
             autoComplete="off"
           />
 
-          {formik.submitCount > 0 && formik.errors.password && (
-            <p>{formik.errors.password}</p>
-          )}
-
           <button
             type="button"
             className="password-see-btn"
@@ -220,6 +214,10 @@ export const AuthForm = () => {
             <Icon type={showPassword ? 'password-seen' : 'password-hide'} />
           </button>
         </div>
+
+        {formik.submitCount > 0 && formik.errors.password && (
+          <div className="error-message">{formik.errors.password}</div>
+        )}
 
         <div className="login--form--actions">
           {isLoginPage && (
@@ -234,16 +232,10 @@ export const AuthForm = () => {
             generalType="submit"
             size="auth"
             className="login--btn"
-            disabled={buttonEnabled || isSubmitting}
+            disabled={!buttonEnabled || isSubmitting}
             isLoading={isSubmitting}
           >
-            {isSubmitting
-              ? isLoginPage
-                ? 'Signing in...'
-                : 'Creating account...'
-              : isLoginPage
-              ? t('login')
-              : t('register')}
+            {isLoginPage ? t('login') : t('register')}
           </Button>
         </div>
 

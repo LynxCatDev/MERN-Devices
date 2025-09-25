@@ -20,3 +20,4 @@ export { AuthForm } from './AuthForm/AuthForm';
 export { Separator } from './Separator/Separator';
 export { Pagination } from './Pagination/Pagination';
 export { Menu } from './Menu/Menu';
+export { Toaster } from './Toaster/Toaster';

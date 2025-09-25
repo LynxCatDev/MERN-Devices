@@ -11,6 +11,7 @@ import { useEffect, useState } from 'react';
 import { useShallow } from 'zustand/react/shallow';
 import { Icon } from '../Icon/Icon';
 import './Devices.scss';
+import { toaster } from '../Toaster/Toaster';
 
 interface DeviceItemProps {
   device: DevicesProps;
@@ -20,8 +21,9 @@ interface DeviceItemProps {
 export const DevicesItem = ({ device, priority = false }: DeviceItemProps) => {
   const t = useTranslations('Categories');
   const [imgSrc, setImgSrc] = useState(checkImageUrl(device?.imageUrl));
-  const [activeFavoritesIds, addToFavorites, loading, error] = useUser(
+  const [profile, activeFavoritesIds, addToFavorites, loading, error] = useUser(
     useShallow((state) => [
+      state.profile,
       state.activeFavoritesIds,
       state.addToFavorites,
       state.loading,
@@ -39,6 +41,14 @@ export const DevicesItem = ({ device, priority = false }: DeviceItemProps) => {
 
   const handleImageError = () => {
     setImgSrc('/images/placeholder.webp');
+  };
+
+  const handleInformUser = () => {
+    toaster.create({
+      title: 'Please log in to add favorites',
+      type: 'info',
+      duration: 4000,
+    });
   };
 
   return (
@@ -100,7 +110,11 @@ export const DevicesItem = ({ device, priority = false }: DeviceItemProps) => {
               </div>
               <div className="add-to-favorites">
                 <Button
-                  onClick={() => addToFavorites(device.id)}
+                  onClick={
+                    profile?.user
+                      ? () => addToFavorites(device.id)
+                      : () => handleInformUser()
+                  }
                   id={
                     mounted && activeAddToFavorites
                       ? 'added-to-favorites'
