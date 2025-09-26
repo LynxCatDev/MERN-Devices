@@ -250,7 +250,7 @@ export const useUser = create<UserStore>()((set) => ({
     }
   },
   userLogOut: async () => {
-    set({ profile: null });
+    set({ profile: null, activeFavoritesIds: [] });
     removeFromStorage();
     await userLogOut();
     if (typeof window !== 'undefined') {
