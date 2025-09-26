@@ -71,13 +71,7 @@ const Home = async () => {
     const categoryTitle = tCategories(category);
     const productsLabel = tDevices('products');
     return (
-      <section
-        style={{
-          contentVisibility: 'auto',
-          containIntrinsicSize: '800px',
-          contain: 'layout paint style',
-        }}
-      >
+      <section>
         <RecommendedDevices
           category={category}
           devices={devices}

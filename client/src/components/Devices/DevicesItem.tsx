@@ -43,9 +43,9 @@ export const DevicesItem = ({ device, priority = false }: DeviceItemProps) => {
     setImgSrc('/images/placeholder.webp');
   };
 
-  const handleInformUser = () => {
+  const handleInformUser = (type = 'favorites') => {
     toaster.create({
-      title: 'Please log in to add favorites',
+      title: `Please log in to add ${type}`,
       type: 'info',
       duration: 4000,
     });
@@ -99,7 +99,7 @@ export const DevicesItem = ({ device, priority = false }: DeviceItemProps) => {
               <div className="compare-devices">
                 <Button
                   aria-label={t('compare')}
-                  // onClick={() => addToCompare(product)}
+                  onClick={() => handleInformUser('compare')}
                   // className={userCompareFind ? 'added-to-compare' : ''}
                 >
                   <Icon type="compare" />
@@ -113,7 +113,7 @@ export const DevicesItem = ({ device, priority = false }: DeviceItemProps) => {
                   onClick={
                     profile?.user
                       ? () => addToFavorites(device.id)
-                      : () => handleInformUser()
+                      : () => handleInformUser('favorites')
                   }
                   id={
                     mounted && activeAddToFavorites
