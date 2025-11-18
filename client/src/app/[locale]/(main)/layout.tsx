@@ -36,9 +36,10 @@ export default async function LocaleLayout({
   if (!hasLocale(routing.locales, locale)) {
     notFound();
   }
+
   return (
     <CacheProvider>
-      <html lang={locale}>
+      <html lang={locale} suppressHydrationWarning>
         <head>
           <link rel="icon" type="image/x-icon" href="/images/play.png" />
 
