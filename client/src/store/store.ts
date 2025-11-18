@@ -100,6 +100,8 @@ export const useTheme = create<ThemeStore>()(
     {
       name: 'theme',
       storage: createJSONStorage(() => localStorage),
+      // Skip hydration on server to prevent mismatch
+      skipHydration: true,
     },
   ),
 );
