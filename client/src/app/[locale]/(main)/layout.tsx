@@ -2,14 +2,15 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { NextIntlClientProvider, hasLocale } from 'next-intl';
 import { Poppins } from 'next/font/google';
-import NextTopLoader from 'nextjs-toploader';
 import CacheProvider from 'react-inlinesvg/provider';
 import { Footer, Header } from '@/components';
 import { Toaster } from '@/components/Toaster/Toaster';
 import { Providers } from './providers';
 import { routing } from '@/i18n/routing';
+import { TopLoader } from './TopLoader';
 
 import '../../globals.scss';
+import { getMessages } from 'next-intl/server';
 
 const poppins = Poppins({
   weight: ['400', '500', '600', '700', '800', '900'],
@@ -36,9 +37,12 @@ export default async function LocaleLayout({
   if (!hasLocale(routing.locales, locale)) {
     notFound();
   }
+
+  const messages = await getMessages();
+
   return (
     <CacheProvider>
-      <html lang={locale}>
+      <html lang={locale} suppressHydrationWarning>
         <head>
           <link rel="icon" type="image/x-icon" href="/images/play.png" />
 
@@ -56,18 +60,18 @@ export default async function LocaleLayout({
             </>
           )}
         </head>
-        <NextIntlClientProvider>
-          <Providers>
-            <body className={`night ${poppins.className}`}>
-              <NextTopLoader showSpinner={false} height={4} />
+        <body className={`night ${poppins.className}`} suppressHydrationWarning>
+          <NextIntlClientProvider messages={messages}>
+            <Providers>
+              <TopLoader />
               <Header />
               <div className="main--wrapper">{children}</div>
               <Footer />
               {/* Mount global toaster once */}
               <Toaster />
-            </body>
-          </Providers>
-        </NextIntlClientProvider>
+            </Providers>
+          </NextIntlClientProvider>
+        </body>
       </html>
     </CacheProvider>
   );
