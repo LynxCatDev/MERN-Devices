@@ -2,10 +2,10 @@
 
 import { apiBaseUrl } from '@/helpers/baseUrl';
 import { useSlider } from '@/store/store';
-import Slider, { Settings } from '@ant-design/react-slick';
+import Slider, { Settings } from 'react-slick';
 import Image from 'next/image';
 import Link from 'next/link';
-import { cache, useEffect, useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useShallow } from 'zustand/react/shallow';
 import { useLocale } from 'next-intl';
 import { NoData } from '../NoData/NoData';
@@ -27,11 +27,9 @@ export const SlickSlider = () => {
     ]),
   );
 
-  const getSlidesCached = cache(getSlides);
-
   useEffect(() => {
-    getSlidesCached();
-  }, []);
+    void getSlides();
+  }, [getSlides]);
 
   const settings: Settings = useMemo(
     () => ({

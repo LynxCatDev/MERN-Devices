@@ -8,6 +8,8 @@ import {
 } from './schemas/devices.schema';
 import { getPageNumber, getTotalPages } from '../../utils/utils';
 
+export type DeviceDetailsResponse = (Devices & { imageUrls: string[] }) | null;
+
 @Injectable()
 export class DevicesService {
   constructor(
@@ -57,7 +59,7 @@ export class DevicesService {
     };
   };
 
-  getDevice = async (link: string) => {
+  getDevice = async (link: string): Promise<DeviceDetailsResponse> => {
     const device = await this.devicesModel
       .findOne({ link }, { _id: 0 })
       .lean()

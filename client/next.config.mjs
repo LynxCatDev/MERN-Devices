@@ -21,7 +21,7 @@ const nextConfig = {
       '@emotion/react',
       '@emotion/styled',
       'framer-motion',
-      '@ant-design/react-slick',
+      'react-slick',
     ],
     cssChunking: true,
   },

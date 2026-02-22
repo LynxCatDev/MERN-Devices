@@ -1,12 +1,16 @@
 'use client';
 
-import { lazy, Suspense, useEffect, useRef, useState } from 'react';
+import dynamic from 'next/dynamic';
+import { useEffect, useRef, useState } from 'react';
 import { SlickSliderSkeleton } from './SlickSliderSkeleton';
 
-const SlickSlider = lazy(() =>
-  import('@/components/SlickSlider/SlickSlider').then((m) => ({
-    default: m.SlickSlider,
-  })),
+const SlickSlider = dynamic(
+  () =>
+    import('@/components/SlickSlider/SlickSlider').then((m) => m.SlickSlider),
+  {
+    ssr: false,
+    loading: () => <SlickSliderSkeleton />,
+  },
 );
 
 export const SlickSliderWrapper = () => {
@@ -35,9 +39,7 @@ export const SlickSliderWrapper = () => {
   return (
     <div ref={hostRef}>
       {showSlider ? (
-        <Suspense fallback={<SlickSliderSkeleton />}>
-          <SlickSlider />
-        </Suspense>
+        <SlickSlider />
       ) : (
         <SlickSliderSkeleton />
       )}

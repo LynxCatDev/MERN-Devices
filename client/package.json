@@ -9,7 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@ant-design/react-slick": "^2.0.0",
     "@chakra-ui/hooks": "^2.4.2",
     "@chakra-ui/next-js": "^2.4.2",
     "@chakra-ui/react": "^3.33.0",
@@ -26,6 +25,7 @@
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "react-inlinesvg": "^4.2.0",
+    "react-slick": "^0.31.0",
     "sass": "^1.97.3",
     "slick-carousel": "^1.8.1",
     "yup": "^1.7.1",
@@ -36,6 +36,7 @@
     "@types/node": "^25.3.0",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
+    "@types/react-slick": "^0.23.13",
     "typescript": "^5.9.3"
   },
   "browserslist": [
