@@ -110,8 +110,13 @@
   &__cards {
     margin-top: 18px;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(220px, 280px));
+    justify-content: start;
     gap: 12px;
+
+    &.is-compact {
+      justify-content: center;
+    }
   }
 
   &__card {
@@ -138,11 +143,16 @@
     border-radius: 10px;
     overflow: hidden;
     background: rgba(255, 255, 255, 0.04);
+    min-height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     img {
       width: 100%;
       height: auto;
       object-fit: contain;
+      max-height: 220px;
       transition: transform 0.35s ease;
     }
 
@@ -248,7 +258,12 @@
     }
 
     &__cards {
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      justify-content: stretch;
+
+      &.is-compact {
+        justify-content: stretch;
+      }
     }
   }
 }

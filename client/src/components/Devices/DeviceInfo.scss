@@ -166,21 +166,27 @@
   }
 }
 
-.added-to-favorites,
-.added-to-compare {
-  color: var(--device-white);
+.options-devices {
+  button.added-to-favorites,
+  button.added-to-compare {
+    color: var(--device-white);
 
-  svg {
-    fill: var(--device-white);
+    svg {
+      fill: var(--device-white);
+    }
   }
-}
 
-.added-to-favorites {
-  background-color: var(--device-dark-purple);
-}
+  button.added-to-favorites,
+  button.added-to-favorites:hover {
+    background-color: var(--device-dark-purple);
+    color: var(--device-white);
+  }
 
-.added-to-compare {
-  background-color: var(--device-light-green);
+  button.added-to-compare,
+  button.added-to-compare:hover {
+    background-color: var(--device-light-green);
+    color: var(--device-white);
+  }
 }
 
 @media screen and (max-width: 1200px) {

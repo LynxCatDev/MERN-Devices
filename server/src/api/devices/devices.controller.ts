@@ -1,5 +1,5 @@
 import { Controller, Get, HttpCode, Param, Query } from '@nestjs/common';
-import { DevicesService } from './devices.service';
+import { DeviceDetailsResponse, DevicesService } from './devices.service';
 import { ApiParam, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { getDeviceInfoResponse, getDevicesResponse } from './api-response';
 
@@ -68,7 +68,7 @@ export class DevicesController {
   @ApiResponse(getDeviceInfoResponse)
   @ApiParam({ name: 'link', example: 'xiaomi-oclean-f1-light-blue' })
   @Get(':link')
-  getDevice(@Param('link') link: string) {
+  getDevice(@Param('link') link: string): Promise<DeviceDetailsResponse> {
     return this.devicesService.getDevice(link);
   }
 }

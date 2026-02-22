@@ -95,7 +95,11 @@ const ComparePage = () => {
 
       {hydrated && compareDevices.length > 0 && (
         <>
-          <div className="compare-page__cards">
+          <div
+            className={`compare-page__cards ${
+              compareDevices.length <= 2 ? 'is-compact' : ''
+            }`}
+          >
             {compareDevices.map((device) => (
               <article key={device.id} className="compare-page__card">
                 <Link href={`/device/${device.link}`} className="compare-page__card-image">
