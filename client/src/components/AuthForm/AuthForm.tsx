@@ -30,7 +30,6 @@ export const AuthForm = () => {
   const pathname = usePathname();
   const isRegistrationPage = pathname?.includes('registration');
   const isLoginPage = pathname?.includes('login');
-  const emailValidation = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
   const formTitle = () => {
     if (isRegistrationPage) {
@@ -80,16 +79,15 @@ export const AuthForm = () => {
           'Password must contain at least one uppercase letter, one lowercase letter, and one number',
         ),
     }),
-    onSubmit: (values: any) => {
+    onSubmit: async (values: any) => {
       if (isSubmitting) return;
 
       setIsSubmitting(true);
       try {
-        console.log(values, 'form values');
         if (isRegistrationPage) {
-          registration(values);
+          await registration(values);
         } else {
-          login(values.email.trim().toLowerCase(), values.password);
+          await login(values.email.trim().toLowerCase(), values.password);
         }
       } catch (error) {
         console.error('Authentication error:', error);
@@ -99,13 +97,13 @@ export const AuthForm = () => {
     },
   });
 
-  const buttonEnabled = emailValidation.test(formik.values.email);
+  const buttonEnabled = formik.isValid && formik.values.email.trim().length > 0;
 
   useEffect(() => {
     if (profile?.user || profile?.accessToken) {
       push(`/`);
     }
-  }, [profile?.user, profile?.accessToken]);
+  }, [profile?.user, profile?.accessToken, push]);
 
   return (
     <div className="login">

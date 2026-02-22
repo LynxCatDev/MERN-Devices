@@ -1,194 +1,176 @@
 'use client';
 
-import { useState } from 'react';
-import { useLocale, useTranslations } from 'next-intl';
+import { useEffect, useMemo, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { Button } from '@chakra-ui/react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { useShallow } from 'zustand/react/shallow';
 import { DevicesProps } from '@/store/store.interface';
 import { PRODUCT_PROPERTY } from '@/constants/devicesSpecs';
-import { checkImageUrl } from '@/helpers';
+import { MAX_COMPARE_DEVICES } from '@/constants/compare';
+import { formatDevicePropertyValue, hasDevicePropertyValue } from '@/helpers';
 import { Icon } from '../Icon/Icon';
-import { useUser } from '@/store/store';
+import { useCompare, useUser } from '@/store/store';
+import { DeviceImageGallery } from './DeviceImageGallery';
+import { toaster } from '../Toaster/Toaster';
 
 import './DeviceInfo.scss';
 
 interface DeviceInfoProps {
   device: DevicesProps;
+  galleryImages?: string[];
 }
 
-export const DeviceInfo = ({ device }: DeviceInfoProps) => {
-  const [imgSrc, setImgSrc] = useState(checkImageUrl(device?.imageUrl));
+export const DeviceInfo = ({
+  device,
+  galleryImages = [],
+}: DeviceInfoProps) => {
+  if (!device) {
+    return null;
+  }
+
   const t = useTranslations('Devices');
   const tCategories = useTranslations('Categories');
-  const locale = useLocale();
-  const [activeFavoritesIds, addToFavorites, loading, error] = useUser(
+  const tNotifications = useTranslations('Notifications');
+  const [mounted, setMounted] = useState(false);
+  const [profile, activeFavoritesIds, addToFavorites] = useUser(
     useShallow((state) => [
+      state.profile,
       state.activeFavoritesIds,
       state.addToFavorites,
-      state.loading,
-      state.error,
     ]),
   );
+  const [compareDevices, toggleCompare] = useCompare(
+    useShallow((state) => [state.compareDevices, state.toggleCompare]),
+  );
+  const deviceColors = Array.isArray(device.colors) ? device.colors : [];
+  const memoryOptions = Array.isArray(device.memoryOptions)
+    ? device.memoryOptions
+    : [];
+  const normalizedDeviceColor =
+    typeof device.color === 'string' ? device.color.toLowerCase() : '';
 
-  const activeAddToFavorites = activeFavoritesIds?.find(
+  const activeAddToFavorites = activeFavoritesIds?.some(
     (favoriteId) => favoriteId === device.id,
   );
-  const findProperties = Object.keys(PRODUCT_PROPERTY).filter((property) => {
-    return device?.[property];
-  });
+  const activeAddToCompare = compareDevices?.some(
+    (compareDevice) => compareDevice.id === device.id,
+  );
+
+  const findProperties = useMemo(
+    () =>
+      Object.keys(PRODUCT_PROPERTY).filter((property) =>
+        hasDevicePropertyValue(device, property),
+      ),
+    [device],
+  );
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const redirectDeviceColors = (color: string) => {
-    if (device.colors.length === 1) {
+    if (deviceColors.length === 1) {
       return `/device/${device.link}`;
-    } else if (!device.memoryOptions.length) {
+    }
+
+    if (!memoryOptions.length) {
       return `/device/${device.link
         .split('-')
         .slice(0, -1)
         .join('-')}-${color}`;
-    } else {
-      return `/device/${device.link.split('-').slice(0, -3).join('-')}-${
-        device.hardDrive
-      }-gb-${color}`;
     }
+
+    return `/device/${device.link.split('-').slice(0, -3).join('-')}-${
+      device.hardDrive
+    }-gb-${color}`;
   };
 
-  const checkDeviceProperties = (property: string) => {
-    if (property === 'camera' || property === 'frontCamera') {
-      return `${device[property]} mpx`;
-    }
-    if (property === 'resolution') {
-      return `${device[property]} px`;
-    }
-    if (
-      property === 'memory' ||
-      property === 'hardDrive' ||
-      property === 'videoCardMemory'
-    ) {
-      return `${device[property]} GB`;
-    }
-    if (property === 'weight') {
-      if (device[property].toString().split('').length >= 4) {
-        return `${(device[property] * 0.001).toFixed(1)} ${t('kilogram')}`;
-      } else {
-        return `${device[property]} ${t('gram')}`;
-      }
-    }
-    if (property === 'supportedWeight') {
-      return `${device[property]} ${t('kilogram')}`;
-    }
-    if (
-      property === 'touchScreen' ||
-      property === 'microphone' ||
-      property === 'coldAir'
-    ) {
-      if (device[property]) {
-        return t('true');
-      }
-      return t('false');
-    }
-    if (property === 'chargingTime' || property === 'workingTimeHours') {
-      return `${device[property]} ${t('hours')}`;
-    }
-    if (property === 'workingTimeDays') {
-      return `${device[property]} ${t('days')}`;
-    }
-    if (property === 'batteryCapacity') {
-      return `${device[property]} mah`;
-    }
-    if (
-      property === 'audioFormats' ||
-      property === 'interface' ||
-      property === 'memoryCard'
-    ) {
-      return device[property]?.join(', ');
-    }
-    if (property === 'maxSpeed' || property === 'electricRange') {
-      return `${device[property]} km/h`;
-    }
-    if (property === 'sensitivity') {
-      return `${device[property]} dB`;
-    }
-    if (property === 'impedance') {
-      return `${device[property]} Ω`;
-    }
-    if (property === 'wheelDiameter' || property === 'frameDiameter') {
-      return `${device[property]}"`;
-    }
-    if (
-      property === 'material' ||
-      property === 'rimMaterial' ||
-      property === 'frameMaterial'
-    ) {
-      return `${t(`${device[property]}`)}`;
-    }
-    return device[property];
+  const handleInformUser = (type: 'compare' | 'favorites') => {
+    toaster.create({
+      title: tNotifications(`login_required_${type}`),
+      type: 'info',
+      duration: 4000,
+    });
   };
 
-  const handleImageError = () => {
-    setImgSrc('/images/placeholder.webp');
+  const handleCompare = () => {
+    if (!profile?.user) {
+      handleInformUser('compare');
+      return;
+    }
+
+    if (!activeAddToCompare && compareDevices.length >= MAX_COMPARE_DEVICES) {
+      toaster.create({
+        title: tNotifications('compare_limit', { count: MAX_COMPARE_DEVICES }),
+        type: 'warning',
+        duration: 4000,
+      });
+      return;
+    }
+
+    toggleCompare(device);
+  };
+
+  const handleFavorites = () => {
+    if (!profile?.user) {
+      handleInformUser('favorites');
+      return;
+    }
+
+    addToFavorites(device.id);
   };
 
   return (
     <div className="device-product">
       <div className="device-product--wrapper">
         <div className="device-product--name">
-          <h1>{device?.name}</h1>
+          <h1>{device.name}</h1>
         </div>
 
         <div className="device-product--info">
           <div className="device-product--info-image">
-            <Image
-              src={imgSrc}
-              alt={device?.name}
-              width={0}
-              height={0}
-              sizes="(max-width: 992px) 100vw, 50vw"
-              style={{ width: '100%', height: 'auto' }}
-              priority
-              onError={handleImageError}
-            />
+            <DeviceImageGallery deviceName={device.name} images={galleryImages} />
           </div>
 
           <div className="device-product--info-specifications">
-            {device?.colors?.length > 0 && (
+            {deviceColors.length > 0 && (
               <div className="device-product--options-colors">
                 <span>{t('color')}</span>
                 <div className="device-product--options-colors-wrapper">
-                  {device.colors.map((color, key) => (
+                  {deviceColors.map((color, key) => (
                     <Link href={redirectDeviceColors(color)} key={key}>
                       <div
                         className={
-                          device.color.toLowerCase().match(color)
+                          normalizedDeviceColor.includes(color.toLowerCase())
                             ? 'device-color is-active'
                             : 'device-color'
                         }
                         style={{
-                          backgroundColor: Object.values(color).join(''),
+                          backgroundColor: color,
                         }}
-                      ></div>
+                      />
                     </Link>
                   ))}
                 </div>
               </div>
             )}
 
-            {device?.memoryOptions?.length > 0 && (
+            {memoryOptions.length > 0 && (
               <div className="device-product--options-memory">
                 <span>{t('memory_mob')}</span>
                 <div className="device-product--options-memory-wrapper">
-                  {device.memoryOptions.map((memory, key) => (
+                  {memoryOptions.map((memory, key) => (
                     <Link
                       href={
-                        device.memoryOptions.length === 1
+                        memoryOptions.length === 1
                           ? `/device/${device.link}`
                           : `/device/${device.link
                               .split('-')
                               .slice(0, -3)
                               .join(
                                 '-',
-                              )}-${memory}-gb-${device.color.toLowerCase()}`
+                              )}-${memory}-gb-${normalizedDeviceColor}`
                       }
                       key={key}
                     >
@@ -209,8 +191,9 @@ export const DeviceInfo = ({ device }: DeviceInfoProps) => {
 
             <ul className="device-product--info-specs">
               {findProperties.map((property, i) => (
-                <li key={i}>
-                  {t(`${property}`)} : {checkDeviceProperties(property)}
+                <li key={property}>
+                  {t(`${property}`)} :{' '}
+                  {formatDevicePropertyValue(device, property, t)}
                 </li>
               ))}
             </ul>
@@ -219,8 +202,11 @@ export const DeviceInfo = ({ device }: DeviceInfoProps) => {
               <div className="compare-devices">
                 <Button
                   size="xl"
-                  // onClick={() => addToCompare(deviceData)}
-                  // className={userCompareFind ? 'added-to-compare' : ''}
+                  onClick={handleCompare}
+                  className={
+                    mounted && activeAddToCompare ? 'added-to-compare' : ''
+                  }
+                  aria-pressed={Boolean(mounted && activeAddToCompare)}
                 >
                   <Icon type="compare" />
                   {tCategories('compare')}
@@ -228,8 +214,11 @@ export const DeviceInfo = ({ device }: DeviceInfoProps) => {
               </div>
               <div className="add-to-favorites">
                 <Button
-                  onClick={() => addToFavorites(device.id)}
-                  id={activeAddToFavorites ? 'added-to-favorites' : ''}
+                  onClick={handleFavorites}
+                  className={
+                    mounted && activeAddToFavorites ? 'added-to-favorites' : ''
+                  }
+                  aria-pressed={Boolean(mounted && activeAddToFavorites)}
                 >
                   <Icon type="heart" />
                   {tCategories('favorites')}
@@ -239,7 +228,7 @@ export const DeviceInfo = ({ device }: DeviceInfoProps) => {
           </div>
 
           <div className="device-product--info-buy">
-            {device?.price && (
+            {device.price && (
               <div className="device-product--info-price">
                 {`${device.price} ${tCategories('lei')}`}
               </div>
@@ -247,17 +236,17 @@ export const DeviceInfo = ({ device }: DeviceInfoProps) => {
             <Link href={`/checkout`} className="device-product--buy">
               {tCategories('buy')}
             </Link>
-            {device?.credit && (
+            {device.credit && (
               <div className="device-product--info-credit">{`${
                 device.credit
               } ${tCategories('credit')}`}</div>
             )}
-            {device?.cashback && (
+            {device.cashback && (
               <div className="device-product--info-cashback">{`Cashback ${
                 device.cashback
               } ${tCategories('lei')}`}</div>
             )}
-            {device?.credit && (
+            {device.credit && (
               <Link href={`/credit`} className="device-product--credit">
                 {tCategories('buy_credit')}
               </Link>

@@ -129,6 +129,23 @@
     "lei": "lei",
     "products": "Produse"
   },
+  "Compare": {
+    "title": "Compară produse",
+    "subtitle": "Analizează specificațiile importante înainte de cumpărare. Poți compara până la {max} produse.",
+    "selected_count": "{count} / {max} selectate",
+    "clear": "Șterge comparația",
+    "login_notice": "Autentifică-te pentru a adăuga produse în comparație din carduri și paginile de produs.",
+    "login_cta": "Autentificare",
+    "browse_devices": "Vezi produse",
+    "remove": "Elimină",
+    "specification": "Specificație",
+    "no_specs": "Nu există specificații comune disponibile pentru comparație."
+  },
+  "Notifications": {
+    "login_required_compare": "Autentifică-te pentru a adăuga produse în comparație",
+    "login_required_favorites": "Autentifică-te pentru a adăuga produse la favorite",
+    "compare_limit": "Poți compara maximum {count} produse."
+  },
   "Auth": {
     "profile": "Profil",
     "login": "Autentificare",

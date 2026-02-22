@@ -129,6 +129,23 @@
     "lei": "lei",
     "products": "Products"
   },
+  "Compare": {
+    "title": "Compare devices",
+    "subtitle": "Review key specs side-by-side before you buy. You can compare up to {max} devices.",
+    "selected_count": "{count} / {max} selected",
+    "clear": "Clear compare",
+    "login_notice": "Log in to add devices to compare from product cards and device pages.",
+    "login_cta": "Log in",
+    "browse_devices": "Browse devices",
+    "remove": "Remove",
+    "specification": "Specification",
+    "no_specs": "No shared specifications available for comparison."
+  },
+  "Notifications": {
+    "login_required_compare": "Please log in to add devices to compare",
+    "login_required_favorites": "Please log in to add devices to favorites",
+    "compare_limit": "You can compare up to {count} devices."
+  },
   "Auth": {
     "profile": "Profile",
     "login": "Login",

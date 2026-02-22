@@ -104,9 +104,8 @@ export class UsersController {
   addToFavorites(
     @Param('id') deviceId: string,
     @CurrentUser('_id') userId: string,
-    @Query('page') page: number,
   ) {
-    return this.users.addToFavorites(deviceId, userId, page);
+    return this.users.addToFavorites(deviceId, userId);
   }
 
   @Auth()

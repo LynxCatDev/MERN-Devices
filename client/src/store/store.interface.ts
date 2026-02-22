@@ -9,7 +9,7 @@ export interface SlidesStore {
   slides: SlidesProps[];
   loading: boolean;
   error: string | null;
-  getSlides: () => void;
+  getSlides: () => Promise<void>;
 }
 
 export interface CategoriesProps {
@@ -25,7 +25,7 @@ export interface CategoriesStore {
   categories: CategoriesProps[];
   loading: boolean;
   error: string | null;
-  getCategories: () => void;
+  getCategories: () => Promise<void>;
 }
 
 export interface ThemeStore {
@@ -34,7 +34,7 @@ export interface ThemeStore {
 }
 
 export interface DevicesProps {
-  [key: string]: any;
+  [key: string]: unknown;
   id: number;
   name: string;
   email?: string;
@@ -46,7 +46,10 @@ export interface DevicesProps {
   weight: number;
   popularity: number;
   manufacturer: string;
+  category?: string;
   imageUrl: string;
+  imageUrls?: string[];
+  images?: string[];
   type: string;
   link: string;
   colors: string[];
@@ -54,7 +57,9 @@ export interface DevicesProps {
   camera?: number;
   frontCamera?: number;
   chipset?: string;
+  processor?: string;
   resolution?: string;
+  displayFrequency?: string;
   hardDrive?: number;
   memory?: number;
   cores?: number;
@@ -69,6 +74,7 @@ export interface DevicesProps {
   workingTimeDays?: number;
   workingTimeHours?: number;
   batteryCapacity?: number;
+  chargingCapacity?: string;
   bluetooth?: number;
   power?: number | string;
   workingDistance?: number;
@@ -84,7 +90,8 @@ export interface DevicesProps {
   errorRange: string;
   measurementLevel: string;
   sensitivity: number;
-  impendance: number;
+  impendance?: number;
+  impedance?: number;
   connectionType: string;
   wireLength: number;
   microphone: boolean;
@@ -104,6 +111,8 @@ export interface DevicesProps {
   focalDistance: string;
   opticalZoom: number;
   refreshRate: string;
+  electricRange?: number;
+  functionalities?: string;
 }
 
 export interface DevicesDataProps {
@@ -123,7 +132,7 @@ export interface FoundDevices {
 }
 
 export interface DevicesStore {
-  devices: DevicesDataProps;
+  devices: DevicesDataProps | null;
   foundDevices: FoundDevices[];
   loading: boolean;
   loadingFoundDevices: boolean;
@@ -135,8 +144,8 @@ export interface DevicesStore {
     sort?: string,
     limit?: number,
     page?: number,
-  ) => void;
-  // searchDevices: (query: string) => void;
+  ) => Promise<void>;
+  searchDevices: (query: string) => Promise<void>;
 }
 
 export interface CollectionProps {
@@ -180,12 +189,19 @@ export interface UserStore {
   activeFavoritesIds?: number[] | null;
   loading: boolean;
   error: string | null;
-  registration: (auth: AuthProps) => void;
-  login: (email: string, password: string) => void;
-  validateSession: () => void;
-  userLogOut: () => void;
-  addToFavorites: (id: number) => void;
-  getUserFavorites: (page: number) => void;
+  registration: (auth: AuthProps) => Promise<void>;
+  login: (email: string, password: string) => Promise<void>;
+  validateSession: () => Promise<void>;
+  userLogOut: () => Promise<void>;
+  addToFavorites: (id: number) => Promise<void>;
+  getUserFavorites: (page: number) => Promise<void>;
+}
+
+export interface CompareStore {
+  compareDevices: DevicesProps[];
+  toggleCompare: (device: DevicesProps) => void;
+  removeFromCompare: (id: number) => void;
+  clearCompare: () => void;
 }
 
 export interface AuthProps {
@@ -196,12 +212,16 @@ export interface AuthProps {
   role: string;
 }
 
-export interface UserResponse {
-  data?: UserProps;
+export interface UserResponse<T = UserProps> {
+  data?: T;
   status?: number;
   response?: {
     data: {
       message: string;
     };
   };
+}
+
+export interface UserFavoritesResponse {
+  favorites: DevicesDataProps;
 }

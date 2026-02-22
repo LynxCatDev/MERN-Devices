@@ -19,14 +19,17 @@ import { createJSONStorage, persist } from 'zustand/middleware';
 import {
   AuthProps,
   CategoriesStore,
+  CompareStore,
   DevicesProps,
   DevicesStore,
   SlidesStore,
   ThemeStore,
+  UserFavoritesResponse,
   UserResponse,
   UserStore,
 } from './store.interface';
 import { AxiosError } from 'axios';
+import { MAX_COMPARE_DEVICES } from '@/constants/compare';
 
 export const useSlider = create<SlidesStore>()(
   persist(
@@ -50,7 +53,7 @@ export const useSlider = create<SlidesStore>()(
       name: 'slides',
       storage: createJSONStorage(() => localStorage),
       partialize: (state) => ({
-        categories: state.slides,
+        slides: state.slides,
       }),
       // Skip hydration on server
       skipHydration: true,
@@ -149,7 +152,7 @@ export const useDevices = create<DevicesStore>()(
       name: 'devices',
       storage: createJSONStorage(() => localStorage),
       partialize: (state) => ({
-        categories: state.devices,
+        devices: state.devices,
       }),
       // Skip hydration on server
       skipHydration: true,
@@ -166,11 +169,9 @@ export const useUser = create<UserStore>()((set) => ({
   registration: async (auth: AuthProps) => {
     try {
       const response = await userRegistration(auth);
-      console.log(response, 'response on registration');
 
       if (response.status !== 200) {
         const message = response.data.message || response.data.error;
-        console.log(message, 'message');
         throw new Error(`${message}`);
       }
 
@@ -181,11 +182,9 @@ export const useUser = create<UserStore>()((set) => ({
 
       set({ profile: response.data });
     } catch (error) {
-      const typedError = error as AxiosError;
+      const typedError = error as AxiosError<{ message?: string }>;
       set({
-        error:
-          (typedError.response && (typedError.response.data as any)?.message) ||
-          typedError.message,
+        error: typedError.response?.data?.message || typedError.message,
       });
     }
   },
@@ -205,11 +204,9 @@ export const useUser = create<UserStore>()((set) => ({
 
       set({ profile: response.data });
     } catch (error) {
-      const typedError = error as AxiosError;
+      const typedError = error as AxiosError<{ message?: string }>;
       set({
-        error:
-          (typedError.response && (typedError.response.data as any)?.message) ||
-          typedError.message,
+        error: typedError.response?.data?.message || typedError.message,
       });
     }
   },
@@ -272,7 +269,7 @@ export const useUser = create<UserStore>()((set) => ({
   },
   addToFavorites: async (id: number) => {
     try {
-      const response: UserResponse = await addToFavorites(id);
+      const response: UserResponse<DevicesProps> = await addToFavorites(id);
       if (response.status !== 200) {
         const message = response?.response?.data?.message;
         throw new Error(`${message}`);
@@ -280,45 +277,37 @@ export const useUser = create<UserStore>()((set) => ({
 
       const responseFavoriteId = Number(response?.data?.id);
 
-      const checkFavorites = (favorites: DevicesProps[]) => {
-        if (favorites?.length > 0) {
-          const newFavorites = [...favorites, response.data];
-          if (
-            favorites?.find((favorite) => favorite.id === responseFavoriteId)
-          ) {
-            const filteredFavorites = favorites?.filter(
+      set((state) => {
+        const existingFavorites = state.userFavorites?.data || [];
+        const isFavoriteActive = existingFavorites.some(
+          (favorite) => favorite.id === responseFavoriteId,
+        );
+
+        const nextFavorites = isFavoriteActive
+          ? existingFavorites.filter(
               (favorite) => favorite.id !== responseFavoriteId,
-            );
-            return filteredFavorites;
-          } else {
-            return newFavorites;
-          }
-        }
-      };
+            )
+          : [...existingFavorites, response.data];
 
-      const checkFavoritesIds = (activeFavoritesIds: number[]) => {
-        const newFavoritesIds = [...activeFavoritesIds, responseFavoriteId];
-        if (
-          activeFavoritesIds?.find(
-            (favoriteId) => favoriteId === responseFavoriteId,
-          )
-        ) {
-          const filteredFavoritesIds = activeFavoritesIds?.filter(
-            (favoriteId) => favoriteId !== responseFavoriteId,
-          );
-          return filteredFavoritesIds;
-        } else {
-          return newFavoritesIds;
-        }
-      };
+        const currentActiveFavoriteIds = state.activeFavoritesIds || [];
+        const nextFavoriteIds = currentActiveFavoriteIds.includes(
+          responseFavoriteId,
+        )
+          ? currentActiveFavoriteIds.filter(
+              (favoriteId) => favoriteId !== responseFavoriteId,
+            )
+          : [...currentActiveFavoriteIds, responseFavoriteId];
 
-      set((state: any) => ({
-        userFavorites: {
-          ...state?.userFavorites,
-          data: checkFavorites(state?.userFavorites?.data),
-        },
-        activeFavoritesIds: checkFavoritesIds(state.activeFavoritesIds),
-      }));
+        return {
+          userFavorites: state.userFavorites
+            ? {
+                ...state.userFavorites,
+                data: nextFavorites,
+              }
+            : state.userFavorites,
+          activeFavoritesIds: nextFavoriteIds,
+        };
+      });
     } catch (error) {
       const typedError = error as Error;
       set({ error: typedError.message });
@@ -326,15 +315,67 @@ export const useUser = create<UserStore>()((set) => ({
   },
   getUserFavorites: async (page: number) => {
     try {
-      const response: UserResponse = await getUserFavorites(page);
+      const response: UserResponse<UserFavoritesResponse> =
+        await getUserFavorites(page);
       if (response.status !== 200) {
         const message = response?.response?.data?.message;
         throw new Error(`${message}`);
       }
-      set({ userFavorites: response.data.favorites });
+      set({ userFavorites: response.data?.favorites });
     } catch (error) {
       const typedError = error as Error;
       set({ error: typedError.message });
     }
   },
 }));
+
+export const useCompare = create<CompareStore>()(
+  persist(
+    (set) => ({
+      compareDevices: [] as CompareStore['compareDevices'],
+      toggleCompare: (device: DevicesProps) => {
+        set((state) => {
+          const isAlreadyCompared = state.compareDevices.some(
+            (compareDevice) => compareDevice.id === device.id,
+          );
+
+          if (isAlreadyCompared) {
+            return {
+              compareDevices: state.compareDevices.filter(
+                (compareDevice) => compareDevice.id !== device.id,
+              ),
+            };
+          }
+
+          if (state.compareDevices.length >= MAX_COMPARE_DEVICES) {
+            return {
+              compareDevices: state.compareDevices,
+            };
+          }
+
+          return {
+            compareDevices: [...state.compareDevices, device],
+          };
+        });
+      },
+      removeFromCompare: (id: number) => {
+        set((state) => ({
+          compareDevices: state.compareDevices.filter(
+            (compareDevice) => compareDevice.id !== id,
+          ),
+        }));
+      },
+      clearCompare: () => {
+        set({ compareDevices: [] });
+      },
+    }),
+    {
+      name: 'compare-devices',
+      storage: createJSONStorage(() => localStorage),
+      partialize: (state) => ({
+        compareDevices: state.compareDevices,
+      }),
+      skipHydration: true,
+    },
+  ),
+);

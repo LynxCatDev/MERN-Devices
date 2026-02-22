@@ -10,7 +10,7 @@ import {
   isTokenExpired,
   refreshTokens,
 } from '@/services/auth-token.service';
-import { useDevices, useUser } from '@/store/store';
+import { useCompare, useDevices, useUser } from '@/store/store';
 import { toaster } from '@/components/Toaster/Toaster';
 import { Button } from '../Button/Button';
 import { Icon } from '../Icon/Icon';
@@ -50,6 +50,11 @@ export const Header = () => {
     () => devices?.data?.length || 0,
     [devices?.data?.length],
   );
+  const [compareDevices] = useCompare(useShallow((state) => [state.compareDevices]));
+  const compareCount = useMemo(
+    () => compareDevices?.length || 0,
+    [compareDevices?.length],
+  );
 
   const checkAccessToken = () => {
     if (accessToken && isTokenExpired(accessToken)) {
@@ -63,6 +68,7 @@ export const Header = () => {
 
   useEffect(() => {
     setMounted(true);
+    void useCompare.persist.rehydrate();
     checkAccessToken();
   }, []);
 
@@ -152,6 +158,9 @@ export const Header = () => {
                 prefetch={false}
               >
                 <Icon type="compare" />
+                {mounted && compareCount > 0 && (
+                  <span className="compare--devices-count">{compareCount}</span>
+                )}
               </Link>
             </div>
 

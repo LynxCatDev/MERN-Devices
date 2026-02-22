@@ -1,7 +1,9 @@
 import { hasLocale, NextIntlClientProvider } from 'next-intl';
 import { Poppins } from 'next/font/google';
 import { notFound } from 'next/navigation';
+import { getMessages } from 'next-intl/server';
 import { routing } from '@/i18n/routing';
+import { Providers } from '../(main)/providers';
 
 const poppins = Poppins({
   weight: ['400', '500', '600', '700', '800', '900'],
@@ -21,8 +23,10 @@ export default async function RegistrationLayout({
   if (!hasLocale(routing.locales, locale)) {
     notFound();
   }
+  const messages = await getMessages();
+
   return (
-    <html lang={locale}>
+    <html lang={locale} suppressHydrationWarning>
       <head>
         <link rel="icon" type="image/x-icon" href="/images/play.png" />
         {process.env.NEXT_PUBLIC_API_BASE_URL && (
@@ -39,9 +43,11 @@ export default async function RegistrationLayout({
           </>
         )}
       </head>
-      <NextIntlClientProvider>
-        <body className={poppins.className}>{children}</body>
-      </NextIntlClientProvider>
+      <body className={poppins.className} suppressHydrationWarning>
+        <NextIntlClientProvider messages={messages}>
+          <Providers>{children}</Providers>
+        </NextIntlClientProvider>
+      </body>
     </html>
   );
 }
