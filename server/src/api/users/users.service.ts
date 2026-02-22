@@ -72,12 +72,13 @@ export class UsersService {
 
     const hashedPassword = await bcrypt.hash(password, 12);
 
-    const user = await this.users.create({
+    const user = new this.users({
       ...userDto,
       email: sanitizedEmail,
       created_at: new Date(),
       password: hashedPassword,
     });
+    await user.save();
 
     const { accessToken, refreshToken } = this.issueTokens(user._id);
 
@@ -229,8 +230,13 @@ export class UsersService {
       throw new ForbiddenException(errorMessage.invalidToken);
     }
 
+    const normalizedDeviceId = Number(deviceId);
+    if (!Number.isFinite(normalizedDeviceId)) {
+      throw new BadRequestException('Invalid device id');
+    }
+
     const user = await this.users.findOne({ _id: userId });
-    const device = await this.devicesModel.findOne({ id: deviceId });
+    const device = await this.devicesModel.findOne({ id: normalizedDeviceId });
 
     if (!device) {
       throw new BadRequestException('Device not found');

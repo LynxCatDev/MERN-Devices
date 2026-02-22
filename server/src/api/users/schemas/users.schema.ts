@@ -44,7 +44,7 @@ export class Users {
   role: string;
 
   @Prop()
-  created_at: string;
+  created_at: Date;
 
   @Prop()
   favorites: Favorites;
