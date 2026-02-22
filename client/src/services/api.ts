@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from 'axios';
+import { AxiosError, AxiosResponse } from 'axios';
 import { axiosClassic, axiosWithAuth } from './interceptors';
 import {
   AuthProps,
@@ -47,7 +47,12 @@ export const fetchDevices = async (
 
     return response.data;
   } catch (error) {
-    console.error(error);
+    const typedError = error as AxiosError<{ message?: string }>;
+    throw new Error(
+      typedError.response?.data?.message ||
+        typedError.message ||
+        'Failed to fetch devices',
+    );
   }
 };
 
@@ -61,7 +66,12 @@ export const fetchDevice = async (link: string): Promise<DevicesProps> => {
 
     return response.data;
   } catch (error) {
-    console.error(error);
+    const typedError = error as AxiosError<{ message?: string }>;
+    throw new Error(
+      typedError.response?.data?.message ||
+        typedError.message ||
+        'Failed to fetch device',
+    );
   }
 };
 
@@ -75,7 +85,12 @@ export const searchDevices = async (name: string): Promise<FoundDevices[]> => {
 
     return response.data;
   } catch (error) {
-    console.error(error);
+    const typedError = error as AxiosError<{ message?: string }>;
+    throw new Error(
+      typedError.response?.data?.message ||
+        typedError.message ||
+        'Failed to search devices',
+    );
   }
 };
 
@@ -89,7 +104,12 @@ export const fetchCategories = async (): Promise<CategoriesProps[]> => {
 
     return response.data;
   } catch (error) {
-    console.error(error);
+    const typedError = error as AxiosError<{ message?: string }>;
+    throw new Error(
+      typedError.response?.data?.message ||
+        typedError.message ||
+        'Failed to fetch categories',
+    );
   }
 };
 
@@ -103,7 +123,12 @@ export const fetchCollection = async (): Promise<CollectionProps[]> => {
 
     return response.data;
   } catch (error) {
-    console.error(error);
+    const typedError = error as AxiosError<{ message?: string }>;
+    throw new Error(
+      typedError.response?.data?.message ||
+        typedError.message ||
+        'Failed to fetch collection',
+    );
   }
 };
 
@@ -168,8 +193,7 @@ export const userLogOut = async () => {
     const response = await axiosWithAuth.post('/users/auth/logout');
     return response;
   } catch (error) {
-    console.error(error);
-    return error;
+    throw error;
   }
 };
 
@@ -178,8 +202,7 @@ export const addToFavorites = async (id: number) => {
     const response = await axiosWithAuth.post(`/users/favorites/${id}`);
     return response;
   } catch (error) {
-    console.error(error);
-    return error;
+    throw error;
   }
 };
 
@@ -190,7 +213,6 @@ export const getUserFavorites = async (page: number) => {
     });
     return response;
   } catch (error) {
-    console.error(error);
-    return error;
+    throw error;
   }
 };

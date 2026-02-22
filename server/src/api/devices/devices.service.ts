@@ -22,6 +22,9 @@ export class DevicesService {
     page: number,
   ): Promise<DevicesPagination> => {
     const manufacturer = 'Apple';
+    const normalizedLimit = Math.max(1, Number(limit) || 8);
+    const normalizedPage = getPageNumber(page);
+
     const checkDeviceType = () => {
       if (q) {
         return { name: new RegExp(q, 'i') };
@@ -33,38 +36,67 @@ export class DevicesService {
         return {};
       }
     };
+    const filter = checkDeviceType();
 
-    const devicesBeforeLimit = await this.devicesModel.find(checkDeviceType(), {
-      _id: 0,
-    });
+    const totalCount = await this.devicesModel.countDocuments(filter).exec();
 
     const devices = await this.devicesModel
-      .find(checkDeviceType(), { _id: 0 })
+      .find(filter, { _id: 0 })
       .sort(sort ? { [`${sort}`]: -1 } : 'id')
-      .skip((page - 1) * limit)
-      .limit(limit)
+      .skip((normalizedPage - 1) * normalizedLimit)
+      .limit(normalizedLimit)
       .lean()
       .exec();
 
     return {
-      limit: Number(limit),
-      page: getPageNumber(page),
-      totalCount: devicesBeforeLimit.length,
-      totalPages: getTotalPages(devicesBeforeLimit.length, limit),
+      limit: normalizedLimit,
+      page: normalizedPage,
+      totalCount,
+      totalPages: getTotalPages(totalCount, normalizedLimit),
       data: devices,
     };
   };
 
   getDevice = async (link: string) => {
-    const device = await this.devicesModel.findOne({ link }, { _id: 0 });
-    return device;
+    const device = await this.devicesModel
+      .findOne({ link }, { _id: 0 })
+      .lean()
+      .exec();
+
+    if (!device) {
+      return null;
+    }
+
+    const hasVariantData = Boolean(device.model && device.manufacturer);
+    const variantImages = hasVariantData
+      ? await this.devicesModel
+          .find(
+            { model: device.model, manufacturer: device.manufacturer },
+            { _id: 0, imageUrl: 1 },
+          )
+          .lean()
+          .exec()
+      : [];
+
+    const imageUrls = Array.from(
+      new Set(
+        [device.imageUrl, ...variantImages.map((variant) => variant?.imageUrl)]
+          .filter((imageUrl): imageUrl is string => Boolean(imageUrl))
+          .map((imageUrl) => imageUrl.trim()),
+      ),
+    );
+
+    return {
+      ...device,
+      imageUrls,
+    };
   };
 
   search = async (name: string) => {
     const searchDevices = await this.devicesModel.find(
       { name: new RegExp(name, 'i') },
       { _id: 0 },
-    );
+    ).lean().exec();
     return searchDevices;
   };
 }

@@ -1,9 +1,9 @@
 'use client';
 
 import React, { memo, useMemo } from 'react';
-import { IconInterface } from './Icon.interface';
+import { IconInterface, IconSvgProps } from './Icon.interface';
 
-type IconRenderer = (props: IconInterface) => React.ReactElement;
+type IconRenderer = (props: IconSvgProps) => React.ReactElement;
 
 // Define SVG icon components for all provided icons
 const SVG_ICONS: Record<string, IconRenderer> = {
@@ -316,7 +316,11 @@ export const Icon = memo(
       [className, type, color, height, width, onClick, disabled, active, props],
     );
 
-    const IconSvg = SVG_ICONS[type];
+    const IconSvg = type ? SVG_ICONS[type] : undefined;
+
+    if (!IconSvg) {
+      return null;
+    }
 
     return <IconSvg {...iconProps} />;
   },

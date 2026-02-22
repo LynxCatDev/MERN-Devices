@@ -1,7 +1,8 @@
 'use client';
 
 import { checkImageUrl } from '@/helpers';
-import { useUser } from '@/store/store';
+import { MAX_COMPARE_DEVICES } from '@/constants/compare';
+import { useCompare, useUser } from '@/store/store';
 import { DevicesProps } from '@/store/store.interface';
 import { Button } from '@chakra-ui/react';
 import { useTranslations } from 'next-intl';
@@ -20,18 +21,23 @@ interface DeviceItemProps {
 
 export const DevicesItem = ({ device, priority = false }: DeviceItemProps) => {
   const t = useTranslations('Categories');
+  const tNotifications = useTranslations('Notifications');
   const [imgSrc, setImgSrc] = useState(checkImageUrl(device?.imageUrl));
-  const [profile, activeFavoritesIds, addToFavorites, loading, error] = useUser(
+  const [profile, activeFavoritesIds, addToFavorites] = useUser(
     useShallow((state) => [
       state.profile,
       state.activeFavoritesIds,
       state.addToFavorites,
-      state.loading,
-      state.error,
     ]),
   );
-  const activeAddToFavorites = activeFavoritesIds?.find(
+  const [compareDevices, toggleCompare] = useCompare(
+    useShallow((state) => [state.compareDevices, state.toggleCompare]),
+  );
+  const activeAddToFavorites = activeFavoritesIds?.some(
     (favoriteId) => favoriteId === device.id,
+  );
+  const activeAddToCompare = compareDevices?.some(
+    (compareDevice) => compareDevice.id === device.id,
   );
   const [mounted, setMounted] = useState(false);
 
@@ -43,12 +49,30 @@ export const DevicesItem = ({ device, priority = false }: DeviceItemProps) => {
     setImgSrc('/images/placeholder.webp');
   };
 
-  const handleInformUser = (type = 'favorites') => {
+  const handleInformUser = (type: 'compare' | 'favorites') => {
     toaster.create({
-      title: `Please log in to add ${type}`,
+      title: tNotifications(`login_required_${type}`),
       type: 'info',
       duration: 4000,
     });
+  };
+
+  const handleCompare = () => {
+    if (!profile?.user) {
+      handleInformUser('compare');
+      return;
+    }
+
+    if (!activeAddToCompare && compareDevices.length >= MAX_COMPARE_DEVICES) {
+      toaster.create({
+        title: tNotifications('compare_limit', { count: MAX_COMPARE_DEVICES }),
+        type: 'warning',
+        duration: 4000,
+      });
+      return;
+    }
+
+    toggleCompare(device);
   };
 
   return (
@@ -99,8 +123,11 @@ export const DevicesItem = ({ device, priority = false }: DeviceItemProps) => {
               <div className="compare-devices">
                 <Button
                   aria-label={t('compare')}
-                  onClick={() => handleInformUser('compare')}
-                  // className={userCompareFind ? 'added-to-compare' : ''}
+                  onClick={handleCompare}
+                  id={
+                    mounted && activeAddToCompare ? 'added-to-compare' : undefined
+                  }
+                  aria-pressed={Boolean(mounted && activeAddToCompare)}
                 >
                   <Icon type="compare" />
                 </Button>

@@ -53,14 +53,6 @@ export class DevicesController {
 
   @HttpCode(200)
   @ApiResponse(getDeviceInfoResponse)
-  @ApiParam({ name: 'link', example: 'xiaomi-oclean-f1-light-blue' })
-  @Get(':link')
-  getDevice(@Param('link') link: string) {
-    return this.devicesService.getDevice(link);
-  }
-
-  @HttpCode(200)
-  @ApiResponse(getDeviceInfoResponse)
   @ApiParam({
     name: 'name',
     required: false,
@@ -70,5 +62,13 @@ export class DevicesController {
   @Get('search/:name')
   search(@Param('name') name: string) {
     return this.devicesService.search(name);
+  }
+
+  @HttpCode(200)
+  @ApiResponse(getDeviceInfoResponse)
+  @ApiParam({ name: 'link', example: 'xiaomi-oclean-f1-light-blue' })
+  @Get(':link')
+  getDevice(@Param('link') link: string) {
+    return this.devicesService.getDevice(link);
   }
 }

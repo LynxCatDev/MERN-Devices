@@ -1,5 +1,16 @@
 import SVG from 'react-inlinesvg';
-import { IconInterface } from './Icon.interface';
+
+type LegacyIconProps = {
+  className?: string;
+  type?: string;
+  color?: string;
+  height?: string | number;
+  width?: string | number;
+  onClick?: () => void;
+  disabled?: boolean;
+  active?: boolean;
+  [key: string]: unknown;
+};
 
 export function Icon({
   className = '',
@@ -11,7 +22,7 @@ export function Icon({
   disabled,
   active,
   ...props
-}: IconInterface) {
+}: LegacyIconProps) {
   const defaultProps = {
     className: `icon-${type} ${active ? ' active' : ''}${
       disabled ? ' disabled' : ''

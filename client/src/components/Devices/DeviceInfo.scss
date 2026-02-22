@@ -17,21 +17,7 @@
     grid-column-start: 1;
     grid-column-end: 4;
     width: 100%;
-
-    img {
-      width: 100%;
-      height: auto;
-      object-fit: cover;
-      cursor: pointer;
-      transform: scale(0.95);
-      transition: transform 0.5s ease-out;
-      will-change: transform;
-      border-radius: 16px;
-
-      &:hover {
-        transform: scale(1);
-      }
-    }
+    align-self: flex-start;
   }
 
   &--info-specifications {
@@ -180,8 +166,8 @@
   }
 }
 
-.added-to-favorites.button,
-.added-to-compare.button {
+.added-to-favorites,
+.added-to-compare {
   color: var(--device-white);
 
   svg {
@@ -189,11 +175,11 @@
   }
 }
 
-.added-to-favorites.button {
+.added-to-favorites {
   background-color: var(--device-dark-purple);
 }
 
-.added-to-compare.button {
+.added-to-compare {
   background-color: var(--device-light-green);
 }
 

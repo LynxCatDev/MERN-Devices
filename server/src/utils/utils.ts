@@ -1,13 +1,36 @@
-export const getPageNumber = (page?: string | number) =>
-  page && !isNaN(Number(page)) ? Number(page) : 1;
+export const getPageNumber = (page?: string | number): number => {
+  const normalizedPage = Number(page);
 
-export const getTotalPages = (itemNumber: number, limit?: number) => Math.ceil(itemNumber / limit);
+  if (!Number.isFinite(normalizedPage) || normalizedPage < 1) {
+    return 1;
+  }
 
-export const getNextPage = (page: number, totalItems?: number) =>
-  totalItems && getTotalPages(totalItems) <= page ? null : page + 1;
+  return Math.floor(normalizedPage);
+};
+
+export const getTotalPages = (itemNumber: number, limit: number = 1): number => {
+  const safeLimit = Math.max(1, Number(limit) || 1);
+  return Math.ceil(itemNumber / safeLimit);
+};
+
+export const getNextPage = (
+  page: number,
+  totalItems?: number,
+  limit: number = 1,
+) => (totalItems && getTotalPages(totalItems, limit) <= page ? null : page + 1);
 
 export const getPrevPage = (page: number) => (page > 1 ? page - 1 : null);
 
-export const paginate = (array, page_size, page_number) => {
-  return array.slice((page_number - 1) * page_size, page_number * page_size);
+export const paginate = <T>(
+  array: T[],
+  pageSize: number,
+  pageNumber: number,
+): T[] => {
+  const safePageNumber = getPageNumber(pageNumber);
+  const safePageSize = Math.max(1, Number(pageSize) || 1);
+
+  return array.slice(
+    (safePageNumber - 1) * safePageSize,
+    safePageNumber * safePageSize,
+  );
 };

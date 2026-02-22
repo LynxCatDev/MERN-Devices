@@ -224,35 +224,33 @@ export class UsersService {
   };
 
   //Add to favorites
-  addToFavorites = async (deviceId: string, userId: string, page) => {
+  addToFavorites = async (deviceId: string, userId: string) => {
     if (!userId) {
       throw new ForbiddenException(errorMessage.invalidToken);
     }
 
     const user = await this.users.findOne({ _id: userId });
     const device = await this.devicesModel.findOne({ id: deviceId });
+
+    if (!device) {
+      throw new BadRequestException('Device not found');
+    }
+
     const userFavorites = user?.favorites?.data || [];
 
-    const checkAddToFavorites = () => {
-      if (userFavorites?.find((favorite) => favorite.id === device?.id)) {
-        const filteredFavorites = userFavorites.filter(
-          (favorite) => favorite.id !== device.id,
-        );
-        return filteredFavorites;
-      } else {
-        return [...userFavorites, device];
-      }
-    };
+    const nextFavorites = userFavorites.find((favorite) => favorite.id === device.id)
+      ? userFavorites.filter((favorite) => favorite.id !== device.id)
+      : [...userFavorites, device];
 
     await this.users.updateOne(
       { _id: userId },
       {
         favorites: {
           limit: 8,
-          page: getPageNumber(1),
-          totalCount: checkAddToFavorites()?.length,
-          totalPages: getTotalPages(checkAddToFavorites()?.length, 8),
-          data: checkAddToFavorites(),
+          page: 1,
+          totalCount: nextFavorites.length,
+          totalPages: getTotalPages(nextFavorites.length, 8),
+          data: nextFavorites,
         },
       },
     );
@@ -266,20 +264,22 @@ export class UsersService {
     limit: number = 8,
     userId: string,
   ) => {
-    const user = await this.users.findOne({ _id: userId });
-    const userFavorites = user?.favorites?.data || [];
-
     if (!userId) {
       throw new ForbiddenException(errorMessage.invalidToken);
     }
 
+    const normalizedPage = getPageNumber(page);
+    const normalizedLimit = Math.max(1, Number(limit) || 8);
+    const user = await this.users.findOne({ _id: userId });
+    const userFavorites = user?.favorites?.data || [];
+
     return {
       favorites: {
-        limit: Number(limit),
-        page: getPageNumber(page),
-        totalCount: userFavorites?.length,
-        totalPages: getTotalPages(userFavorites?.length, 8),
-        data: paginate(userFavorites, 8, page),
+        limit: normalizedLimit,
+        page: normalizedPage,
+        totalCount: userFavorites.length,
+        totalPages: getTotalPages(userFavorites.length, normalizedLimit),
+        data: paginate(userFavorites, normalizedLimit, normalizedPage),
       },
     };
   };

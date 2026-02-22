@@ -15,6 +15,10 @@ export const getDeviceInfoResponse: ApiResponseOptions = {
       manufacturer: 'Xiaomi',
       imageUrl:
         'https://darwin.md/images/product/2020/06/redmi_note_9_pro_gray_5-200605035405-darwin.webp',
+      imageUrls: [
+        'https://darwin.md/images/product/2020/06/redmi_note_9_pro_gray_5-200605035405-darwin.webp',
+        'https://darwin.md/images/product/2020/06/redmi_note_9_pro_green.webp',
+      ],
       type: 'smartphones',
       link: 'redmi-note-9-pro-64-gb-gray',
       colors: ['gray', 'green', 'white'],

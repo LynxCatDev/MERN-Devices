@@ -1,11 +1,11 @@
-export interface IconInterface {
-  className?: string;
+import type { SVGProps } from 'react';
+
+export interface IconInterface
+  extends Omit<SVGProps<SVGSVGElement>, 'type' | 'color'> {
   type?: string;
   color?: string;
-  height?: string;
-  width?: string;
-  onClick?: () => void;
   disabled?: boolean;
   active?: boolean;
-  [key: string]: any;
 }
+
+export type IconSvgProps = IconInterface;

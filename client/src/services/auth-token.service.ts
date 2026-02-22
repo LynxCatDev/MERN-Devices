@@ -56,7 +56,7 @@ export const refreshTokens = async (): Promise<string | null> => {
       });
       return response.data.accessToken;
     } else {
-      console.log('Failed to refresh tokens, user needs to login again');
+      console.warn('Failed to refresh tokens, user needs to login again');
       removeFromStorage();
       return null;
     }
