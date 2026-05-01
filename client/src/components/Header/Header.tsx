@@ -23,6 +23,30 @@ const Menu = lazy(() =>
   import('../Menu/Menu').then((m) => ({ default: m.Menu })),
 );
 
+type IdleWindow = Window & {
+  requestIdleCallback?: (
+    callback: () => void,
+    options?: { timeout: number },
+  ) => number;
+  cancelIdleCallback?: (handle: number) => void;
+};
+
+const runWhenIdle = (callback: () => void) => {
+  const browserWindow = window as IdleWindow;
+
+  if (browserWindow.requestIdleCallback) {
+    const idleId = browserWindow.requestIdleCallback(callback, {
+      timeout: 2500,
+    });
+
+    return () => browserWindow.cancelIdleCallback?.(idleId);
+  }
+
+  const timeoutId = window.setTimeout(callback, 1200);
+
+  return () => window.clearTimeout(timeoutId);
+};
+
 export const Header = () => {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
@@ -30,7 +54,6 @@ export const Header = () => {
   const showRef = useRef(null);
   const t = useTranslations('Header');
   const tAuth = useTranslations('Auth');
-  const accessToken = getAccessToken();
   useOutsideClick({
     ref: showRef,
     handler: () => setShowProfileMenu(false),
@@ -57,6 +80,8 @@ export const Header = () => {
   );
 
   const checkAccessToken = () => {
+    const accessToken = getAccessToken();
+
     if (accessToken && isTokenExpired(accessToken)) {
       refreshTokens();
       return;
@@ -68,8 +93,11 @@ export const Header = () => {
 
   useEffect(() => {
     setMounted(true);
-    void useCompare.persist.rehydrate();
-    checkAccessToken();
+
+    return runWhenIdle(() => {
+      void useCompare.persist.rehydrate();
+      checkAccessToken();
+    });
   }, []);
 
   const logout = () => {

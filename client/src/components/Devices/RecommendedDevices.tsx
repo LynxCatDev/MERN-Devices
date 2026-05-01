@@ -31,8 +31,8 @@ export const RecommendedDevices = ({
               fill
               sizes="(max-width: 992px) 100vw, 25vw"
               className="devices--banner-img"
-              priority={category === 'smartphones'}
-              loading={category === 'smartphones' ? 'eager' : 'lazy'}
+              priority={false}
+              loading="lazy"
             />
             {category && <h2>{categoryTitle}</h2>}
             {!!devicesData?.length && (
@@ -50,7 +50,7 @@ export const RecommendedDevices = ({
             <DevicesItem
               key={device.id}
               device={device}
-              priority={category === 'smartphones'}
+              priority={false}
             />
           ))}
       </div>
