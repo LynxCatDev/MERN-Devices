@@ -11,14 +11,21 @@ import { useLocale } from 'next-intl';
 import { NoData } from '../NoData/NoData';
 import { ShowErrorMessage } from '../ShowErrorMessage/ShowErrorMessage';
 import { SlickSliderSkeleton } from './SlickSliderSkeleton';
+import { SlidesProps } from '@/store/store.interface';
 
 import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
 import './SlickSlider.scss';
 
-export const SlickSlider = () => {
+interface Props {
+  initialSlides?: SlidesProps[];
+}
+
+export const SlickSlider = ({ initialSlides }: Props = {}) => {
   const locale = useLocale();
-  const [slides, getSlides, loading, error] = useSlider(
+  const hasInitialSlides = !!initialSlides && initialSlides.length > 0;
+
+  const [slidesFromStore, getSlides, loading, error] = useSlider(
     useShallow((state) => [
       state.slides,
       state.getSlides,
@@ -28,8 +35,11 @@ export const SlickSlider = () => {
   );
 
   useEffect(() => {
+    if (hasInitialSlides) return;
     void getSlides();
-  }, [getSlides]);
+  }, [getSlides, hasInitialSlides]);
+
+  const slides = hasInitialSlides ? initialSlides : slidesFromStore;
 
   const settings: Settings = useMemo(
     () => ({
@@ -45,8 +55,8 @@ export const SlickSlider = () => {
     [],
   );
 
-  if (loading) return <SlickSliderSkeleton />;
-  if (error)
+  if (!hasInitialSlides && loading) return <SlickSliderSkeleton />;
+  if (!hasInitialSlides && error)
     return (
       <div className="slick-wrapper">
         <ShowErrorMessage errorMessage={error} />

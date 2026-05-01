@@ -4,7 +4,12 @@ import { getTranslations } from 'next-intl/server';
 import { Features, Loading, RecommendedDevices, ShopTitle } from '@/components';
 import { CategoriesSkeleton } from '@/components/Categories/CategoriesSkeleton';
 import { PromotionsSkeleton } from '@/components/Promotions/PromotionsSkeleton';
-import { fetchCategories, fetchCollection, fetchDevices } from '@/services/api';
+import {
+  fetchCategories,
+  fetchCollection,
+  fetchDevices,
+  fetchSlides,
+} from '@/services/api';
 import { DevicesDataProps } from '@/store/store.interface';
 import { SlickSliderWrapper } from '@/components/SlickSlider/SlickSliderWrapper';
 
@@ -43,6 +48,9 @@ const Home = async () => {
   const getCollection = nextCache(fetchCollection, ['collection'], {
     revalidate: 900,
   });
+  const getSlides = nextCache(fetchSlides, ['slides'], {
+    revalidate: 900,
+  });
   const tCategories = await getTranslations('Categories');
   const tDevices = await getTranslations('Devices');
 
@@ -53,10 +61,11 @@ const Home = async () => {
       { revalidate: 900 },
     )();
 
-  const [categories, collection, smartphones, laptops, gadgets, audio] =
+  const [categories, collection, slides, smartphones, laptops, gadgets, audio] =
     await Promise.all([
       getCategories(),
       getCollection(),
+      getSlides(),
       recommendedDevices('smartphones'),
       recommendedDevices('laptops'),
       recommendedDevices('gadgets'),
@@ -86,7 +95,7 @@ const Home = async () => {
     <main className="main">
       <ShopTitle />
 
-      <SlickSliderWrapper />
+      <SlickSliderWrapper slides={slides} />
 
       <Categories categories={categories} />
 
