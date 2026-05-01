@@ -21,6 +21,12 @@ interface Props {
   initialSlides?: SlidesProps[];
 }
 
+const getSlideImageUrl = (url: string) => {
+  if (/^https?:\/\//i.test(url)) return url;
+
+  return `${apiBaseUrl}/${url.replace(/^\/+/, '')}`;
+};
+
 export const SlickSlider = ({ initialSlides }: Props = {}) => {
   const locale = useLocale();
   const hasInitialSlides = !!initialSlides && initialSlides.length > 0;
@@ -80,14 +86,14 @@ export const SlickSlider = ({ initialSlides }: Props = {}) => {
               prefetch={false}
             >
               <Image
-                priority={i === 0}
-                src={`${apiBaseUrl}/${slide.imgUrl}`}
+                priority={false}
+                src={getSlideImageUrl(slide.imgUrl)}
                 alt={slide.altName}
-                width="0"
-                height="0"
-                sizes="100vw"
+                width={1400}
+                height={520}
+                sizes="(max-width: 576px) 100vw, (max-width: 1440px) calc(100vw - 32px), 1400px"
                 loading={i === 0 ? 'eager' : 'lazy'}
-                fetchPriority={i === 0 ? 'high' : 'auto'}
+                fetchPriority="auto"
                 quality={i === 0 ? 65 : 100}
               />
             </Link>

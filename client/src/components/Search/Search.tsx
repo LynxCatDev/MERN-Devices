@@ -40,7 +40,20 @@ export const Search = () => {
     setSearchValue('');
   };
 
+  const submitSearch = () => {
+    const query = searchValue.trim();
+
+    if (!query) return;
+
+    router.push(`/search?q=${encodeURIComponent(query)}`);
+    clearSearchValue();
+  };
+
   useEffect(() => {
+    if (!searchValue) {
+      return;
+    }
+
     useDevices.setState({
       loading: true,
       devices: {
@@ -51,37 +64,15 @@ export const Search = () => {
         limit: 8,
       },
     });
+
     const debounce = setTimeout(() => {
-      if (searchValue) {
-        getDevices(searchValue, '', 'popularity', 10, 1);
-      }
+      getDevices(searchValue, '', 'popularity', 10, 1);
     }, 1000);
-
-    // if (!searchValue) {
-    //   useDevices.setState({
-    //     devices: {
-    //       data: [],
-    //       totalCount: 0,
-    //       page: 1,
-    //       totalPages: 1,
-    //       limit: 8,
-    //     },
-    //   });
-    // }
-
-    const listener = (event: { code: string }) => {
-      if (event.code === 'Enter' || event.code === 'NumpadEnter') {
-        router.push(`/search?q=${searchValue}`);
-        clearSearchValue();
-      }
-    };
-    document.addEventListener('keydown', listener, { passive: true });
 
     return () => {
       clearTimeout(debounce);
-      document.removeEventListener('keydown', listener);
     };
-  }, [searchValue]);
+  }, [getDevices, searchValue]);
 
   return (
     <div className="search">
@@ -92,6 +83,12 @@ export const Search = () => {
         type="text"
         value={searchValue}
         onChange={onSearchChange}
+        onKeyDown={(event) => {
+          if (event.key === 'Enter') {
+            event.preventDefault();
+            submitSearch();
+          }
+        }}
         placeholder="Find your device..."
       />
 
@@ -108,7 +105,7 @@ export const Search = () => {
       )}
 
       <Link
-        href={`/search?q=${searchValue}`}
+        href={`/search?q=${encodeURIComponent(searchValue.trim())}`}
         onClick={clearSearchValue}
         aria-label="search submit"
         prefetch={false}
