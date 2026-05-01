@@ -9,11 +9,11 @@ const nextConfig = {
   poweredByHeader: false,
   generateEtags: true,
 
-  // compiler: {
-  //   removeConsole: {
-  //     exclude: ['error', 'warn'],
-  //   },
-  // },
+  compiler: {
+    removeConsole: {
+      exclude: ['error', 'warn'],
+    },
+  },
 
   experimental: {
     optimizePackageImports: [

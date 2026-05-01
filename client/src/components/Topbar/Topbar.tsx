@@ -17,6 +17,7 @@ export const TopBar = () => {
   );
 
   useEffect(() => {
+    if (document.body.getAttribute('data-theme') === theme) return;
     if (theme === 'light') {
       document.body.classList.remove('night');
     }

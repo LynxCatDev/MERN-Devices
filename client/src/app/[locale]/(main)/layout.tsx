@@ -60,7 +60,7 @@ export default async function LocaleLayout({
             </>
           )}
         </head>
-        <body className={`night ${poppins.className}`} suppressHydrationWarning>
+        <body className={`night ${poppins.className}`} data-theme="dark" suppressHydrationWarning>
           <NextIntlClientProvider messages={messages}>
             <Providers>
               <TopLoader />

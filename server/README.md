@@ -57,7 +57,7 @@ npm run start:dev/yarn start:dev
 
 This will start:
 
-- Backend: http://localhost:5000
+- Backend: http://localhost:5000 ; https://mern-devices.onrender.com/api
 - API Documentation: http://localhost:5000/api/docs
 
 ## 📝 License
