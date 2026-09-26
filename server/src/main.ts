@@ -30,7 +30,16 @@ async function bootstrap() {
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('/api/docs/swagger', app, document);
+  // Vercel's function bundle doesn't include swagger-ui-dist's static files,
+  // so load the UI assets from a CDN instead of node_modules
+  const swaggerUiCdn = 'https://cdn.jsdelivr.net/npm/swagger-ui-dist@5';
+  SwaggerModule.setup('/api/docs/swagger', app, document, {
+    customCssUrl: `${swaggerUiCdn}/swagger-ui.css`,
+    customJs: [
+      `${swaggerUiCdn}/swagger-ui-bundle.js`,
+      `${swaggerUiCdn}/swagger-ui-standalone-preset.js`,
+    ],
+  });
 
   await app.listen(PORT);
   logger.log(`Server started on port ${PORT}`);
