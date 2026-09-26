@@ -3,6 +3,7 @@ import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import cookieParser from 'cookie-parser';
 import compression from 'compression';
+import { NextFunction, Request, Response } from 'express';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
@@ -30,15 +31,23 @@ async function bootstrap() {
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
+  const swaggerPath = '/api/docs/swagger';
+  SwaggerModule.setup(swaggerPath, app, document);
+
   // Vercel's function bundle doesn't include swagger-ui-dist's static files,
-  // so load the UI assets from a CDN instead of node_modules
+  // so redirect any UI asset the static handler couldn't find to the CDN copy
   const swaggerUiCdn = 'https://cdn.jsdelivr.net/npm/swagger-ui-dist@5';
-  SwaggerModule.setup('/api/docs/swagger', app, document, {
-    customCssUrl: `${swaggerUiCdn}/swagger-ui.css`,
-    customJs: [
-      `${swaggerUiCdn}/swagger-ui-bundle.js`,
-      `${swaggerUiCdn}/swagger-ui-standalone-preset.js`,
-    ],
+  const swaggerUiAssets = new Set([
+    'swagger-ui.css',
+    'swagger-ui-bundle.js',
+    'swagger-ui-standalone-preset.js',
+    'favicon-16x16.png',
+    'favicon-32x32.png',
+  ]);
+  app.use(swaggerPath, (req: Request, res: Response, next: NextFunction) => {
+    const file = req.path.split('/').pop();
+    if (!swaggerUiAssets.has(file)) return next();
+    res.redirect(`${swaggerUiCdn}/${file}`);
   });
 
   await app.listen(PORT);
